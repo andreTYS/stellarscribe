@@ -4,160 +4,110 @@
   <meta charset="UTF-8">
   <title>Aldrin y el Gato Cósmico</title>
   <style>
-    /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Courier New', monospace;
-      color: #fff;
-      background: #000;
+    body, html {
+      width: 100%; height: 100%;
       overflow: hidden;
+      font-family: 'Courier New', monospace;
+      background: black;
+      color: white;
     }
 
-    /* ===== AURORAS ===== */
-    .aurora {
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-      background: radial-gradient(circle at 30% 30%, rgba(0,255,200,0.4), transparent 60%),
-                  radial-gradient(circle at 70% 40%, rgba(200,0,255,0.4), transparent 60%),
-                  radial-gradient(circle at 50% 80%, rgba(0,150,255,0.3), transparent 70%);
-      animation: auroraMove 20s infinite linear alternate;
-      z-index: -3;
-    }
-    @keyframes auroraMove {
-      from { transform: rotate(0deg) scale(1); }
-      to   { transform: rotate(360deg) scale(1.2); }
-    }
-
-    /* ===== NIEVE ===== */
-    .snow {
-      position: absolute;
+    /* === VIDEO INTRO === */
+    #intro {
+      position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      pointer-events: none;
-      z-index: -2;
+      z-index: 999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: black;
     }
-    .snow span {
-      position: absolute;
-      display: block;
-      width: 4px; height: 4px;
-      background: white;
-      border-radius: 50%;
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      from { transform: translateY(-10vh); opacity: 1; }
-      to { transform: translateY(110vh); opacity: 0; }
+    #intro video {
+      width: 100%; height: 100%;
+      object-fit: cover;
     }
 
-    /* ===== HISTORIA ===== */
-    .container {
-      position: relative;
-      width: 100%;
+    /* Botón para saltar */
+    #skip {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.7);
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* === CONTENIDO WEB === */
+    #main {
+      display: none; /* oculto al inicio */
+      width: 100%; height: 100%;
+      overflow-y: auto;
+      text-align: center;
+      padding: 40px;
+      background: linear-gradient(to bottom, #000 40%, #111 100%);
+    }
+    .story {
+      font-size: 1.3rem;
       max-width: 800px;
-      margin: 5% auto;
-      padding: 20px;
-      background: rgba(0,0,0,0.6);
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(0,255,255,0.4);
+      margin: 0 auto;
+      line-height: 1.6;
       animation: fadeIn 2s ease forwards;
     }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
+      from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-    .story {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      white-space: pre-wrap;
-    }
-
-    /* ===== EFECTO MÁQUINA ===== */
-    .typewriter {
-      border-right: 2px solid #0ff;
-      white-space: nowrap;
-      overflow: hidden;
-      animation: typing 6s steps(60, end), blink 0.8s step-end infinite alternate;
-    }
-    @keyframes typing {
-      from { width: 0 }
-      to { width: 100% }
-    }
-    @keyframes blink {
-      50% { border-color: transparent; }
-    }
-
-    /* ===== GATO ===== */
-    .cat {
-      width: 120px;
-      margin: 20px auto;
-      animation: pulse 2s infinite alternate;
-    }
-    @keyframes pulse {
-      from { filter: drop-shadow(0 0 10px cyan); }
-      to   { filter: drop-shadow(0 0 30px magenta); }
-    }
-
-    /* ===== BOTONES ===== */
-    .choices {
-      margin-top: 20px;
-      display: flex;
-      justify-content: space-around;
-    }
-    .choices button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      transform: translateY(30px);
-      opacity: 0;
-      animation: slideIn 1s forwards;
-    }
-    .choices button:nth-child(1) { animation-delay: 6s; }
-    .choices button:nth-child(2) { animation-delay: 6.5s; }
-    .choices button:nth-child(3) { animation-delay: 7s; }
-    @keyframes slideIn {
-      to { transform: translateY(0); opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Fondo animado -->
-  <div class="aurora"></div>
-  <div class="snow"></div>
+  <!-- Intro con video -->
+  <div id="intro">
+    <video autoplay muted playsinline id="introVideo">
+      <source src="assets/intro_nasa.mp4" type="video/mp4">
+      Tu navegador no soporta video en HTML5.
+    </video>
+    <button id="skip">Saltar Intro</button>
+  </div>
 
-  <!-- Contenido -->
-  <div class="container">
-    <div class="story typewriter">
-      Nivel 1 – El despertar  
-      Cuando Aldrin abrió los ojos, la cabina estaba en silencio...
-    </div>
-    <img src="assets/cat.svg" alt="Gato Cósmico" class="cat">
+  <!-- Contenido de tu web -->
+  <div id="main">
+    <h1>Nivel 1 – El despertar</h1>
+    <p class="story">
+      Cuando Aldrin abrió los ojos, la cabina estaba en silencio.  
+      Frente a él, el gato cósmico lo observaba con calma…
+    </p>
     <div class="choices">
-      <button onclick="alert('Explorar el monolito...')">Opción A</button>
-      <button onclick="alert('Reparar la nave...')">Opción B</button>
-      <button onclick="alert('Comunicar con la señal...')">Opción C</button>
+      <button>Opción A</button>
+      <button>Opción B</button>
+      <button>Opción C</button>
     </div>
   </div>
 
-  <!-- Script: Generar nieve -->
   <script>
-    const snowContainer = document.querySelector('.snow');
-    for (let i = 0; i < 60; i++) {
-      let s = document.createElement('span');
-      s.style.left = Math.random() * 100 + 'vw';
-      s.style.animationDuration = (5 + Math.random() * 10) + 's';
-      s.style.animationDelay = Math.random() * 10 + 's';
-      snowContainer.appendChild(s);
-    }
+    const intro = document.getElementById('intro');
+    const main = document.getElementById('main');
+    const video = document.getElementById('introVideo');
+    const skip = document.getElementById('skip');
+
+    // Cuando termina el video, mostrar web
+    video.onended = () => {
+      intro.style.display = 'none';
+      main.style.display = 'block';
+    };
+
+    // Si se pulsa "Saltar"
+    skip.onclick = () => {
+      video.pause();
+      intro.style.display = 'none';
+      main.style.display = 'block';
+    };
   </script>
 
 </body>
 </html>
-
