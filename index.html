@@ -2,199 +2,648 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Aldrin y el Gato Cósmico</title>
-  <link rel="icon" type="image/svg+xml" href="img/ICONOO.png">
+  <title>Aldrin y el Gato Cósmico - Aventura Espacial Interactiva</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="img/faviconnasa.svg">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body, html {
-      width: 100%; height: 100%;
-      overflow: hidden;
-      font-family: 'Courier New', monospace;
-      background: black;
-      color: white;
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap');
+    
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    :root {
+      --primary-cyan: #00ffff;
+      --dark-cyan: #00cccc;
+      --electric-blue: #0066ff;
+      --deep-space: #0a0a0f;
+      --star-white: #ffffff;
+      --nebula-purple: #6600cc;
+      --cosmic-gold: #ffd700;
     }
 
-    /* === PANTALLA DE INICIO === */
+    body, html {
+      width: 100%; 
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Roboto', sans-serif;
+      background: var(--deep-space);
+      color: var(--star-white);
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--primary-cyan);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.1s ease;
+      backdrop-filter: blur(2px);
+    }
+
+    /* Animated starfield background */
+    .starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: 
+        radial-gradient(2px 2px at 20px 30px, var(--primary-cyan), transparent),
+        radial-gradient(2px 2px at 40px 70px, var(--star-white), transparent),
+        radial-gradient(1px 1px at 90px 40px, var(--cosmic-gold), transparent),
+        radial-gradient(1px 1px at 130px 80px, var(--electric-blue), transparent),
+        radial-gradient(2px 2px at 160px 30px, var(--star-white), transparent);
+      background-repeat: repeat;
+      background-size: 200px 100px;
+      animation: sparkle 20s linear infinite;
+    }
+
+    @keyframes sparkle {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-100px); }
+    }
+
+    /* === PANTALLA DE INICIO MEJORADA === */
     #startScreen {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: black;
+      background: 
+        linear-gradient(45deg, var(--deep-space) 0%, var(--nebula-purple) 50%, var(--deep-space) 100%),
+        radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.8) 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      text-align: center;
+      padding: 20px;
       z-index: 1000;
     }
-    #startScreen h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: cyan;
-      text-shadow: 0 0 10px cyan;
-    }
-    #startBtn {
-      padding: 15px 30px;
-      font-size: 1.2rem;
-      background: cyan;
-      color: black;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: transform 0.3s, background 0.3s;
-    }
-    #startBtn:hover {
-      transform: scale(1.1);
-      background: #00ffffcc;
+
+    .title-container {
+      margin-bottom: 40px;
+      animation: titleGlow 3s ease-in-out infinite alternate;
     }
 
-    /* === VIDEO INTRO === */
+    #startScreen h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      color: var(--primary-cyan);
+      text-shadow: 
+        0 0 20px var(--primary-cyan),
+        0 0 40px var(--primary-cyan),
+        0 0 60px var(--primary-cyan);
+      margin-bottom: 15px;
+      letter-spacing: 3px;
+    }
+
+    .subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      color: var(--cosmic-gold);
+      font-weight: 300;
+      opacity: 0.9;
+      animation: fadeInUp 2s ease 0.5s both;
+    }
+
+    @keyframes titleGlow {
+      from { 
+        text-shadow: 
+          0 0 20px var(--primary-cyan),
+          0 0 40px var(--primary-cyan),
+          0 0 60px var(--primary-cyan);
+      }
+      to { 
+        text-shadow: 
+          0 0 30px var(--primary-cyan),
+          0 0 60px var(--primary-cyan),
+          0 0 90px var(--primary-cyan);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 0.9; 
+        transform: translateY(0); 
+      }
+    }
+
+    #startBtn {
+      padding: 18px 40px;
+      font-family: 'Orbitron', monospace;
+      font-size: 1.2rem;
+      font-weight: 700;
+      background: linear-gradient(45deg, var(--primary-cyan), var(--electric-blue));
+      color: var(--deep-space);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: fadeInUp 2s ease 1s both;
+    }
+
+    #startBtn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    #startBtn:hover {
+      transform: scale(1.05) translateY(-2px);
+      box-shadow: 
+        0 10px 30px rgba(0,255,255,0.4),
+        0 0 50px rgba(0,255,255,0.2);
+    }
+
+    #startBtn:hover::before {
+      left: 100%;
+    }
+
+    /* === VIDEO INTRO MEJORADO === */
     #intro {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 999;
-      display: none; /* oculto hasta dar click en Iniciar */
+      display: none;
       justify-content: center;
       align-items: center;
-      background: black;
+      background: var(--deep-space);
     }
+
     #intro video {
-      width: 100%; height: 100%;
+      width: 100%; 
+      height: 100%;
       object-fit: cover;
+      filter: brightness(0.8) contrast(1.2);
     }
+
     #skip {
       position: absolute;
       bottom: 30px;
       right: 30px;
-      padding: 10px 20px;
-      background: rgba(255,255,255,0.7);
-      border: none;
-      border-radius: 8px;
-      font-weight: bold;
+      padding: 12px 24px;
+      background: rgba(0,255,255,0.2);
+      backdrop-filter: blur(10px);
+      border: 2px solid var(--primary-cyan);
+      border-radius: 25px;
+      color: var(--star-white);
+      font-weight: 500;
       cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Orbitron', monospace;
     }
 
-    /* === NAVBAR === */
+    #skip:hover {
+      background: rgba(0,255,255,0.4);
+      transform: scale(1.05);
+      box-shadow: 0 0 20px var(--primary-cyan);
+    }
+
+    /* === NAVBAR FUTURISTA === */
     header {
       position: fixed;
       top: 0; left: 0;
       width: 100%;
-      background: rgba(0,0,0,0.6);
-      padding: 10px 20px;
+      background: rgba(10,10,15,0.9);
+      backdrop-filter: blur(20px);
+      padding: 15px 30px;
       z-index: 500;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-      display: none; /* Oculto hasta que termine intro */
+      border-bottom: 1px solid rgba(0,255,255,0.3);
+      display: none;
     }
+
     .navbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     .logo {
       display: flex;
       align-items: center;
       text-decoration: none;
+      transition: all 0.3s ease;
     }
+
     .logo img {
       height: 40px;
-      margin-right: 10px;
-      transition: transform 0.3s, filter 0.3s;
+      margin-right: 12px;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 0 10px var(--primary-cyan));
     }
+
     .logo:hover img {
-      transform: rotate(-10deg) scale(1.1);
-      filter: drop-shadow(0 0 8px cyan);
+      transform: rotate(360deg) scale(1.1);
+      filter: drop-shadow(0 0 20px var(--primary-cyan));
     }
+
     .brand-name {
+      font-family: 'Orbitron', monospace;
       font-size: 1.2rem;
-      font-weight: bold;
-      color: #fff;
-      letter-spacing: 1px;
+      font-weight: 700;
+      color: var(--star-white);
+      letter-spacing: 2px;
     }
+
     .nav-links {
       list-style: none;
       display: flex;
-      gap: 20px;
+      gap: 25px;
       margin: 0;
       padding: 0;
     }
+
     .nav-links li a {
       text-decoration: none;
-      color: #fff;
-      font-size: 1rem;
-      transition: color 0.3s;
-    }
-    .nav-links li a:hover {
-      color: cyan;
+      color: var(--star-white);
+      font-size: 0.95rem;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 20px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    /* Botón música */
-    #musicControl {
-      margin-left: 20px;
-      background: rgba(255,255,255,0.15);
-      border: none;
+    .nav-links li a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.2), transparent);
+      transition: left 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: var(--primary-cyan);
+      background: rgba(0,255,255,0.1);
+      box-shadow: 0 0 15px rgba(0,255,255,0.3);
+    }
+
+    .nav-links li a:hover::before {
+      left: 100%;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    #musicControl, #fullscreenBtn {
+      background: rgba(0,255,255,0.1);
+      border: 2px solid var(--primary-cyan);
       border-radius: 50%;
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
       cursor: pointer;
       font-size: 18px;
-      color: white;
+      color: var(--star-white);
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: background 0.3s, transform 0.3s;
-    }
-    #musicControl:hover {
-      background: rgba(0,255,255,0.3);
-      transform: scale(1.1);
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
     }
 
-    /* === CONTENIDO WEB === */
+    #musicControl:hover, #fullscreenBtn:hover {
+      background: rgba(0,255,255,0.3);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--primary-cyan);
+    }
+
+    /* === HAMBURGER FUTURISTA === */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+      gap: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .hamburger span {
+      width: 28px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-cyan), var(--electric-blue));
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 5px var(--primary-cyan);
+    }
+
+    .hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(6px, 6px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(8px, -8px);
+    }
+
+    .nav-links.active {
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      background: rgba(10,10,15,0.95);
+      backdrop-filter: blur(20px);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(0,255,255,0.3);
+      gap: 15px;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(-20px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    /* === CONTENIDO PRINCIPAL MEJORADO === */
     #main {
       display: none;
-      width: 100%; height: 100%;
+      width: 100%; 
+      height: 100%;
       overflow-y: auto;
       text-align: center;
-      padding: 100px 40px 40px; /* espacio para navbar */
-      background: linear-gradient(to bottom, #000 40%, #111 100%);
+      padding: 100px 20px 60px;
+      background: 
+        linear-gradient(135deg, var(--deep-space) 0%, rgba(102,0,204,0.1) 50%, var(--deep-space) 100%);
     }
-    .story {
-      font-size: 1.3rem;
+
+    .level-indicator {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.9rem;
+      color: var(--cosmic-gold);
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+
+    #main h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--primary-cyan);
+      margin-bottom: 30px;
+      text-shadow: 0 0 20px var(--primary-cyan);
+      animation: slideInFromTop 1s ease;
+    }
+
+    @keyframes slideInFromTop {
+      from { 
+        opacity: 0; 
+        transform: translateY(-50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .story-container {
       max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.6;
-      animation: fadeIn 2s ease forwards;
+      margin: 0 auto 40px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      border: 1px solid rgba(0,255,255,0.2);
+      animation: fadeInScale 1.2s ease 0.3s both;
     }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeInScale {
+      from { 
+        opacity: 0; 
+        transform: scale(0.9); 
+      }
+      to { 
+        opacity: 1; 
+        transform: scale(1); 
+      }
     }
+
+    .story {
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      line-height: 1.8;
+      color: var(--star-white);
+      margin-bottom: 20px;
+    }
+
     .choices {
-      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      animation: slideInFromBottom 1s ease 0.6s both;
     }
+
+    @keyframes slideInFromBottom {
+      from { 
+        opacity: 0; 
+        transform: translateY(50px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
     .choices button {
-      margin: 10px;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 8px;
-      background: cyan;
-      color: black;
-      font-weight: bold;
+      padding: 18px 25px;
+      border: 2px solid var(--primary-cyan);
+      border-radius: 15px;
+      background: rgba(0,255,255,0.1);
+      backdrop-filter: blur(10px);
+      color: var(--star-white);
+      font-weight: 500;
       cursor: pointer;
-      transition: transform 0.3s, background 0.3s;
+      transition: all 0.4s ease;
+      font-size: 1rem;
+      position: relative;
+      overflow: hidden;
     }
+
+    .choices button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.3), transparent);
+      transition: left 0.4s ease;
+    }
+
     .choices button:hover {
-      transform: scale(1.1);
-      background: #00ffffcc;
+      transform: translateY(-5px) scale(1.02);
+      background: rgba(0,255,255,0.2);
+      box-shadow: 
+        0 15px 35px rgba(0,255,255,0.3),
+        0 0 30px rgba(0,255,255,0.2);
+      color: var(--primary-cyan);
+    }
+
+    .choices button:hover::before {
+      left: 100%;
+    }
+
+    /* Progress indicator */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-cyan), var(--electric-blue));
+      z-index: 1001;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px var(--primary-cyan);
+    }
+
+    /* Particle effects */
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--primary-cyan);
+      border-radius: 50%;
+      animation: float 4s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      0% { 
+        transform: translateY(100vh) rotate(0deg); 
+        opacity: 0; 
+      }
+      10% { 
+        opacity: 0.7; 
+      }
+      90% { 
+        opacity: 0.7; 
+      }
+      100% { 
+        transform: translateY(-100px) rotate(360deg); 
+        opacity: 0; 
+      }
+    }
+
+    /* === MEDIA QUERIES === */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      .hamburger {
+        display: flex;
+      }
+      
+      .story-container {
+        padding: 25px;
+        margin: 0 auto 30px;
+      }
+      
+      .choices {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      
+      header {
+        padding: 10px 20px;
+      }
+      
+      #main {
+        padding: 80px 15px 40px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .title-container {
+        margin-bottom: 30px;
+      }
+      
+      #startBtn {
+        padding: 15px 30px;
+        font-size: 1rem;
+      }
+      
+      .story-container {
+        padding: 20px;
+      }
+    }
+
+    /* Scroll animations */
+    @keyframes scrollGlow {
+      0%, 100% { box-shadow: 0 0 5px var(--primary-cyan); }
+      50% { box-shadow: 0 0 20px var(--primary-cyan); }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0,0,0,0.3);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--primary-cyan), var(--electric-blue));
+      border-radius: 4px;
+      animation: scrollGlow 2s ease-in-out infinite;
     }
   </style>
 </head>
 <body>
+  <!-- Custom cursor -->
+  <div class="cursor"></div>
 
-  <!-- Pantalla de inicio -->
+  <!-- Animated starfield background -->
+  <div class="starfield"></div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar" style="width: 0%"></div>
+
+  <!-- Pantalla de inicio mejorada -->
   <div id="startScreen">
-    <h1>🚀 Aldrin y el Gato Cósmico</h1>
-    <button id="startBtn">Iniciar experiencia</button>
+    <div class="title-container">
+      <h1>🚀 Aldrin y el Gato Cósmico</h1>
+      <p class="subtitle">Una aventura espacial interactiva</p>
+    </div>
+    <button id="startBtn">Iniciar Misión</button>
   </div>
 
   <!-- Intro con video -->
@@ -203,38 +652,70 @@
       <source src="assets/intro_nasa.mp4" type="video/mp4">
       Tu navegador no soporta video en HTML5.
     </video>
-    <button id="skip">Saltar Intro</button>
+    <button id="skip">⏩ Saltar Intro</button>
   </div>
 
-  <!-- Navbar -->
+  <!-- Navbar futurista -->
   <header id="navbar">
     <nav class="navbar">
       <a href="index.html" class="logo">
         <img src="img/faviconnasa.svg" alt="Logo de la marca" />
         <span class="brand-name">Aldrin & Cat</span>
       </a>
-      <ul class="nav-links">
+
+      <!-- Enlaces -->
+      <ul class="nav-links" id="navLinks">
         <li><a href="#historia">Historia</a></li>
         <li><a href="#personajes">Personajes</a></li>
         <li><a href="#decisiones">Decisiones</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
-      <!-- Botón música -->
-      <button id="musicControl">🎵</button>
+
+      <!-- Controles -->
+      <div class="controls">
+        <button id="musicControl" title="Controlar música">🎵</button>
+        <button id="fullscreenBtn" title="Pantalla completa">⛶</button>
+      </div>
+
+      <!-- Botón hamburguesa futurista -->
+      <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
     </nav>
   </header>
 
-  <!-- Contenido de tu web -->
+  <!-- Contenido principal mejorado -->
   <div id="main">
-    <h1 id="historia">Nivel 1 – El despertar</h1>
-    <p class="story">
-      Cuando Aldrin abrió los ojos, la cabina estaba en silencio.  
-      Frente a él, el gato cósmico lo observaba con calma…
-    </p>
+    <div class="level-indicator">NIVEL 1</div>
+    <h1 id="historia">El Despertar Cósmico</h1>
+    
+    <div class="story-container">
+      <p class="story">
+        Cuando Aldrin abrió los ojos, la cabina estaba sumida en un silencio inquietante. 
+        Las luces de emergencia parpadeaban débilmente, creando sombras danzantes en las paredes metálicas. 
+        Frente a él, una criatura felina de pelaje brillante como las estrellas lo observaba con 
+        ojos que parecían contener galaxias enteras...
+      </p>
+      <p class="story">
+        El gato cósmico inclina su cabeza, y Aldrin puede escuchar una voz etérea que resuena 
+        directamente en su mente: <em>"Finalmente has despertado, viajero del tiempo. 
+        Tu destino está entrelazado con el mío, pero el camino que elijas determinará 
+        el futuro de ambos mundos."</em>
+      </p>
+    </div>
+
     <div class="choices">
-      <button>Opción A</button>
-      <button>Opción B</button>
-      <button>Opción C</button>
+      <button onclick="makeChoice('A')">
+        🤝 Intentar comunicarse pacíficamente con el gato
+      </button>
+      <button onclick="makeChoice('B')">
+        🔍 Investigar los controles de la nave primero
+      </button>
+      <button onclick="makeChoice('C')">
+        ⚡ Activar los sistemas de emergencia inmediatamente
+      </button>
     </div>
   </div>
 
@@ -245,6 +726,7 @@
   </audio>
 
   <script>
+    // Variables principales
     const startScreen = document.getElementById('startScreen');
     const startBtn = document.getElementById('startBtn');
     const intro = document.getElementById('intro');
@@ -254,41 +736,307 @@
     const navbar = document.getElementById('navbar');
     const music = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicControl');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    const progressBar = document.querySelector('.progress-bar');
+    const cursor = document.querySelector('.cursor');
 
     let isPlaying = false;
+    let currentLevel = 1;
 
+    // Cursor personalizado
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX - 10 + 'px';
+      cursor.style.top = e.clientY - 10 + 'px';
+    });
+
+    // Efectos de partículas
+    function createParticle() {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      particle.style.left = Math.random() * window.innerWidth + 'px';
+      particle.style.animationDelay = Math.random() * 4 + 's';
+      document.body.appendChild(particle);
+      
+      setTimeout(() => {
+        particle.remove();
+      }, 4000);
+    }
+
+    // Crear partículas cada 500ms
+    setInterval(createParticle, 500);
+
+    // Función para mostrar el contenido principal
     function showContent() {
       intro.style.display = 'none';
       main.style.display = 'block';
       navbar.style.display = 'block';
+      updateProgress(25);
     }
 
+    // Actualizar barra de progreso
+    function updateProgress(percentage) {
+      progressBar.style.width = percentage + '%';
+    }
+
+    // Event listeners para el video
     video.onended = showContent;
     skip.onclick = () => {
       video.pause();
       showContent();
     };
 
-    // Iniciar experiencia con música y video
+    // Iniciar experiencia
     startBtn.onclick = () => {
       startScreen.style.display = 'none';
       intro.style.display = 'flex';
-      video.play();
-      music.play();
-      isPlaying = true;
+      video.play().catch(e => console.log('Error al reproducir video:', e));
+      
+      // Intentar reproducir música
+      music.play().then(() => {
+        isPlaying = true;
+        musicBtn.textContent = "🎵";
+      }).catch(e => {
+        console.log('Error al reproducir música:', e);
+        isPlaying = false;
+        musicBtn.textContent = "🔇";
+      });
+      
+      updateProgress(10);
     };
 
-    // Botón música
+    // Control de música
     musicBtn.onclick = () => {
       if (isPlaying) {
         music.pause();
         musicBtn.textContent = "🔇";
+        musicBtn.title = "Activar música";
       } else {
-        music.play();
-        musicBtn.textContent = "🎵";
+        music.play().then(() => {
+          musicBtn.textContent = "🎵";
+          musicBtn.title = "Desactivar música";
+        }).catch(e => console.log('Error al reproducir música:', e));
       }
       isPlaying = !isPlaying;
     };
+
+    // Pantalla completa
+    fullscreenBtn.onclick = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(e => 
+          console.log('Error al activar pantalla completa:', e)
+        );
+      } else {
+        document.exitFullscreen().catch(e => 
+          console.log('Error al salir de pantalla completa:', e)
+        );
+      }
+    };
+
+    // Menú hamburguesa
+    hamburger.onclick = () => {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('active');
+    };
+
+    // Cerrar menú al hacer clic en un enlace
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        navLinks.classList.remove('active');
+        hamburger.classList.remove('active');
+        
+        // Scroll suave a la sección
+        const targetId = link.getAttribute('href');
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          targetElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Función para manejar las decisiones
+    function makeChoice(choice) {
+      currentLevel++;
+      updateProgress(currentLevel * 25);
+      
+      const stories = {
+        'A': {
+          title: 'Comunicación Telepática',
+          content: `El gato cósmico ronronea suavemente, y una sensación de calidez invade tu mente. 
+                   "Sabia elección, Aldrin. Mi nombre es Nebula, guardián de los secretos estelares. 
+                   Esta nave no es lo que parece... es una cápsula de escape del tiempo. 
+                   Hemos viajado desde el año 3024, huyendo de una catástrofe cósmica."
+                   
+                   Nebula se acerca y toca tu frente con su pata. Inmediatamente, imágenes de 
+                   planetas destruidos y civilizaciones extintas llenan tu mente.`
+        },
+        'B': {
+          title: 'Análisis de Sistemas',
+          content: `Te diriges a los controles, ignorando momentáneamente al gato cósmico. 
+                   Los displays muestran datos inquietantes: coordenadas desconocidas, 
+                   fecha: año 2387, combustible al 15%. 
+                   
+                   "Los sistemas no mienten," maulló el gato detrás de ti. "Pero tampoco 
+                   revelan toda la verdad. Esa nave que ves en el monitor no es una amenaza... 
+                   es nuestra única esperanza de regresar a casa."`
+        },
+        'C': {
+          title: 'Protocolo de Emergencia',
+          content: `Las sirenas resuenan por toda la cabina mientras las luces rojas de emergencia 
+                   bañan el espacio en un resplandor ominoso. Los sistemas se activan rápidamente, 
+                   pero algo sale mal: una descarga eléctrica recorre los controles.
+                   
+                   El gato cósmico salta ágilmente, esquivando las chispas. "¡Imprudente humano! 
+                   Los sistemas están dañados desde la tormenta cuántica. Ahora hemos alertado 
+                   a los Cazadores de Tiempo de nuestra ubicación. Tenemos minutos antes de 
+                   que nos encuentren."`
+        }
+      };
+
+      const selectedStory = stories[choice];
+      
+      // Actualizar contenido con animaciones
+      const mainContent = document.getElementById('main');
+      mainContent.style.opacity = '0.3';
+      mainContent.style.transform = 'scale(0.95)';
+      
+      setTimeout(() => {
+        document.querySelector('.level-indicator').textContent = `NIVEL ${currentLevel}`;
+        document.getElementById('historia').textContent = selectedStory.title;
+        document.querySelector('.story').innerHTML = selectedStory.content;
+        
+        // Nuevas opciones basadas en la elección
+        updateChoices(choice);
+        
+        mainContent.style.opacity = '1';
+        mainContent.style.transform = 'scale(1)';
+      }, 300);
+    }
+
+    // Función para actualizar las opciones de decisión
+    function updateChoices(previousChoice) {
+      const choicesContainer = document.querySelector('.choices');
+      
+      const newChoices = {
+        'A': [
+          { text: '🧠 Compartir tus propios recuerdos con Nebula', action: () => makeChoice('A1') },
+          { text: '🌌 Preguntarle sobre la catástrofe cósmica', action: () => makeChoice('A2') },
+          { text: '🚀 Sugerir trabajar juntos para encontrar una solución', action: () => makeChoice('A3') }
+        ],
+        'B': [
+          { text: '📡 Intentar contactar con la nave misteriosa', action: () => makeChoice('B1') },
+          { text: '🔧 Reparar el sistema de navegación primero', action: () => makeChoice('B2') },
+          { text: '⚠️ Verificar los sensores de peligro', action: () => makeChoice('B3') }
+        ],
+        'C': [
+          { text: '🏃 Escapar inmediatamente en las cápsulas de emergencia', action: () => makeChoice('C1') },
+          { text: '⚔️ Preparar las defensas de la nave', action: () => makeChoice('C2') },
+          { text: '🤝 Confiar en el gato para encontrar una salida', action: () => makeChoice('C3') }
+        ]
+      };
+
+      choicesContainer.innerHTML = '';
+      
+      newChoices[previousChoice].forEach((choice, index) => {
+        const button = document.createElement('button');
+        button.innerHTML = choice.text;
+        button.onclick = choice.action;
+        button.style.animationDelay = (index * 0.1) + 's';
+        choicesContainer.appendChild(button);
+      });
+    }
+
+    // Efectos visuales adicionales
+    document.addEventListener('click', (e) => {
+      // Crear efecto de ondas al hacer clic
+      const ripple = document.createElement('div');
+      ripple.style.position = 'fixed';
+      ripple.style.left = e.clientX - 25 + 'px';
+      ripple.style.top = e.clientY - 25 + 'px';
+      ripple.style.width = '50px';
+      ripple.style.height = '50px';
+      ripple.style.borderRadius = '50%';
+      ripple.style.border = '2px solid var(--primary-cyan)';
+      ripple.style.pointerEvents = 'none';
+      ripple.style.animation = 'rippleEffect 0.6s ease-out forwards';
+      ripple.style.zIndex = '9998';
+      
+      document.body.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+
+    // Agregar animación de ondas CSS
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes rippleEffect {
+        0% {
+          transform: scale(0);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(4);
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Auto-scroll suave
+    function smoothScrollTo(element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center'
+      });
+    }
+
+    // Detectar cambios de pantalla completa
+    document.addEventListener('fullscreenchange', () => {
+      if (document.fullscreenElement) {
+        fullscreenBtn.innerHTML = '⛶';
+        fullscreenBtn.title = 'Salir de pantalla completa';
+      } else {
+        fullscreenBtn.innerHTML = '⛶';
+        fullscreenBtn.title = 'Pantalla completa';
+      }
+    });
+
+    // Inicialización cuando se carga la página
+    document.addEventListener('DOMContentLoaded', () => {
+      // Precargar recursos si están disponibles
+      if (video.canPlayType) {
+        video.load();
+      }
+      
+      if (music.canPlayType) {
+        music.load();
+      }
+      
+      // Configuración inicial del volumen
+      music.volume = 0.3;
+      
+      console.log('🚀 Sistema iniciado. Listo para la aventura espacial...');
+    });
+
+    // Manejo de errores de media
+    video.onerror = () => {
+      console.warn('No se pudo cargar el video de intro');
+      skip.textContent = '▶️ Comenzar sin video';
+    };
+
+    music.onerror = () => {
+      console.warn('No se pudo cargar la música de fondo');
+      musicBtn.style.display = 'none';
+    };
+
+    // Prevenir clic derecho en elementos importantes
+    [video, startBtn, ...document.querySelectorAll('.choices button')].forEach(element => {
+      element.addEventListener('contextmenu', e => e.preventDefault());
+    });
   </script>
 
 </body>
