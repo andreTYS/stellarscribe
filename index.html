@@ -219,13 +219,6 @@
       intro.style.display = 'none';
       main.style.display = 'block';
       navbar.style.display = 'block';
-
-      // Iniciar música cuando entra al contenido
-      music.play().then(() => {
-        isPlaying = true;
-      }).catch(err => {
-        console.log("El navegador bloqueó el autoplay hasta interacción del usuario");
-      });
     }
 
     video.onended = showContent;
@@ -233,6 +226,15 @@
       video.pause();
       showContent();
     };
+
+    // Intentar reproducir música al cargar la página
+    window.addEventListener("load", () => {
+      music.play().then(() => {
+        isPlaying = true;
+      }).catch(() => {
+        console.log("Autoplay bloqueado: el usuario debe interactuar primero.");
+      });
+    });
 
     // Botón música
     musicBtn.onclick = () => {
