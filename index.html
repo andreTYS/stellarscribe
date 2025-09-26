@@ -14,13 +14,47 @@
       color: white;
     }
 
+    /* === PANTALLA DE INICIO === */
+    #startScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: black;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    #startScreen h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: cyan;
+      text-shadow: 0 0 10px cyan;
+    }
+    #startBtn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      background: cyan;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.3s, background 0.3s;
+    }
+    #startBtn:hover {
+      transform: scale(1.1);
+      background: #00ffffcc;
+    }
+
     /* === VIDEO INTRO === */
     #intro {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 999;
-      display: flex;
+      display: none; /* oculto hasta dar click en Iniciar */
       justify-content: center;
       align-items: center;
       background: black;
@@ -157,9 +191,15 @@
 </head>
 <body>
 
+  <!-- Pantalla de inicio -->
+  <div id="startScreen">
+    <h1>🚀 Aldrin y el Gato Cósmico</h1>
+    <button id="startBtn">Iniciar experiencia</button>
+  </div>
+
   <!-- Intro con video -->
   <div id="intro">
-    <video autoplay muted playsinline id="introVideo">
+    <video muted playsinline id="introVideo">
       <source src="assets/intro_nasa.mp4" type="video/mp4">
       Tu navegador no soporta video en HTML5.
     </video>
@@ -205,6 +245,8 @@
   </audio>
 
   <script>
+    const startScreen = document.getElementById('startScreen');
+    const startBtn = document.getElementById('startBtn');
     const intro = document.getElementById('intro');
     const main = document.getElementById('main');
     const video = document.getElementById('introVideo');
@@ -227,15 +269,14 @@
       showContent();
     };
 
-    // 🎵 Iniciar música desde que arranca la intro
-    window.addEventListener("DOMContentLoaded", () => {
-      music.play().then(() => {
-        isPlaying = true;
-        console.log("Música iniciada durante intro ✅");
-      }).catch(() => {
-        console.log("Autoplay bloqueado: el usuario debe interactuar primero.");
-      });
-    });
+    // Iniciar experiencia con música y video
+    startBtn.onclick = () => {
+      startScreen.style.display = 'none';
+      intro.style.display = 'flex';
+      video.play();
+      music.play();
+      isPlaying = true;
+    };
 
     // Botón música
     musicBtn.onclick = () => {
