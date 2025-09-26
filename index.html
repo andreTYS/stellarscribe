@@ -29,8 +29,6 @@
       width: 100%; height: 100%;
       object-fit: cover;
     }
-
-    /* Botón para saltar */
     #skip {
       position: absolute;
       bottom: 30px;
@@ -43,13 +41,66 @@
       cursor: pointer;
     }
 
+    /* === NAVBAR === */
+    header {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.6);
+      padding: 10px 20px;
+      z-index: 500;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+      display: none; /* Oculto hasta que termine intro */
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
+      transition: transform 0.3s, filter 0.3s;
+    }
+    .logo:hover img {
+      transform: rotate(-10deg) scale(1.1);
+      filter: drop-shadow(0 0 8px cyan);
+    }
+    .brand-name {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+      transition: color 0.3s;
+    }
+    .nav-links li a:hover {
+      color: cyan;
+    }
+
     /* === CONTENIDO WEB === */
     #main {
-      display: none; /* oculto al inicio */
+      display: none;
       width: 100%; height: 100%;
       overflow-y: auto;
       text-align: center;
-      padding: 40px;
+      padding: 100px 40px 40px; /* espacio para navbar */
       background: linear-gradient(to bottom, #000 40%, #111 100%);
     }
     .story {
@@ -62,6 +113,24 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(20px); }
       to   { opacity: 1; transform: translateY(0); }
+    }
+    .choices {
+      margin-top: 30px;
+    }
+    .choices button {
+      margin: 10px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: cyan;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .choices button:hover {
+      transform: scale(1.1);
+      background: #00ffffcc;
     }
   </style>
 </head>
@@ -76,9 +145,25 @@
     <button id="skip">Saltar Intro</button>
   </div>
 
+  <!-- Navbar -->
+  <header id="navbar">
+    <nav class="navbar">
+      <a href="index.html" class="logo">
+        <img src="img/cono.svg" alt="Logo de la marca" />
+        <span class="brand-name">Aldrin & Cat</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#historia">Historia</a></li>
+        <li><a href="#personajes">Personajes</a></li>
+        <li><a href="#decisiones">Decisiones</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+  </header>
+
   <!-- Contenido de tu web -->
   <div id="main">
-    <h1>Nivel 1 – El despertar</h1>
+    <h1 id="historia">Nivel 1 – El despertar</h1>
     <p class="story">
       Cuando Aldrin abrió los ojos, la cabina estaba en silencio.  
       Frente a él, el gato cósmico lo observaba con calma…
@@ -95,21 +180,20 @@
     const main = document.getElementById('main');
     const video = document.getElementById('introVideo');
     const skip = document.getElementById('skip');
+    const navbar = document.getElementById('navbar');
 
-    // Cuando termina el video, mostrar web
-    video.onended = () => {
+    function showContent() {
       intro.style.display = 'none';
       main.style.display = 'block';
-    };
+      navbar.style.display = 'block'; // mostrar barra
+    }
 
-    // Si se pulsa "Saltar"
+    video.onended = showContent;
     skip.onclick = () => {
       video.pause();
-      intro.style.display = 'none';
-      main.style.display = 'block';
+      showContent();
     };
   </script>
 
 </body>
 </html>
-
