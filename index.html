@@ -227,10 +227,11 @@
       showContent();
     };
 
-    // Intentar reproducir música al cargar la página
-    window.addEventListener("load", () => {
+    // 🎵 Iniciar música desde que arranca la intro
+    window.addEventListener("DOMContentLoaded", () => {
       music.play().then(() => {
         isPlaying = true;
+        console.log("Música iniciada durante intro ✅");
       }).catch(() => {
         console.log("Autoplay bloqueado: el usuario debe interactuar primero.");
       });
