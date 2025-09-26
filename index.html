@@ -94,6 +94,27 @@
       color: cyan;
     }
 
+    /* Botón música */
+    #musicControl {
+      margin-left: 20px;
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 18px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s, transform 0.3s;
+    }
+    #musicControl:hover {
+      background: rgba(0,255,255,0.3);
+      transform: scale(1.1);
+    }
+
     /* === CONTENIDO WEB === */
     #main {
       display: none;
@@ -158,6 +179,8 @@
         <li><a href="#decisiones">Decisiones</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
+      <!-- Botón música -->
+      <button id="musicControl">🎵</button>
     </nav>
   </header>
 
@@ -175,17 +198,34 @@
     </div>
   </div>
 
+  <!-- Música de fondo -->
+  <audio id="bgMusic" loop>
+    <source src="assets/music.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio en HTML5.
+  </audio>
+
   <script>
     const intro = document.getElementById('intro');
     const main = document.getElementById('main');
     const video = document.getElementById('introVideo');
     const skip = document.getElementById('skip');
     const navbar = document.getElementById('navbar');
+    const music = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicControl');
+
+    let isPlaying = false;
 
     function showContent() {
       intro.style.display = 'none';
       main.style.display = 'block';
-      navbar.style.display = 'block'; // mostrar barra
+      navbar.style.display = 'block';
+
+      // Iniciar música cuando entra al contenido
+      music.play().then(() => {
+        isPlaying = true;
+      }).catch(err => {
+        console.log("El navegador bloqueó el autoplay hasta interacción del usuario");
+      });
     }
 
     video.onended = showContent;
@@ -193,8 +233,19 @@
       video.pause();
       showContent();
     };
+
+    // Botón música
+    musicBtn.onclick = () => {
+      if (isPlaying) {
+        music.pause();
+        musicBtn.textContent = "🔇";
+      } else {
+        music.play();
+        musicBtn.textContent = "🎵";
+      }
+      isPlaying = !isPlaying;
+    };
   </script>
 
 </body>
 </html>
-
