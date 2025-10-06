@@ -1,0 +1,161 @@
+{
+  "timestamp": "2025-09-22T01:55:07.472725",
+  "difficulty_levels": {
+    "elementary": {
+      "age_range": "6-10 años",
+      "concepts": [
+        "El Sol es una estrella",
+        "Manchas solares",
+        "Auroras"
+      ],
+      "activities": [
+        "Colorear el Sol",
+        "Contar manchas solares",
+        "Dibujar auroras"
+      ]
+    },
+    "middle_school": {
+      "age_range": "11-14 años",
+      "concepts": [
+        "Ciclo solar",
+        "Campo magnético",
+        "Viento solar",
+        "Erupciones solares"
+      ],
+      "activities": [
+        "Graficar manchas solares",
+        "Simular campo magnético",
+        "Predecir auroras"
+      ]
+    },
+    "high_school": {
+      "age_range": "15-18 años",
+      "concepts": [
+        "Física del plasma",
+        "Espectroscopia",
+        "Índice Kp",
+        "CMEs"
+      ],
+      "activities": [
+        "Análisis espectral",
+        "Calcular velocidad CME",
+        "Pronóstico clima espacial"
+      ]
+    },
+    "university": {
+      "age_range": "18+ años",
+      "concepts": [
+        "Magnetohidrodinámica",
+        "Reconexión magnética",
+        "Modelos predictivos"
+      ],
+      "activities": [
+        "Análisis de series temporales",
+        "Modelado matemático",
+        "Investigación"
+      ]
+    }
+  },
+  "expanded_mini_games": {
+    "solar_flare_dodge": {
+      "description": "Esquiva erupciones solares mientras navegas por el espacio",
+      "physics_concepts": [
+        "Velocidad de la luz",
+        "Radiación electromagnética",
+        "Protección espacial"
+      ],
+      "difficulty_params": {
+        "flare_frequency": 3.1,
+        "flare_intensity": 1.4444444444444444,
+        "particle_density": 155000
+      },
+      "educational_popups": [
+        "Las erupciones clase X pueden dañar satélites",
+        "La radiación llega a la Tierra en 8 minutos",
+        "Los astronautas deben refugiarse durante erupciones fuertes"
+      ]
+    },
+    "magnetic_field_builder": {
+      "description": "Construye líneas de campo magnético alrededor del Sol",
+      "physics_concepts": [
+        "Campo magnético",
+        "Líneas de fuerza",
+        "Polos magnéticos"
+      ],
+      "challenge_levels": [
+        "Dipolo simple (Sol tranquilo)",
+        "Campo complejo (manchas solares)",
+        "Reconexión magnética (erupciones)"
+      ],
+      "scoring": "Precisión en recrear campos magnéticos reales"
+    },
+    "cme_impact_calculator": {
+      "description": "Calcula cuándo una CME llegará a la Tierra",
+      "physics_concepts": [
+        "Velocidad",
+        "Distancia",
+        "Tiempo de viaje"
+      ],
+      "real_data_integration": true,
+      "formula": "Tiempo = 150 millones km / velocidad_CME",
+      "educational_value": "Enseña cálculos científicos reales"
+    },
+    "aurora_predictor": {
+      "description": "Predice dónde serán visibles las auroras",
+      "physics_concepts": [
+        "Latitud magnética",
+        "Índice Kp",
+        "Campo geomagnético"
+      ],
+      "interactive_map": true,
+      "current_prediction": "Auroras posibles en norte de Escandinavia"
+    }
+  },
+  "real_time_viz_params": {
+    "sun_activity_animation": {
+      "rotation_speed": 1.0,
+      "corona_intensity": 0.775,
+      "magnetic_field_lines": true,
+      "prominence_activity": false
+    },
+    "space_weather_dashboard": {
+      "kp_index_color": "green",
+      "solar_wind_speed_indicator": "normal",
+      "aurora_oval_size": 64,
+      "radiation_level": "elevated"
+    }
+  },
+  "science_topics": {
+    "solar_physics": {
+      "concepts": [
+        "Fusión nuclear en el núcleo solar",
+        "Transporte de energía por radiación y convección",
+        "Granulación y supergranulación",
+        "Campo magnético solar y ciclo de 11 años"
+      ],
+      "current_examples": "Actualmente hay 155 manchas solares visibles"
+    },
+    "space_weather": {
+      "concepts": [
+        "Viento solar y su variabilidad",
+        "Eyecciones de masa coronal (CMEs)",
+        "Tormentas geomagnéticas",
+        "Efectos en tecnología y comunicaciones"
+      ],
+      "current_status": "Índice Kp actual: 2.0 - QUIET"
+    },
+    "solar_terrestrial_relations": {
+      "concepts": [
+        "Magnetosfera terrestre",
+        "Cinturones de radiación de Van Allen",
+        "Aurora boreal y austral",
+        "Clima espacial y cambio climático"
+      ],
+      "fun_facts": [
+        "Las auroras ocurren a 100-300 km de altura",
+        "El viento solar viaja a 400-800 km/s",
+        "Una CME puede contener mil millones de toneladas de plasma"
+      ]
+    }
+  }
+}

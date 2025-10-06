@@ -1,0 +1,66 @@
+{
+  "timestamp": "2025-09-22T01:55:01.457378",
+  "available_wavelengths": [
+    "94",
+    "131",
+    "171",
+    "193",
+    "211",
+    "304",
+    "335",
+    "1600",
+    "1700",
+    "4500"
+  ],
+  "image_metadata": [
+    {
+      "wavelength": "94",
+      "description": "Corona muy caliente (6 millones K) - muestra erupciones",
+      "typical_url_pattern": "https://sdo.gsfc.nasa.gov/assets/img/browse/2025/09/22/",
+      "resolution": "4096x4096 pixels",
+      "update_frequency": "12 seconds",
+      "scientific_value": "Detecta erupciones solares clase X"
+    },
+    {
+      "wavelength": "131",
+      "description": "",
+      "typical_url_pattern": "https://sdo.gsfc.nasa.gov/assets/img/browse/2025/09/22/",
+      "resolution": "4096x4096 pixels",
+      "update_frequency": "12 seconds",
+      "scientific_value": "Observación solar especializada"
+    },
+    {
+      "wavelength": "171",
+      "description": "Corona tranquila (600,000 K) - estructura magnética",
+      "typical_url_pattern": "https://sdo.gsfc.nasa.gov/assets/img/browse/2025/09/22/",
+      "resolution": "4096x4096 pixels",
+      "update_frequency": "12 seconds",
+      "scientific_value": "Muestra la estructura magnética coronal"
+    },
+    {
+      "wavelength": "193",
+      "description": "Corona caliente (1.2-2 millones K) - bucles coronales",
+      "typical_url_pattern": "https://sdo.gsfc.nasa.gov/assets/img/browse/2025/09/22/",
+      "resolution": "4096x4096 pixels",
+      "update_frequency": "12 seconds",
+      "scientific_value": "Revela bucles magnéticos y calentamiento"
+    },
+    {
+      "wavelength": "211",
+      "description": "Regiones activas (2 millones K) - manchas solares",
+      "typical_url_pattern": "https://sdo.gsfc.nasa.gov/assets/img/browse/2025/09/22/",
+      "resolution": "4096x4096 pixels",
+      "update_frequency": "12 seconds",
+      "scientific_value": "Identifica regiones activas y manchas solares"
+    }
+  ],
+  "educational_info": {
+    "94": "Corona muy caliente (6 millones K) - muestra erupciones",
+    "171": "Corona tranquila (600,000 K) - estructura magnética",
+    "193": "Corona caliente (1.2-2 millones K) - bucles coronales",
+    "211": "Regiones activas (2 millones K) - manchas solares",
+    "304": "Cromosfera (50,000 K) - protuberancias",
+    "1600": "Cromosfera baja (UV continuo) - brillos solares",
+    "4500": "Fotosfera (5,800 K) - superficie visible del Sol"
+  }
+}

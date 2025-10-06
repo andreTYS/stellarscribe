@@ -1,0 +1,282 @@
+[
+  {
+    "event_id": "SYNTH_FLR_001",
+    "begin_time": "2025-08-23T07:36:56.203624",
+    "peak_time": "2025-08-23T07:44:56.203624",
+    "end_time": "2025-08-23T09:06:56.203624",
+    "class_type": "B3.4",
+    "source_location": "S26E41",
+    "active_region": 3395,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_002",
+    "begin_time": "2025-09-21T18:13:13.008235",
+    "peak_time": "2025-09-21T18:20:13.008235",
+    "end_time": "2025-09-21T18:43:13.008235",
+    "class_type": "B7.6",
+    "source_location": "S17E66",
+    "active_region": 3392,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_003",
+    "begin_time": "2025-08-31T13:04:02.415688",
+    "peak_time": "2025-08-31T13:26:02.415688",
+    "end_time": "2025-08-31T14:59:02.415688",
+    "class_type": "B8.0",
+    "source_location": "S20E65",
+    "active_region": 3374,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_004",
+    "begin_time": "2025-09-13T15:45:30.032191",
+    "peak_time": "2025-09-13T16:03:30.032191",
+    "end_time": "2025-09-13T16:26:30.032191",
+    "class_type": "A1.4",
+    "source_location": "S34E61",
+    "active_region": 3364,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_005",
+    "begin_time": "2025-08-24T08:13:11.572298",
+    "peak_time": "2025-08-24T08:38:11.572298",
+    "end_time": "2025-08-24T09:51:11.572298",
+    "class_type": "B2.1",
+    "source_location": "S26E73",
+    "active_region": 3363,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_006",
+    "begin_time": "2025-08-29T12:47:10.780636",
+    "peak_time": "2025-08-29T13:12:10.780636",
+    "end_time": "2025-08-29T14:07:10.780636",
+    "class_type": "B5.4",
+    "source_location": "S08E70",
+    "active_region": 3348,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_007",
+    "begin_time": "2025-08-23T08:51:24.671494",
+    "peak_time": "2025-08-23T08:56:24.671494",
+    "end_time": "2025-08-23T09:31:24.671494",
+    "class_type": "A3.8",
+    "source_location": "S21E20",
+    "active_region": 3392,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_008",
+    "begin_time": "2025-08-27T00:04:27.960580",
+    "peak_time": "2025-08-27T00:23:27.960580",
+    "end_time": "2025-08-27T00:52:27.960580",
+    "class_type": "B3.6",
+    "source_location": "S09E72",
+    "active_region": 3388,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_009",
+    "begin_time": "2025-08-27T23:23:38.889361",
+    "peak_time": "2025-08-27T23:51:38.889361",
+    "end_time": "2025-08-28T01:19:38.889361",
+    "class_type": "B6.8",
+    "source_location": "S06E72",
+    "active_region": 3324,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_010",
+    "begin_time": "2025-09-06T06:11:19.827017",
+    "peak_time": "2025-09-06T06:18:19.827017",
+    "end_time": "2025-09-06T06:55:19.827017",
+    "class_type": "M6.3",
+    "source_location": "S17E75",
+    "active_region": 3392,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_011",
+    "begin_time": "2025-09-01T17:30:12.950855",
+    "peak_time": "2025-09-01T17:56:12.950855",
+    "end_time": "2025-09-01T19:22:12.950855",
+    "class_type": "B8.8",
+    "source_location": "S30E30",
+    "active_region": 3355,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_012",
+    "begin_time": "2025-08-25T08:33:44.225795",
+    "peak_time": "2025-08-25T09:02:44.225795",
+    "end_time": "2025-08-25T10:32:44.225795",
+    "class_type": "C9.0",
+    "source_location": "S09E56",
+    "active_region": 3352,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_013",
+    "begin_time": "2025-08-24T05:11:53.155048",
+    "peak_time": "2025-08-24T05:23:53.155048",
+    "end_time": "2025-08-24T06:27:53.155048",
+    "class_type": "B1.2",
+    "source_location": "S20E41",
+    "active_region": 3311,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_014",
+    "begin_time": "2025-09-12T21:25:09.301976",
+    "peak_time": "2025-09-12T21:45:09.301976",
+    "end_time": "2025-09-12T21:59:09.301976",
+    "class_type": "M9.4",
+    "source_location": "S28E62",
+    "active_region": 3375,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_015",
+    "begin_time": "2025-09-18T14:30:02.234098",
+    "peak_time": "2025-09-18T14:47:02.234098",
+    "end_time": "2025-09-18T15:12:02.234098",
+    "class_type": "A7.3",
+    "source_location": "S07E47",
+    "active_region": 3321,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_016",
+    "begin_time": "2025-09-08T07:57:03.152452",
+    "peak_time": "2025-09-08T08:06:03.152452",
+    "end_time": "2025-09-08T09:25:03.152452",
+    "class_type": "B3.4",
+    "source_location": "S23E58",
+    "active_region": 3321,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_017",
+    "begin_time": "2025-09-19T01:35:22.429459",
+    "peak_time": "2025-09-19T01:54:22.429459",
+    "end_time": "2025-09-19T03:24:22.429459",
+    "class_type": "B6.2",
+    "source_location": "S27E69",
+    "active_region": 3301,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_018",
+    "begin_time": "2025-09-19T23:31:11.050135",
+    "peak_time": "2025-09-19T23:57:11.050135",
+    "end_time": "2025-09-20T00:20:11.050135",
+    "class_type": "B8.1",
+    "source_location": "S29E70",
+    "active_region": 3389,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_019",
+    "begin_time": "2025-09-06T01:57:16.252693",
+    "peak_time": "2025-09-06T02:11:16.252693",
+    "end_time": "2025-09-06T03:43:16.252693",
+    "class_type": "A6.0",
+    "source_location": "S08E58",
+    "active_region": 3322,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  },
+  {
+    "event_id": "SYNTH_FLR_020",
+    "begin_time": "2025-09-12T12:39:58.106711",
+    "peak_time": "2025-09-12T12:50:58.106711",
+    "end_time": "2025-09-12T13:19:58.106711",
+    "class_type": "B6.0",
+    "source_location": "S29E19",
+    "active_region": 3362,
+    "note": "Datos sintéticos basados en patrones históricos",
+    "instruments": [
+      "SDO/AIA",
+      "GOES"
+    ]
+  }
+]
