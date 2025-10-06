@@ -7,6 +7,7 @@
 <style>
 /* ==================== RESET Y BODY ==================== */
 * { box-sizing: border-box; margin:0; padding:0; }
+html, body { height: 100%; }
 body {
   font-family: 'Arial', sans-serif;
   background: url('img/fondo.jpg') no-repeat center center fixed;
@@ -14,6 +15,8 @@ body {
   color: #ccc;
   overflow-x: hidden;
   perspective: 1000px;
+  margin: 0;
+  padding: 0;
 }
 
 body::before {
@@ -21,7 +24,7 @@ body::before {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,1) 100%);
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.95) 0%, rgba(0,0,0,1) 100%);
   z-index: 0;
 }
 
@@ -45,7 +48,7 @@ body::before {
 /* ==================== HEADER ==================== */
 header {
   text-align: center;
-  padding: 60px 20px 20px 20px;
+  padding: 40px 20px 20px 20px;
   position: relative; z-index: 3;
 }
 
@@ -67,7 +70,7 @@ nav button {
   border: 2px solid #00ffff;
   color: #0ff;
   padding: 15px 30px;
-  margin: 10px;
+  margin: 12px;
   font-size: 1.1em;
   cursor: pointer;
   border-radius: 12px;
@@ -84,19 +87,19 @@ nav button:hover {
 .mosaic-container {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto 60px auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 25px;
+  gap: 40px; /* más separación entre imágenes */
   z-index: 3;
   perspective: 1000px;
 }
 
 .mosaic-container img {
   width: 250px;
-  max-width: 45vw;
+  max-width: 40vw;
   border-radius: 20px;
   border: 2px solid rgba(0,255,255,0.5);
   box-shadow: 0 0 25px rgba(0,255,255,0.4), 0 5px 15px rgba(0,255,255,0.15) inset;
@@ -143,12 +146,14 @@ footer {
   header h1 { font-size: 2em; }
   nav button { padding: 12px 25px; font-size: 1em; }
   .mosaic-container img { width: 180px; max-width: 40vw; }
+  .mosaic-container { gap: 30px; }
 }
 
 @media (max-width: 480px) {
   header h1 { font-size: 1.6em; }
   nav button { padding: 10px 20px; font-size: 0.9em; }
   .mosaic-container img { width: 140px; max-width: 70vw; }
+  .mosaic-container { gap: 20px; }
 }
 </style>
 </head>
@@ -161,8 +166,8 @@ footer {
 </header>
 
 <nav>
-  <button onclick="window.open('https://stellarscribe.moquegutech.com/index2.html','_blank')">Cuento</button>
-  <button onclick="window.open('flutter_entertainment/index.html','_blank')">Entretenimiento</button>
+  <button onclick="window.open('https://stellarscribe.moqueguatech.com/index2.html','_blank')">Cuento</button>
+  <button onclick="window.open('https://stellarscribe.moqueguatech.com/flutter_entertainment/index.html','_blank')">Entretenimiento</button>
 </nav>
 
 <div class="mosaic-container" id="mosaic">
@@ -216,8 +221,6 @@ for(let i=0;i<40;i++){
 // ==================== MOSAICO FLOTANTE ====================
 const mosaic = document.getElementById('mosaic');
 const images = mosaic.querySelectorAll('img');
-
-// Dar posición inicial aleatoria y velocidad
 images.forEach(img => {
   img.dataset.x = Math.random()*200 - 100;
   img.dataset.y = Math.random()*200 - 100;
@@ -233,8 +236,8 @@ function animateMosaic(){
     let dy = parseFloat(img.dataset.dy);
     x += dx;
     y += dy;
-    if(x>50 || x<-50) img.dataset.dx = -dx;
-    if(y>50 || y<-50) img.dataset.dy = -dy;
+    if(x>60 || x<-60) img.dataset.dx = -dx;
+    if(y>60 || y<-60) img.dataset.dy = -dy;
     img.dataset.x = x;
     img.dataset.y = y;
     img.style.transform = `translate(${x}px, ${y}px)`;
