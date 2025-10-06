@@ -6,11 +6,7 @@
 <title>Perú Es Clave - NASA Space Apps 2025</title>
 <style>
 /* ==================== RESET Y BODY ==================== */
-* {
-  box-sizing: border-box;
-  margin: 0; padding: 0;
-}
-
+* { box-sizing: border-box; margin:0; padding:0; }
 body {
   font-family: 'Arial', sans-serif;
   background: url('img/fondo.jpg') no-repeat center center fixed;
@@ -50,8 +46,7 @@ body::before {
 header {
   text-align: center;
   padding: 60px 20px 20px 20px;
-  position: relative;
-  z-index: 3;
+  position: relative; z-index: 3;
 }
 
 header h1 {
@@ -64,8 +59,7 @@ header h1 {
 nav {
   text-align: center;
   margin: 20px 0 50px 0;
-  position: relative;
-  z-index: 3;
+  position: relative; z-index: 3;
 }
 
 nav button {
@@ -86,59 +80,35 @@ nav button:hover {
   box-shadow: 0 0 40px #0ff;
 }
 
-/* ==================== CARRUSEL / GALERIA ==================== */
-.carousel-container {
-  max-width: 1000px;
-  margin: 0 auto 60px auto;
+/* ==================== MOSAICO FLOTANTE ==================== */
+.mosaic-container {
   position: relative;
-  overflow: hidden;
-  border-radius: 20px;
-  z-index: 3;
-}
-
-.carousel-slide {
-  display: flex;
-  transition: transform 0.6s ease-in-out;
-  gap: 20px;
-}
-
-.carousel-slide img {
   width: 100%;
-  max-width: 280px;
-  flex-shrink: 0;
-  border-radius: 15px;
+  max-width: 1200px;
+  margin: 0 auto 60px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 25px;
+  z-index: 3;
+  perspective: 1000px;
+}
+
+.mosaic-container img {
+  width: 250px;
+  max-width: 45vw;
+  border-radius: 20px;
   border: 2px solid rgba(0,255,255,0.5);
   box-shadow: 0 0 25px rgba(0,255,255,0.4), 0 5px 15px rgba(0,255,255,0.15) inset;
-  transition: transform 0.3s ease, filter 0.3s, box-shadow 0.3s;
-  background: rgba(0,0,0,0.3);
+  transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
   cursor: grab;
+  background: rgba(0,0,0,0.3);
 }
 
-.carousel-slide img:hover {
-  transform: scale(1.15) rotateY(3deg) rotateX(2deg);
-  filter: brightness(1.3);
+.mosaic-container img:hover {
+  transform: scale(1.15) rotateY(5deg) rotateX(3deg);
+  filter: brightness(1.4);
   box-shadow: 0 0 50px #0ff, 0 10px 30px rgba(0,255,255,0.5) inset;
-}
-
-/* ==================== BOTONES CARRUSEL ==================== */
-.prev, .next {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,255,255,0.25);
-  border: none;
-  font-size: 2em;
-  padding: 5px 15px;
-  cursor: pointer;
-  border-radius: 50%;
-  color: white;
-  text-shadow: 0 0 5px #0ff;
-  transition: 0.3s;
-  z-index: 4;
-}
-
-.prev:hover, .next:hover {
-  background: rgba(0,255,255,0.6);
 }
 
 /* ==================== FOOTER ==================== */
@@ -170,43 +140,15 @@ footer {
 
 /* ==================== RESPONSIVE ==================== */
 @media (max-width: 768px) {
-  header h1 {
-    font-size: 2em;
-  }
-
-  nav button {
-    padding: 12px 25px;
-    font-size: 1em;
-  }
-
-  .carousel-slide {
-    gap: 15px;
-    justify-content: center;
-  }
-
-  .carousel-slide img {
-    max-width: 200px;
-  }
+  header h1 { font-size: 2em; }
+  nav button { padding: 12px 25px; font-size: 1em; }
+  .mosaic-container img { width: 180px; max-width: 40vw; }
 }
 
 @media (max-width: 480px) {
-  header h1 {
-    font-size: 1.6em;
-  }
-
-  nav button {
-    padding: 10px 20px;
-    font-size: 0.9em;
-  }
-
-  .carousel-slide img {
-    max-width: 150px;
-  }
-
-  .prev, .next {
-    font-size: 1.5em;
-    padding: 4px 10px;
-  }
+  header h1 { font-size: 1.6em; }
+  nav button { padding: 10px 20px; font-size: 0.9em; }
+  .mosaic-container img { width: 140px; max-width: 70vw; }
 }
 </style>
 </head>
@@ -223,15 +165,11 @@ footer {
   <button onclick="window.open('flutter_entertainment/index.html','_blank')">Entretenimiento</button>
 </nav>
 
-<div class="carousel-container">
-  <button class="prev">&#10094;</button>
-  <div class="carousel-slide" id="carousel-slide">
-    <img src="https://stellarscribe.moquegutech.com/images/imagen1.jpg" alt="Imagen historia 1">
-    <img src="https://stellarscribe.moquegutech.com/images/imagen2.jpg" alt="Imagen historia 2">
-    <img src="https://stellarscribe.moquegutech.com/images/imagen3.jpg" alt="Imagen historia 3">
-    <img src="https://stellarscribe.moquegutech.com/images/imagen4.jpg" alt="Imagen historia 4">
-  </div>
-  <button class="next">&#10095;</button>
+<div class="mosaic-container" id="mosaic">
+  <img src="https://stellarscribe.moqueguatech.com/images/imagen1.jpg" alt="Imagen historia 1">
+  <img src="https://stellarscribe.moqueguatech.com/images/imagen2.jpg" alt="Imagen historia 2">
+  <img src="https://stellarscribe.moqueguatech.com/images/imagen3.jpg" alt="Imagen historia 3">
+  <img src="https://stellarscribe.moqueguatech.com/images/imagen4.jpg" alt="Imagen historia 4">
 </div>
 
 <footer>
@@ -239,73 +177,86 @@ footer {
 </footer>
 
 <script>
-  // ESTRELLAS
-  const stars=[];
-  for(let i=0;i<100;i++){
-    const s=document.createElement('div');
-    s.classList.add('star');
-    s.style.width=s.style.height=(Math.random()*2+1)+'px';
-    s.style.top=Math.random()*100+'%';
-    s.style.left=Math.random()*100+'%';
-    s.dataset.speed=Math.random()*0.5+0.1;
-    document.body.appendChild(s);
-    stars.push(s);
-  }
+// ==================== ESTRELLAS ====================
+const stars=[];
+for(let i=0;i<100;i++){
+  const s=document.createElement('div');
+  s.classList.add('star');
+  s.style.width=s.style.height=(Math.random()*2+1)+'px';
+  s.style.top=Math.random()*100+'%';
+  s.style.left=Math.random()*100+'%';
+  s.dataset.speed=Math.random()*0.5+0.1;
+  document.body.appendChild(s);
+  stars.push(s);
+}
 
-  // PLANETAS
-  const planets=[];
-  for(let i=0;i<4;i++){
-    const p=document.createElement('div');
-    p.classList.add('planet');
-    p.style.width=p.style.height=(Math.random()*40+20)+'px';
-    p.style.top=Math.random()*70+'%';
-    p.style.left=Math.random()*70+'%';
-    document.body.appendChild(p);
-    planets.push(p);
-  }
+// ==================== PLANETAS ====================
+const planets=[];
+for(let i=0;i<4;i++){
+  const p=document.createElement('div');
+  p.classList.add('planet');
+  p.style.width=p.style.height=(Math.random()*40+20)+'px';
+  p.style.top=Math.random()*70+'%';
+  p.style.left=Math.random()*70+'%';
+  document.body.appendChild(p);
+  planets.push(p);
+}
 
-  // PARTICULAS
-  const particles=[];
-  for(let i=0;i<40;i++){
-    const p=document.createElement('div');
-    p.classList.add('particle');
-    p.style.top=Math.random()*100+'%';
-    p.style.left=Math.random()*100+'%';
-    document.body.appendChild(p);
-    particles.push(p);
-  }
+// ==================== PARTICULAS ====================
+const particles=[];
+for(let i=0;i<40;i++){
+  const p=document.createElement('div');
+  p.classList.add('particle');
+  p.style.top=Math.random()*100+'%';
+  p.style.left=Math.random()*100+'%';
+  document.body.appendChild(p);
+  particles.push(p);
+}
 
-  // CARRUSEL
-  const carouselSlide=document.getElementById('carousel-slide');
-  const carouselImages=carouselSlide.querySelectorAll('img');
-  const prevBtn=document.querySelector('.prev');
-  const nextBtn=document.querySelector('.next');
-  let counter=0;
+// ==================== MOSAICO FLOTANTE ====================
+const mosaic = document.getElementById('mosaic');
+const images = mosaic.querySelectorAll('img');
 
-  function showSlide(){
-    carouselSlide.style.transform='translateX('+(-counter*100)+'%)';
-  }
+// Dar posición inicial aleatoria y velocidad
+images.forEach(img => {
+  img.dataset.x = Math.random()*200 - 100;
+  img.dataset.y = Math.random()*200 - 100;
+  img.dataset.dx = (Math.random()*0.4-0.2);
+  img.dataset.dy = (Math.random()*0.4-0.2);
+});
 
-  nextBtn.addEventListener('click',()=>{counter=(counter+1)%carouselImages.length; showSlide();});
-  prevBtn.addEventListener('click',()=>{counter=(counter-1+carouselImages.length)%carouselImages.length; showSlide();});
-
-  setInterval(()=>{counter=(counter+1)%carouselImages.length; showSlide();},5000);
-
-  // EFECTO PARALLAX
-  window.addEventListener('scroll',()=>{
-    const scrollPos=window.scrollY;
-    stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});
-    carouselImages.forEach((img,i)=>{img.style.transform=`translateZ(${i*30 - scrollPos*0.3}px)`;});
+function animateMosaic(){
+  images.forEach(img=>{
+    let x = parseFloat(img.dataset.x);
+    let y = parseFloat(img.dataset.y);
+    let dx = parseFloat(img.dataset.dx);
+    let dy = parseFloat(img.dataset.dy);
+    x += dx;
+    y += dy;
+    if(x>50 || x<-50) img.dataset.dx = -dx;
+    if(y>50 || y<-50) img.dataset.dy = -dy;
+    img.dataset.x = x;
+    img.dataset.y = y;
+    img.style.transform = `translate(${x}px, ${y}px)`;
   });
+  requestAnimationFrame(animateMosaic);
+}
+animateMosaic();
 
-  document.addEventListener('mousemove',e=>{
-    const x=e.clientX/window.innerWidth-0.5;
-    const y=e.clientY/window.innerHeight-0.5;
-    particles.forEach((p,i)=>{
-      const speed=(i+1)/100;
-      p.style.transform=`translate(${x*speed*40}px, ${y*speed*40}px)`;
-    });
+// ==================== PARALLAX ====================
+window.addEventListener('scroll',()=>{
+  const scrollPos=window.scrollY;
+  stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});
+});
+
+document.addEventListener('mousemove',e=>{
+  const x=e.clientX/window.innerWidth-0.5;
+  const y=e.clientY/window.innerHeight-0.5;
+  particles.forEach((p,i)=>{
+    const speed=(i+1)/100;
+    p.style.transform=`translate(${x*speed*40}px, ${y*speed*40}px)`;
   });
+});
 </script>
 </body>
 </html>
