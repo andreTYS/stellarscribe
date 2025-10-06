@@ -427,42 +427,48 @@
   }
   
   /* ===== FLOATING PROGRESS ===== */
-  .float-progress {
-    position: fixed;
-    top: 120px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1090;
-    background: linear-gradient(135deg, rgba(6, 18, 30, 0.95), rgba(15, 30, 55, 0.9));
-    padding: 14px 24px;
-    border-radius: 20px;
-    border: 2px solid rgba(0, 255, 255, 0.4);
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    box-shadow: var(--shadow), var(--glow-cyan);
-    backdrop-filter: blur(30px);
-    animation: slideDown 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
-  }
-  
-  #levelBadge {
-    background: linear-gradient(135deg, #00ffff, #0099ff);
-    padding: 10px 16px;
-    border-radius: 12px;
-    font-weight: 800;
-    color: #001;
-    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-    font-family: 'Orbitron', sans-serif;
-  }
-  
-  #levelTitle {
-    font-family: 'Orbitron', sans-serif;
-    color: var(--primary);
-    font-weight: 700;
-    text-shadow: var(--glow-cyan);
-  }
-  
+/* ===== FLOATING PROGRESS (OCULTO TOTALMENTE) ===== */
+.float-progress {
+  display: none !important;        /* No se muestra ni ocupa espacio */
+  opacity: 0 !important;           /* Invisible aunque se fuerce su visibilidad */
+  visibility: hidden !important;   /* No visible en ningún caso */
+  pointer-events: none !important; /* No clickeable ni detectable */
+  position: fixed;
+  top: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1090;
+  background: linear-gradient(135deg, rgba(6, 18, 30, 0.95), rgba(15, 30, 55, 0.9));
+  padding: 14px 24px;
+  border-radius: 20px;
+  border: 2px solid rgba(0, 255, 255, 0.4);
+  gap: 16px;
+  align-items: center;
+  box-shadow: var(--shadow), var(--glow-cyan);
+  backdrop-filter: blur(30px);
+  animation: slideDown 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s both;
+}
+
+/* Mantiene estilos de badge y title por si el JS los toca */
+#levelBadge {
+  background: linear-gradient(135deg, #00ffff, #0099ff);
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-weight: 800;
+  color: #001;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-family: 'Orbitron', sans-serif;
+}
+
+#levelTitle {
+  font-family: 'Orbitron', sans-serif;
+  color: var(--primary);
+  font-weight: 700;
+  text-shadow: var(--glow-cyan);
+}
+
+
   /* ===== MAIN CONTENT ===== */
   .main {
     position: relative;
@@ -926,11 +932,11 @@
     <button id="skipBtn" class="skip-btn">⏩ Saltar Intro</button>
   </div>
 
-  <!-- Floating progress 
+  <!-- Floating progress -->
   <div class="float-progress" id="floatProgress" style="display:none">
-    <div id="levelBadge">NIVEL 1</div>
-    <div id="levelTitle">El Despertar</div>
-  </div> -->
+    <div id="levelBadge"></div> 
+    <div id="levelTitle"></div>
+  </div>
   
 
   <!-- Main content -->
@@ -972,7 +978,7 @@
     muteNarration: document.getElementById('mute-narration'),
     floatProgress: document.getElementById('floatProgress'),
     levelBadge: document.getElementById('levelBadge'),
-    levelTitle: document.getElementById('levelTitle'),
+    levelTitle: document.getElementById('levelTitle'), 
     topbar: document.getElementById('topbar')
   };
 
@@ -1501,8 +1507,4 @@
   </script>
 </body>
 </html>
-
-
-
-
 
