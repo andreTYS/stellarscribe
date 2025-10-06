@@ -5,176 +5,209 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perú Es Clave - NASA Space Apps 2025</title>
 <style>
-  body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background: url('img/fondo.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #ccc;
-    overflow-x: hidden;
-    perspective: 1000px;
-  }
+/* ==================== RESET Y BODY ==================== */
+* {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,1) 100%);
-    z-index: 0;
-  }
+body {
+  font-family: 'Arial', sans-serif;
+  background: url('img/fondo.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: #ccc;
+  overflow-x: hidden;
+  perspective: 1000px;
+}
 
-  .nebula {
-    position: fixed;
-    top: -20%; left: -20%;
-    width: 140%; height: 140%;
-    background: radial-gradient(circle at 30% 30%, rgba(150,0,200,0.05), transparent 40%),
-                radial-gradient(circle at 70% 70%, rgba(0,150,200,0.05), transparent 50%);
-    animation: nebMove 60s linear infinite;
-    z-index: 1; pointer-events: none;
-  }
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 0%, rgba(0,0,0,1) 100%);
+  z-index: 0;
+}
 
-  @keyframes nebMove {
-    0% { transform: translate(0,0) scale(1); }
-    50% { transform: translate(50px,-50px) scale(1.05); }
-    100% { transform: translate(0,0) scale(1); }
-  }
+/* ==================== NEBULAS ==================== */
+.nebula {
+  position: fixed;
+  top: -20%; left: -20%;
+  width: 140%; height: 140%;
+  background: radial-gradient(circle at 30% 30%, rgba(150,0,200,0.05), transparent 40%),
+              radial-gradient(circle at 70% 70%, rgba(0,150,200,0.05), transparent 50%);
+  animation: nebMove 60s linear infinite;
+  z-index: 1; pointer-events: none;
+}
 
-  .star {
-    position: fixed;
-    background: #00ffff;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    box-shadow: 0 0 4px #00ffff, 0 0 8px #00ffff inset;
-  }
+@keyframes nebMove {
+  0% { transform: translate(0,0) scale(1); }
+  50% { transform: translate(50px,-50px) scale(1.05); }
+  100% { transform: translate(0,0) scale(1); }
+}
 
-  .particle {
-    position: fixed;
-    width: 4px; height: 4px;
-    background: rgba(0,255,255,0.5);
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 2;
-    box-shadow: 0 0 6px #00ffff, 0 0 10px #00ffff inset;
-  }
+/* ==================== HEADER ==================== */
+header {
+  text-align: center;
+  padding: 60px 20px 20px 20px;
+  position: relative;
+  z-index: 3;
+}
 
-  header {
-    text-align: center;
-    padding: 60px 20px 20px 20px;
-    position: relative; z-index: 3;
-  }
+header h1 {
+  font-size: 2.8em;
+  color: #0ff;
+  text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
+}
 
+/* ==================== NAV ==================== */
+nav {
+  text-align: center;
+  margin: 20px 0 50px 0;
+  position: relative;
+  z-index: 3;
+}
+
+nav button {
+  background: linear-gradient(135deg, #001122, #004040);
+  border: 2px solid #00ffff;
+  color: #0ff;
+  padding: 15px 30px;
+  margin: 10px;
+  font-size: 1.1em;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffff;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+nav button:hover {
+  transform: scale(1.2);
+  box-shadow: 0 0 40px #0ff;
+}
+
+/* ==================== CARRUSEL / GALERIA ==================== */
+.carousel-container {
+  max-width: 1000px;
+  margin: 0 auto 60px auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  z-index: 3;
+}
+
+.carousel-slide {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+  gap: 20px;
+}
+
+.carousel-slide img {
+  width: 100%;
+  max-width: 280px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  border: 2px solid rgba(0,255,255,0.5);
+  box-shadow: 0 0 25px rgba(0,255,255,0.4), 0 5px 15px rgba(0,255,255,0.15) inset;
+  transition: transform 0.3s ease, filter 0.3s, box-shadow 0.3s;
+  background: rgba(0,0,0,0.3);
+  cursor: grab;
+}
+
+.carousel-slide img:hover {
+  transform: scale(1.15) rotateY(3deg) rotateX(2deg);
+  filter: brightness(1.3);
+  box-shadow: 0 0 50px #0ff, 0 10px 30px rgba(0,255,255,0.5) inset;
+}
+
+/* ==================== BOTONES CARRUSEL ==================== */
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,255,255,0.25);
+  border: none;
+  font-size: 2em;
+  padding: 5px 15px;
+  cursor: pointer;
+  border-radius: 50%;
+  color: white;
+  text-shadow: 0 0 5px #0ff;
+  transition: 0.3s;
+  z-index: 4;
+}
+
+.prev:hover, .next:hover {
+  background: rgba(0,255,255,0.6);
+}
+
+/* ==================== FOOTER ==================== */
+footer {
+  text-align: center;
+  padding: 25px;
+  font-size: 1em;
+  color: #888;
+  position: relative;
+  z-index: 3;
+}
+
+/* ==================== PLANETAS ==================== */
+.planet {
+  position: fixed;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #cc9900, #664400);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 2;
+  animation: blink 4s infinite alternate;
+}
+
+@keyframes blink {
+  0% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+  100% { opacity: 0.2; transform: scale(1); }
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
   header h1 {
-    font-size: 3em;
-    color: #0ff;
-    text-shadow: 0 0 20px #0ff, 0 0 40px #0ff;
-  }
-
-  nav {
-    text-align: center;
-    margin: 30px 0;
-    position: relative; z-index: 3;
+    font-size: 2em;
   }
 
   nav button {
-    background: linear-gradient(135deg, #000033, #004040, #008080);
-    border: none;
-    color: #fff;
-    padding: 18px 35px;
-    margin: 12px;
-    font-size: 1.2em;
-    cursor: pointer;
-    border-radius: 14px;
-    box-shadow: 0 0 50px #00ffff, 0 0 100px #00ffff inset;
-    transition: 0.3s;
-    position: relative; overflow: hidden;
-  }
-
-  nav button::after {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
-    transform: rotate(45deg);
-    transition: all 0.5s;
-  }
-
-  nav button:hover::after {
-    top: -20%; left: -20%; width: 140%; height: 140%;
-  }
-
-  nav button:hover {
-    transform: scale(1.35);
-    box-shadow: 0 0 80px #0ff, 0 0 150px #004040 inset;
-  }
-
-  /* Carrusel/mosaico flotante */
-  .carousel-container {
-    max-width: 1000px;
-    margin: 60px auto;
-    position: relative;
-    overflow: visible;
-    border-radius: 25px;
-    z-index: 3;
+    padding: 12px 25px;
+    font-size: 1em;
   }
 
   .carousel-slide {
-    display: flex;
-    transition: transform 0.6s ease-in-out;
-    transform-style: preserve-3d;
-    gap: 20px;
+    gap: 15px;
+    justify-content: center;
   }
 
   .carousel-slide img {
-    width: 100%;
-    max-width: 300px;
-    flex-shrink: 0;
-    border-radius: 20px;
-    border: 2px solid rgba(0,255,255,0.6);
-    box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 10px 20px rgba(0,255,255,0.2) inset;
-    transition: transform 0.3s ease-out, filter 0.3s, box-shadow 0.3s;
-    background: rgba(0,0,0,0.3);
-    cursor: grab;
-    will-change: transform;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  header h1 {
+    font-size: 1.6em;
   }
 
-  .carousel-slide img:hover {
-    transform: scale(1.15) rotateY(5deg) rotateX(3deg);
-    filter: brightness(1.4) saturate(1.3);
-    box-shadow: 0 0 50px #00ffff, 0 10px 30px rgba(0,255,255,0.5) inset;
+  nav button {
+    padding: 10px 20px;
+    font-size: 0.9em;
+  }
+
+  .carousel-slide img {
+    max-width: 150px;
   }
 
   .prev, .next {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    background: rgba(0,255,255,0.25);
-    border: none; font-size: 2.4em; padding: 6px 18px;
-    cursor: pointer; border-radius: 50%; color: white;
-    text-shadow: 0 0 5px #0ff; transition: 0.3s; z-index: 4;
+    font-size: 1.5em;
+    padding: 4px 10px;
   }
-
-  .prev:hover, .next:hover { background: rgba(0,255,255,0.6); }
-
-  footer {
-    text-align: center;
-    padding: 25px; font-size: 1em;
-    color: #888; position: relative; z-index: 3;
-  }
-
-  .planet {
-    position: fixed; border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #cc9900, #664400);
-    opacity: 0.5; pointer-events: none; z-index: 2;
-    animation: blink 4s infinite alternate;
-  }
-
-  @keyframes blink {
-    0% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 0.6; transform: scale(1.05); }
-    100% { opacity: 0.2; transform: scale(1); }
-  }
+}
 </style>
 </head>
 <body>
@@ -186,17 +219,17 @@
 </header>
 
 <nav>
-  <button onclick="window.open('https://stellarscribe.moqueguatech.com/index2.html','_blank')">Cuento</button>
+  <button onclick="window.open('https://stellarscribe.moquegutech.com/index2.html','_blank')">Cuento</button>
   <button onclick="window.open('flutter_entertainment/index.html','_blank')">Entretenimiento</button>
 </nav>
 
 <div class="carousel-container">
   <button class="prev">&#10094;</button>
   <div class="carousel-slide" id="carousel-slide">
-    <img src="https://stellarscribe.moqueguatech.com/images/imagen1.jpg" alt="Imagen historia 1">
-    <img src="https://stellarscribe.moqueguatech.com/images/imagen2.jpg" alt="Imagen historia 2">
-    <img src="https://stellarscribe.moqueguatech.com/images/imagen3.jpg" alt="Imagen historia 3">
-    <img src="https://stellarscribe.moqueguatech.com/images/imagen4.jpg" alt="Imagen historia 4">
+    <img src="https://stellarscribe.moquegutech.com/images/imagen1.jpg" alt="Imagen historia 1">
+    <img src="https://stellarscribe.moquegutech.com/images/imagen2.jpg" alt="Imagen historia 2">
+    <img src="https://stellarscribe.moquegutech.com/images/imagen3.jpg" alt="Imagen historia 3">
+    <img src="https://stellarscribe.moquegutech.com/images/imagen4.jpg" alt="Imagen historia 4">
   </div>
   <button class="next">&#10095;</button>
 </div>
@@ -206,22 +239,73 @@
 </footer>
 
 <script>
-  // Estrellas
-  const stars=[];for(let i=0;i<150;i++){const s=document.createElement('div');s.classList.add('star');s.style.width=s.style.height=(Math.random()*3+1)+'px';s.style.top=Math.random()*100+'%';s.style.left=Math.random()*100+'%';s.dataset.speed=Math.random()*0.6+0.2;document.body.appendChild(s);stars.push(s);}
-  // Planetas
-  const planets=[];for(let i=0;i<5;i++){const p=document.createElement('div');p.classList.add('planet');p.style.width=p.style.height=(Math.random()*50+30)+'px';p.style.top=Math.random()*80+'%';p.style.left=Math.random()*80+'%';document.body.appendChild(p);planets.push(p);}
-  // Partículas
-  const particles=[];for(let i=0;i<50;i++){const p=document.createElement('div');p.classList.add('particle');p.style.top=Math.random()*100+'%';p.style.left=Math.random()*100+'%';document.body.appendChild(p);particles.push(p);}
-  // Carrusel
-  const carouselSlide=document.getElementById('carousel-slide');const carouselImages=carouselSlide.querySelectorAll('img');const prevBtn=document.querySelector('.prev');const nextBtn=document.querySelector('.next');let counter=0;
-  function showSlide(){carouselSlide.style.transform='translateX('+(-counter*100)+'%)';}
-  nextBtn.addEventListener('click',()=>{counter=(counter+1)%carouselImages.length;showSlide();});
-  prevBtn.addEventListener('click',()=>{counter=(counter-1+carouselImages.length)%carouselImages.length;showSlide();});
-  setInterval(()=>{counter=(counter+1)%carouselImages.length;showSlide();},5000);
-  window.addEventListener('scroll',()=>{const scrollPos=window.scrollY;stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});carouselImages.forEach((img,i)=>{img.style.transform=`translateZ(${i*50 - scrollPos*0.4}px)`;});});
-  document.addEventListener('mousemove',e=>{const x=e.clientX/window.innerWidth-0.5;const y=e.clientY/window.innerHeight-0.5;particles.forEach((p,i)=>{const speed=(i+1)/100;p.style.transform=`translate(${x*speed*50}px, ${y*speed*50}px)`;});});
-</script>
+  // ESTRELLAS
+  const stars=[];
+  for(let i=0;i<100;i++){
+    const s=document.createElement('div');
+    s.classList.add('star');
+    s.style.width=s.style.height=(Math.random()*2+1)+'px';
+    s.style.top=Math.random()*100+'%';
+    s.style.left=Math.random()*100+'%';
+    s.dataset.speed=Math.random()*0.5+0.1;
+    document.body.appendChild(s);
+    stars.push(s);
+  }
 
+  // PLANETAS
+  const planets=[];
+  for(let i=0;i<4;i++){
+    const p=document.createElement('div');
+    p.classList.add('planet');
+    p.style.width=p.style.height=(Math.random()*40+20)+'px';
+    p.style.top=Math.random()*70+'%';
+    p.style.left=Math.random()*70+'%';
+    document.body.appendChild(p);
+    planets.push(p);
+  }
+
+  // PARTICULAS
+  const particles=[];
+  for(let i=0;i<40;i++){
+    const p=document.createElement('div');
+    p.classList.add('particle');
+    p.style.top=Math.random()*100+'%';
+    p.style.left=Math.random()*100+'%';
+    document.body.appendChild(p);
+    particles.push(p);
+  }
+
+  // CARRUSEL
+  const carouselSlide=document.getElementById('carousel-slide');
+  const carouselImages=carouselSlide.querySelectorAll('img');
+  const prevBtn=document.querySelector('.prev');
+  const nextBtn=document.querySelector('.next');
+  let counter=0;
+
+  function showSlide(){
+    carouselSlide.style.transform='translateX('+(-counter*100)+'%)';
+  }
+
+  nextBtn.addEventListener('click',()=>{counter=(counter+1)%carouselImages.length; showSlide();});
+  prevBtn.addEventListener('click',()=>{counter=(counter-1+carouselImages.length)%carouselImages.length; showSlide();});
+
+  setInterval(()=>{counter=(counter+1)%carouselImages.length; showSlide();},5000);
+
+  // EFECTO PARALLAX
+  window.addEventListener('scroll',()=>{
+    const scrollPos=window.scrollY;
+    stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});
+    carouselImages.forEach((img,i)=>{img.style.transform=`translateZ(${i*30 - scrollPos*0.3}px)`;});
+  });
+
+  document.addEventListener('mousemove',e=>{
+    const x=e.clientX/window.innerWidth-0.5;
+    const y=e.clientY/window.innerHeight-0.5;
+    particles.forEach((p,i)=>{
+      const speed=(i+1)/100;
+      p.style.transform=`translate(${x*speed*40}px, ${y*speed*40}px)`;
+    });
+  });
+</script>
 </body>
 </html>
-
