@@ -10,8 +10,11 @@
 html, body { height: 100%; width: 100%; }
 body {
   font-family: 'Arial', sans-serif;
-  background: url('img/fondo.jpg') no-repeat center center fixed;
+
+  /* ====== AQUI SE AGREGA TU FONDO LOCAL ====== */
+  background: url('img/chap1-bg.jpg') no-repeat center center fixed;
   background-size: cover;
+
   color: #ccc;
   overflow-x: hidden;
   perspective: 1000px;
@@ -81,7 +84,7 @@ nav button:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 50px;
-  padding-bottom: 60px; /* para que no haya scroll extra */
+  padding-bottom: 60px;
   z-index: 3;
 }
 
@@ -240,11 +243,6 @@ function animateMosaic(){
 animateMosaic();
 
 // ==================== PARALLAX ====================
-window.addEventListener('scroll',()=>{
-  const scrollPos=window.scrollY;
-  stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});
-});
-
 document.addEventListener('mousemove',e=>{
   const x=e.clientX/window.innerWidth-0.5;
   const y=e.clientY/window.innerHeight-0.5;
