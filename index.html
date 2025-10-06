@@ -24,7 +24,6 @@
     z-index: 0;
   }
 
-  /* Nebulosas más tenues */
   .nebula {
     position: fixed;
     top: -20%; left: -20%;
@@ -41,7 +40,6 @@
     100% { transform: translate(0,0) scale(1); }
   }
 
-  /* Estrellas neón */
   .star {
     position: fixed;
     background: #00ffff;
@@ -112,14 +110,13 @@
     box-shadow: 0 0 80px #0ff, 0 0 150px #004040 inset;
   }
 
-  /* Carrusel neón */
+  /* Carrusel/mosaico flotante */
   .carousel-container {
     max-width: 1000px;
     margin: 60px auto;
     position: relative;
-    overflow: hidden;
-    border-radius: 20px;
-    box-shadow: 0 0 50px #00ffff;
+    overflow: visible;
+    border-radius: 25px;
     z-index: 3;
   }
 
@@ -127,18 +124,26 @@
     display: flex;
     transition: transform 0.6s ease-in-out;
     transform-style: preserve-3d;
+    gap: 20px;
   }
 
   .carousel-slide img {
     width: 100%;
+    max-width: 300px;
     flex-shrink: 0;
     border-radius: 20px;
-    box-shadow: 0 0 50px #00ffff;
-    transition: transform 0.3s ease-out, filter 0.3s;
+    border: 2px solid rgba(0,255,255,0.6);
+    box-shadow: 0 0 30px rgba(0,255,255,0.5), 0 10px 20px rgba(0,255,255,0.2) inset;
+    transition: transform 0.3s ease-out, filter 0.3s, box-shadow 0.3s;
+    background: rgba(0,0,0,0.3);
+    cursor: grab;
+    will-change: transform;
   }
 
   .carousel-slide img:hover {
-    filter: brightness(1.3) saturate(1.3);
+    transform: scale(1.15) rotateY(5deg) rotateX(3deg);
+    filter: brightness(1.4) saturate(1.3);
+    box-shadow: 0 0 50px #00ffff, 0 10px 30px rgba(0,255,255,0.5) inset;
   }
 
   .prev, .next {
@@ -181,7 +186,7 @@
 </header>
 
 <nav>
-  <button onclick="window.open('https://stellarscribe.moqueguatech.com/index2.html','_blank')">Cuento</button>
+  <button onclick="window.open('https://stellarscribe.moquegutech.com/index2.html','_blank')">Cuento</button>
   <button onclick="window.open('flutter_entertainment/index.html','_blank')">Entretenimiento</button>
 </nav>
 
@@ -214,10 +219,8 @@
   prevBtn.addEventListener('click',()=>{counter=(counter-1+carouselImages.length)%carouselImages.length;showSlide();});
   setInterval(()=>{counter=(counter+1)%carouselImages.length;showSlide();},5000);
   window.addEventListener('scroll',()=>{const scrollPos=window.scrollY;stars.forEach(s=>{s.style.transform=`translateY(${scrollPos*s.dataset.speed}px)`;});carouselImages.forEach((img,i)=>{img.style.transform=`translateZ(${i*50 - scrollPos*0.4}px)`;});});
-  document.addEventListener('mousemove',e=>{const x=e.clientX/window.innerWidth-0.5;const y=e.clientY/window.innerHeight-0.5;particles.forEach((p,i)=>{const speed=(i+1)/100;p.style.transform=`translate(${x*speed*100}px, ${y*speed*100}px)`;});});
+  document.addEventListener('mousemove',e=>{const x=e.clientX/window.innerWidth-0.5;const y=e.clientY/window.innerHeight-0.5;particles.forEach((p,i)=>{const speed=(i+1)/100;p.style.transform=`translate(${x*speed*50}px, ${y*speed*50}px)`;});});
 </script>
 
 </body>
 </html>
-
-
