@@ -1034,7 +1034,7 @@
     },
     3: {
       title: "Nivel 3: Baterías Caseras",
-      bg: "img/chap3-bg.jpg",
+      bg: "img/chap3-bg.gif",
       leftChar: "escena3.gif",
       rightChar: "escena3_1.jpg",
       education: {
@@ -1280,7 +1280,7 @@
     setTimeout(() => {
       d.gameArea.innerHTML = `
         <section class="scene visible">
-          <div class="bg" style="background-image:url('img/chap4-bg.jpg');"></div>
+          <div class="bg" style="background-image:url('chap4-bg.jpg');"></div>
           <div class="overlay"></div>
           <div class="content">
             <h2 class="page-title">🔀 PUNTO DE DECISIÓN CRÍTICO</h2>
@@ -1291,7 +1291,7 @@
               <div class="choice" data-branch="C">OPCIÓN C — Comunicación Pacífica</div>
             </div>
           </div>
-          <div class="media"><img src="img/monolith.gif" alt="monolito" style="width:240px"/></div>
+          <div class="media"><img src="monolith.gif" alt="monolito" style="width:240px"/></div>
         </section>
       `;
       
@@ -1313,7 +1313,7 @@
     
     d.gameArea.innerHTML = `
       <article class="scene visible">
-        <div class="bg" style="background-image:url('img/branch${b}-bg.jpg');"></div>
+        <div class="bg" style="background-image:url('img/bg_anim.jpg');"></div>
         <div class="overlay"></div>
         <div class="content">
           <h2 class="page-title">Ramificación ${b}</h2>
@@ -1322,7 +1322,7 @@
             <button id="branchContinue" class="continue-btn">VER CONCLUSIÓN →</button>
           </div>
         </div>
-        <div class="media"><img src="img/branch_placeholder.gif" alt="animación" style="width:240px"/></div>
+        <div class="media"><img src="img/animaion.gif" alt="animación" style="width:240px"/></div>
       </article>
     `;
 
@@ -1349,7 +1349,7 @@
     
     d.gameArea.innerHTML = `
       <section class="scene visible">
-        <div class="bg" style="background-image:url('img/conclusion-bg.jpg');"></div>
+        <div class="bg" style="background-image:url('img/bg_final.jpg');"></div>
         <div class="overlay"></div>
         <div class="content">
           <h2 class="page-title">🏠 REGRESO A CASA</h2>
@@ -1368,7 +1368,7 @@
             <button id="restartBtn" class="continue-btn">🔄 REINICIAR AVENTURA</button>
           </div>
         </div>
-        <div class="media"><img src="img/conclusion-gif.gif" alt="final" style="width:240px"/></div>
+        <div class="media"><img src="img/final.gif" alt="final" style="width:240px"/></div>
       </section>
     `;
     
