@@ -11,7 +11,7 @@ html, body { height: 100%; width: 100%; }
 body {
   font-family: 'Arial', sans-serif;
 
-  /* ====== AQUI SE AGREGA TU FONDO LOCAL ====== */
+  /* ====== FONDO LOCAL ====== */
   background: url('img/chap1-bg.jpg') no-repeat center center fixed;
   background-size: cover;
 
@@ -83,25 +83,25 @@ nav button:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 50px;
+  gap: 30px;
   padding-bottom: 60px;
   z-index: 3;
 }
 
 .mosaic-container img {
-  width: 250px;
-  max-width: 90%;
+  width: 180px;   /* tamaño base más pequeño */
+  max-width: 80%;
   border-radius: 20px;
   border: 2px solid rgba(0,255,255,0.5);
-  box-shadow: 0 0 25px rgba(0,255,255,0.4), 0 5px 15px rgba(0,255,255,0.15) inset;
+  box-shadow: 0 0 20px rgba(0,255,255,0.4), 0 5px 10px rgba(0,255,255,0.15) inset;
   transition: transform 0.5s ease, box-shadow 0.5s ease, filter 0.5s ease;
   cursor: grab;
   background: rgba(0,0,0,0.3);
 }
 .mosaic-container img:hover {
-  transform: scale(1.15) rotateY(5deg) rotateX(3deg);
-  filter: brightness(1.4);
-  box-shadow: 0 0 50px #0ff, 0 10px 30px rgba(0,255,255,0.5) inset;
+  transform: scale(1.1) rotateY(3deg) rotateX(2deg);
+  filter: brightness(1.3);
+  box-shadow: 0 0 40px #0ff, 0 8px 20px rgba(0,255,255,0.5) inset;
 }
 
 /* ==================== FOOTER ==================== */
@@ -134,22 +134,22 @@ footer {
 @media (max-width: 1024px) {
   header h1 { font-size: 2.4em; }
   nav button { padding: 12px 25px; font-size: 1em; }
-  .mosaic-container { gap: 35px; }
-  .mosaic-container img { width: 200px; max-width: 45%; }
+  .mosaic-container { gap: 25px; }
+  .mosaic-container img { width: 150px; max-width: 70%; }
 }
 
 @media (max-width: 768px) {
   header h1 { font-size: 2em; }
   nav button { padding: 10px 20px; font-size: 0.95em; }
-  .mosaic-container { gap: 30px; }
-  .mosaic-container img { width: 170px; max-width: 60%; }
+  .mosaic-container { gap: 20px; }
+  .mosaic-container img { width: 130px; max-width: 80%; }
 }
 
 @media (max-width: 480px) {
   header h1 { font-size: 1.6em; }
   nav button { padding: 8px 16px; font-size: 0.85em; }
-  .mosaic-container { gap: 20px; padding-bottom: 40px; }
-  .mosaic-container img { width: 140px; max-width: 80%; }
+  .mosaic-container { gap: 15px; padding-bottom: 40px; }
+  .mosaic-container img { width: 110px; max-width: 90%; }
 }
 </style>
 </head>
