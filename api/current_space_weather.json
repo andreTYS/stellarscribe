@@ -1,0 +1,16 @@
+{
+  "timestamp": "2025-09-22T01:55:00.414955",
+  "sunspot_number": 155,
+  "solar_wind_speed": 547.3281880834303,
+  "kp_index": 3.9766209730101645,
+  "aurora_forecast": "moderate",
+  "solar_flux_10_7cm": 141.87447409466526,
+  "proton_flux": 0.9973257579507787,
+  "electron_flux": 8.196329541566342,
+  "magnetic_field": 6.206936467334916,
+  "current_solar_cycle": {
+    "cycle_number": 25,
+    "phase": "ascending",
+    "predicted_maximum": "2024-2025"
+  }
+}
