@@ -15,13 +15,13 @@ services:
     labels:
       - traefik.enable=true
       - traefik.docker.network=${TRAEFIK_NETWORK:-n8n_default}
-      - traefik.http.routers.stellarscribe.rule=Host(`${DOMINIO:-stellarscribe.moqueguatech.com}`)
+      - traefik.http.routers.stellarscribe.rule=Host(`${DOMINIO:-stellarscribe.moqueguasoft.com}`)
       - traefik.http.routers.stellarscribe.entrypoints=websecure
       - traefik.http.routers.stellarscribe.tls=true
       - traefik.http.routers.stellarscribe.tls.certresolver=${CERT_RESOLVER:-mytlschallenge}
       - traefik.http.services.stellarscribe.loadbalancer.server.port=80
       # HTTP -> HTTPS
-      - traefik.http.routers.stellarscribe-http.rule=Host(`${DOMINIO:-stellarscribe.moqueguatech.com}`)
+      - traefik.http.routers.stellarscribe-http.rule=Host(`${DOMINIO:-stellarscribe.moqueguasoft.com}`)
       - traefik.http.routers.stellarscribe-http.entrypoints=web
       - traefik.http.routers.stellarscribe-http.middlewares=stellarscribe-https
       - traefik.http.middlewares.stellarscribe-https.redirectscheme.scheme=https
