@@ -1,0 +1,5 @@
+.git
+.gitignore
+.dockerignore
+deploy/docker-compose.yml
+deploy/.env
