@@ -473,15 +473,14 @@
   .main {
     position: relative;
     display: block;
-    height: 100%;
-    overflow: auto;
-    padding: 200px 24px 100px;
+    padding: 140px 24px 100px;
   }
   
   .container {
     max-width: 1400px;
     margin: 0 auto;
     padding-bottom: 60px;
+    scroll-margin-top: 130px; /* que el título no quede bajo la barra fija */
   }
   
   /* ===== SCENE CARD ===== */
@@ -855,7 +854,10 @@
       gap: 16px;
     }
     .main {
-      padding: 200px 16px 80px;
+      padding: 190px 16px 80px;
+    }
+    .container {
+      scroll-margin-top: 180px;
     }
   }
   
@@ -879,7 +881,34 @@
     }
     .story-text {
       font-size: 1rem;
+      line-height: 1.75;
     }
+    header#topbar {
+      top: 8px; left: 8px; right: 8px;
+    }
+    .topbar-inner {
+      padding: 10px 12px;
+      border-radius: 16px;
+    }
+    .brand { gap: 10px; }
+    .brand img { height: 32px; }
+    .brand-name { font-size: 1rem; letter-spacing: 2px; }
+    .brand-subtitle { display: none; }
+    .nav-pill { padding: 6px 12px; }
+    .main { padding: 130px 10px 60px; }
+    .container { scroll-margin-top: 120px; }
+    .scene { padding: 18px; border-radius: 18px; min-height: 0; }
+    .scene .content { padding: 8px 4px; }
+    .scene .media img { width: 130px !important; }
+    .education-box h3 { font-size: 1.15rem; }
+    .continue-btn { padding: 16px 28px; font-size: 1rem; }
+  }
+
+  /* Pantallas táctiles: sin cursor personalizado */
+  @media (hover: none), (pointer: coarse) {
+    body { cursor: auto; }
+    .cursor { display: none; }
+    .scene:hover .bg { transform: none; }
   }
   </style>
 </head>
@@ -1174,8 +1203,6 @@
   }
   
   function scrollMainTop() {
-    const topY = d.main.getBoundingClientRect().top + window.scrollY - 100;
-    window.scrollTo({ top: topY, behavior: 'smooth' });
     d.gameArea.scrollIntoView({behavior:'smooth', block:'start'});
   }
 
@@ -1322,7 +1349,7 @@
             <button id="branchContinue" class="continue-btn">VER CONCLUSIÓN →</button>
           </div>
         </div>
-        <div class="media"><img src="img/animaion.gif" alt="animación" style="width:240px"/></div>
+        <div class="media"><img src="img/animacion.gif" alt="animación" style="width:240px"/></div>
       </article>
     `;
 

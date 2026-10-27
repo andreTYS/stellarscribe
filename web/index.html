@@ -17,10 +17,17 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="favicon.png"/>
 
-  <title>peruesclave</title>
+  <title>Solar Interactivo — StellarScribe</title>
   <link rel="manifest" href="manifest.json">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* En pantallas anchas la app (diseñada para celular) se muestra en una columna centrada */
+    html, body { margin: 0; height: 100%; background: #0b1020; }
+    #flutter_host { position: relative; height: 100%; max-width: 560px; margin: 0 auto; box-shadow: 0 0 60px rgba(0, 255, 255, .15); }
+  </style>
 </head>
 <body>
+  <div id="flutter_host"></div>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

@@ -39,6 +39,11 @@ _flutter.buildConfig = {"engineRevision":"dd93de6fb1776398bf586cbd477deade1391c7
 
 _flutter.loader.load({
   serviceWorkerSettings: {
-    serviceWorkerVersion: "143324891"
+    serviceWorkerVersion: "143324892"
+  },
+  // CanvasKit servido desde este mismo sitio (no depende de gstatic.com)
+  config: {
+    canvasKitBaseUrl: "canvaskit/",
+    hostElement: document.getElementById("flutter_host")
   }
 });

@@ -157,5 +157,25 @@
         "Una CME puede contener mil millones de toneladas de plasma"
       ]
     }
-  }
+  },
+  "difficulty_level": "middle_school",
+  "concepts": [
+    "Ciclo solar",
+    "Campo magnético",
+    "Viento solar",
+    "Erupciones solares"
+  ],
+  "mini_game_params": {
+    "flare_frequency": 3.1,
+    "flare_intensity": 1.4444444444444444,
+    "particle_density": 155000
+  },
+  "fun_facts": [
+    "La luz del Sol tarda unos 8 minutos y 20 segundos en llegar a la Tierra.",
+    "En agosto de 2025 el Sol tuvo unas 134 manchas: estamos cerca del máximo del ciclo solar 25.",
+    "Las manchas solares se cuentan desde 1610; el registro diario de SILSO empieza en 1818.",
+    "Una CME rápida puede recorrer los 150 millones de km hasta la Tierra en menos de un día.",
+    "Las auroras aparecen cuando el viento solar choca con el oxígeno (verde y rojo) y el nitrógeno (azul y morado).",
+    "El ciclo solar dura unos 11 años: las manchas suben hasta un máximo y luego bajan casi a cero."
+  ]
 }

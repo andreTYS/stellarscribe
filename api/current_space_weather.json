@@ -12,5 +12,8 @@
     "cycle_number": 25,
     "phase": "ascending",
     "predicted_maximum": "2024-2025"
-  }
+  },
+  "current_kp": 3.98,
+  "max_kp_24h": 3.98,
+  "geomagnetic_activity_level": "UNSETTLED"
 }

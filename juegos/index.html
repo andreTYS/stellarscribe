@@ -1,0 +1,574 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Juegos Solares — StellarScribe</title>
+<link rel="icon" href="/img/ICONOO.png">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#000510; --panel:rgba(8,22,38,.92); --line:rgba(0,255,255,.35);
+  --cyan:#00ffff; --gold:#ffd23f; --purple:#a855f7; --red:#ff5a5f; --green:#3ddc97;
+  --text:#e6f8ff; --muted:#9fb8c8;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{
+  font-family:'Roboto',system-ui,sans-serif; color:var(--text); min-height:100vh;
+  background:
+    radial-gradient(ellipse at 15% 10%,rgba(139,92,246,.22),transparent 50%),
+    radial-gradient(ellipse at 85% 90%,rgba(59,130,246,.18),transparent 50%),
+    var(--bg);
+}
+a{color:var(--cyan)}
+.wrap{max-width:1100px;margin:0 auto;padding:16px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0 20px}
+.back{color:var(--cyan);text-decoration:none;border:2px solid var(--line);padding:8px 14px;border-radius:12px;font-weight:700}
+.back:hover{background:rgba(0,255,255,.1)}
+h1{font-family:'Orbitron',sans-serif;color:var(--cyan);font-size:clamp(1.5rem,4.5vw,2.4rem);text-shadow:0 0 18px rgba(0,255,255,.6);letter-spacing:2px}
+.lead{color:var(--muted);margin:6px 0 18px;line-height:1.6}
+
+/* Datos reales */
+.data{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.stat b{display:block;font-family:'Orbitron',sans-serif;color:var(--gold);font-size:1.35rem;margin-top:4px}
+.stat span{color:var(--muted);font-size:.85rem}
+.cycle{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:24px}
+.cycle h2{font-size:1rem;color:var(--cyan);font-family:'Orbitron',sans-serif;margin-bottom:6px}
+.cycle canvas{width:100%;height:110px;display:block}
+.cycle small{color:var(--muted)}
+
+/* Menú */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{
+  background:linear-gradient(135deg,rgba(15,30,55,.95),rgba(25,40,70,.9));border:2px solid var(--line);
+  border-radius:18px;padding:20px;cursor:pointer;text-align:left;color:var(--text);font:inherit;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+}
+.card:hover,.card:focus-visible{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 0 28px rgba(0,255,255,.35);outline:none}
+.card .ico{font-size:2.2rem}
+.card h3{font-family:'Orbitron',sans-serif;color:var(--cyan);margin:8px 0 6px;font-size:1.1rem}
+.card p{color:var(--muted);font-size:.95rem;line-height:1.5}
+.card .best{margin-top:10px;color:var(--gold);font-size:.85rem}
+
+/* Pantalla de juego */
+.stage{display:none}
+.stage.on{display:block}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.bar h2{font-family:'Orbitron',sans-serif;color:var(--cyan);font-size:clamp(1.05rem,3vw,1.4rem)}
+.btn{
+  background:linear-gradient(135deg,#00ffff,#0077ff);color:#001;border:0;border-radius:12px;padding:11px 20px;
+  font-family:'Orbitron',sans-serif;font-weight:700;cursor:pointer;letter-spacing:1px;font-size:.95rem
+}
+.btn:hover{filter:brightness(1.15)}
+.btn.ghost{background:transparent;color:var(--cyan);border:2px solid var(--line)}
+.screen{position:relative;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:#01060f}
+.screen canvas{display:block;width:100%;height:auto;touch-action:none}
+.hud{position:absolute;top:8px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none;
+  font-family:'Orbitron',sans-serif;font-size:clamp(.7rem,2.2vw,.95rem);text-shadow:0 0 6px #000}
+.hud .r{text-align:right}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,5,16,.82)}
+.overlay.hide{display:none}
+.box{max-width:560px;text-align:center}
+.box h3{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:clamp(1.1rem,3.5vw,1.6rem);margin-bottom:10px}
+.box p{color:var(--text);line-height:1.6;margin-bottom:10px;font-size:clamp(.85rem,2.4vw,1rem)}
+.box .fact{color:var(--muted);font-style:italic}
+.box .btn{margin-top:6px}
+.toast{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(255,210,63,.15);border:1px solid var(--gold);
+  color:var(--gold);padding:8px 14px;border-radius:10px;font-size:clamp(.75rem,2.2vw,.9rem);max-width:90%;text-align:center;
+  opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.on{opacity:1}
+.help{color:var(--muted);font-size:.9rem;margin-top:10px;line-height:1.5}
+
+/* CME */
+.cme-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
+.cme-panel .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.cme-panel label{color:var(--muted);font-size:.9rem}
+.cme-panel input[type=range]{flex:1;min-width:200px;accent-color:var(--cyan)}
+.cme-panel output{font-family:'Orbitron',sans-serif;color:var(--gold);min-width:90px}
+.choices{display:grid;gap:8px;margin-top:10px}
+.choice{background:rgba(0,255,255,.06);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;text-align:left;cursor:pointer;font:inherit}
+.choice:hover{border-color:var(--cyan)}
+.choice.ok{border-color:var(--green);background:rgba(61,220,151,.15)}
+.choice.bad{border-color:var(--red);background:rgba(255,90,95,.15)}
+.hidden{display:none!important}
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px;line-height:1.6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>☀️ Juegos Solares</h1>
+    <a class="back" href="/">← Inicio</a>
+  </header>
+  <p class="lead">Cuatro misiones para entender el clima espacial. Cada juego usa los datos del proyecto: manchas solares (SILSO), viento solar, índice Kp, erupciones y CMEs.</p>
+
+  <div id="menu">
+    <section class="data" aria-label="Datos solares">
+      <div class="stat"><span>Manchas solares</span><b id="dSun">—</b></div>
+      <div class="stat"><span>Viento solar</span><b id="dWind">—</b></div>
+      <div class="stat"><span>Índice Kp</span><b id="dKp">—</b></div>
+      <div class="stat"><span>Ciclo solar</span><b id="dCycle">—</b></div>
+    </section>
+    <section class="cycle">
+      <h2>Ciclo solar real · manchas por mes</h2>
+      <canvas id="cycleChart" width="1000" height="110"></canvas>
+      <small id="cycleNote">Fuente: SILSO (Real Observatorio de Bélgica)</small>
+    </section>
+
+    <div class="grid">
+      <button class="card" data-game="dodge"><div class="ico">🔥</div><h3>Esquiva Erupciones</h3><p>Pilota tu nave entre erupciones de clase B, C, M y X.</p><div class="best" data-best="dodge"></div></button>
+      <button class="card" data-game="shield"><div class="ico">🧲</div><h3>Escudo Magnético</h3><p>Gira la magnetosfera y protege la Tierra del viento solar.</p><div class="best" data-best="shield"></div></button>
+      <button class="card" data-game="cme"><div class="ico">🌪️</div><h3>Calculadora CME</h3><p>Calcula cuándo llega una eyección de masa coronal y decide qué hacer.</p><div class="best" data-best="cme"></div></button>
+      <button class="card" data-game="aurora"><div class="ico">🌈</div><h3>Cazador de Auroras</h3><p>Según el índice Kp, adivina desde qué ciudades se verá la aurora.</p><div class="best" data-best="aurora"></div></button>
+    </div>
+  </div>
+
+  <!-- Juego con canvas (esquivar / escudo / auroras) -->
+  <section class="stage" id="stage">
+    <div class="bar">
+      <h2 id="gTitle"></h2>
+      <button class="btn ghost" id="gBack">← Juegos</button>
+    </div>
+    <div class="screen">
+      <canvas id="cv" width="800" height="500"></canvas>
+      <div class="hud"><div id="hudL"></div><div class="r" id="hudR"></div></div>
+      <div class="toast" id="toast"></div>
+      <div class="overlay" id="ov"><div class="box" id="ovBox"></div></div>
+    </div>
+    <p class="help" id="gHelp"></p>
+
+    <!-- Controles extra de la calculadora CME -->
+    <div class="cme-panel hidden" id="cmePanel">
+      <div id="cmeInfo"></div>
+      <div class="row" style="margin-top:10px">
+        <label for="cmeGuess">Tu estimación:</label>
+        <input type="range" id="cmeGuess" min="10" max="120" step="1" value="48">
+        <output id="cmeOut">48 h</output>
+        <button class="btn" id="cmeGo">Lanzar</button>
+      </div>
+      <div id="cmeQ" class="hidden"></div>
+    </div>
+    <div class="cme-panel hidden" id="auroraPanel">
+      <div class="row"><span id="auroraInfo"></span><button class="btn" id="auroraGo">Comprobar</button></div>
+    </div>
+  </section>
+
+  <footer>StellarScribe · Perú Es Clave — NASA Space Apps Challenge 2025<br>
+  Datos: SILSO, NOAA SWPC y NASA. Las secciones sin datos en vivo usan valores típicos del mismo periodo.</footer>
+</div>
+
+<script>
+/* ===================== DATOS ===================== */
+const FALLBACK = {
+  weather:{sunspot_number:155,solar_wind_speed:547,kp_index:4,magnetic_field:6.2,current_solar_cycle:{cycle_number:25,phase:'ascending'}},
+  flares:['B3.4','C1.2','M1.5','C4.8','X1.1','B7.6','M2.3','C2.0'].map(c=>({class_type:c})),
+  cmes:[{speed:1417,start_time:'2025-09-06T02:17',source_location:'S34E52'},{speed:620,start_time:'2025-09-04T17:01',source_location:'S07E75'},{speed:950,start_time:'2025-09-10T08:00',source_location:'N12W20'}],
+  kp:[1.33,2,3,4],
+  cycles:[], facts:['La radiación de una erupción llega a la Tierra en unos 8 minutos.']
+};
+const D = structuredClone(FALLBACK);
+
+async function getJSON(u){ try{ const r=await fetch(u); if(!r.ok) throw 0; return await r.json(); }catch(e){ return null; } }
+
+async function loadData(){
+  const [w,f,c,n,h,e] = await Promise.all([
+    getJSON('/api/current_space_weather.json'), getJSON('/api/basic_flare_data.json'),
+    getJSON('/api/basic_cme_data.json'), getJSON('/api/noaa_comprehensive.json'),
+    getJSON('/api/solar_cycles_historical.json'), getJSON('/api/advanced_educational_content.json')
+  ]);
+  if(w) D.weather=w;
+  if(f && f.length) D.flares=f;
+  if(c && c.length) D.cmes=c.filter(x=>x.speed>0);
+  if(n && n.kp_index && n.kp_index.length) D.kp=n.kp_index.map(k=>k.estimated_kp).filter(k=>k>=0);
+  if(h && h.length) D.cycles=h;
+  const pop = e && e.expanded_mini_games && e.expanded_mini_games.solar_flare_dodge && e.expanded_mini_games.solar_flare_dodge.educational_popups;
+  if(pop) D.facts=pop;
+  renderStats();
+}
+
+function renderStats(){
+  const w=D.weather;
+  document.getElementById('dSun').textContent = Math.round(w.sunspot_number);
+  document.getElementById('dWind').textContent = Math.round(w.solar_wind_speed)+' km/s';
+  document.getElementById('dKp').textContent = (+w.kp_index).toFixed(1);
+  const cy=w.current_solar_cycle||{};
+  document.getElementById('dCycle').textContent = (cy.cycle_number||25)+(cy.phase==='ascending'?' ↑':'');
+  drawCycle();
+}
+
+function drawCycle(){
+  const cv=document.getElementById('cycleChart'), g=cv.getContext('2d');
+  const data=D.cycles.filter(r=>r.year>=1975);
+  g.clearRect(0,0,cv.width,cv.height);
+  if(!data.length){ document.getElementById('cycleNote').textContent='Sin datos históricos disponibles.'; return; }
+  const max=Math.max(...data.map(r=>r.sunspot_number));
+  const W=cv.width,H=cv.height,pad=14;
+  g.strokeStyle='rgba(0,255,255,.15)'; g.fillStyle='#6f8ea3'; g.font='13px Roboto';
+  for(let y=1980;y<=2025;y+=10){
+    const x=(data.findIndex(r=>r.year===y)/data.length)*W;
+    if(x<0) continue;
+    g.beginPath(); g.moveTo(x,0); g.lineTo(x,H-pad); g.stroke(); g.fillText(y,x+3,H-2);
+  }
+  const grd=g.createLinearGradient(0,0,0,H); grd.addColorStop(0,'rgba(255,210,63,.9)'); grd.addColorStop(1,'rgba(255,90,0,.15)');
+  g.beginPath(); g.moveTo(0,H-pad);
+  data.forEach((r,i)=>g.lineTo(i/(data.length-1)*W, H-pad-(r.sunspot_number/max)*(H-pad-6)));
+  g.lineTo(W,H-pad); g.closePath(); g.fillStyle=grd; g.fill();
+  const last=data[data.length-1];
+  document.getElementById('cycleNote').textContent=`Fuente: SILSO · ${data[0].year}–${last.date} · máximo del periodo: ${Math.round(max)} manchas`;
+}
+
+/* ===================== UTILIDADES ===================== */
+const $=id=>document.getElementById(id);
+const cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
+const rand=(a,b)=>a+Math.random()*(b-a);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const store={
+  get(k){ try{ return +localStorage.getItem('ss_best_'+k)||0; }catch(e){ return 0; } },
+  set(k,v){ try{ if(v>store.get(k)) localStorage.setItem('ss_best_'+k,v); }catch(e){} }
+};
+function refreshBest(){ document.querySelectorAll('[data-best]').forEach(el=>{ const b=store.get(el.dataset.best); el.textContent=b?('Récord: '+b):''; }); }
+
+let toastT;
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3200); }
+function overlay(html){ $('ovBox').innerHTML=html; $('ov').classList.remove('hide'); }
+function hideOverlay(){ $('ov').classList.add('hide'); }
+
+// Puntero en coordenadas del canvas (ratón y táctil)
+const ptr={x:W/2,y:H/2,down:false,active:false};
+function toCanvas(e){ const r=cv.getBoundingClientRect(); ptr.x=(e.clientX-r.left)/r.width*W; ptr.y=(e.clientY-r.top)/r.height*H; }
+cv.addEventListener('pointermove',e=>{ toCanvas(e); ptr.active=true; });
+cv.addEventListener('pointerdown',e=>{ toCanvas(e); ptr.down=true; ptr.active=true; if(cur && cur.click) cur.click(ptr.x,ptr.y); });
+window.addEventListener('pointerup',()=>ptr.down=false);
+const keys={};
+window.addEventListener('keydown',e=>{ keys[e.key]=true; if(cur && running && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault(); });
+window.addEventListener('keyup',e=>keys[e.key]=false);
+
+// Fondo de estrellas compartido
+const stars=Array.from({length:120},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,s:Math.random()*.6+.1}));
+function drawStars(dy=0){
+  g.fillStyle='#01060f'; g.fillRect(0,0,W,H);
+  g.fillStyle='#fff';
+  for(const s of stars){ s.y+=s.s*dy; if(s.y>H) s.y-=H; g.globalAlpha=.4+s.s; g.fillRect(s.x,s.y,s.r,s.r); }
+  g.globalAlpha=1;
+}
+function glow(x,y,r,color,blur=20){ g.save(); g.shadowColor=color; g.shadowBlur=blur; g.fillStyle=color; g.beginPath(); g.arc(x,y,r,0,Math.PI*2); g.fill(); g.restore(); }
+
+/* ===================== MOTOR ===================== */
+let cur=null, running=false, raf=0, last=0;
+function loop(t){
+  const dt=Math.min(.05,(t-last)/1000||0); last=t;
+  if(running && cur){ cur.update(dt); }
+  if(cur) cur.draw();
+  raf=requestAnimationFrame(loop);
+}
+function openGame(name){
+  cur=GAMES[name];
+  $('menu').classList.add('hidden'); $('stage').classList.add('on');
+  $('gTitle').textContent=cur.title; $('gHelp').textContent=cur.help;
+  $('cmePanel').classList.toggle('hidden',name!=='cme');
+  $('auroraPanel').classList.toggle('hidden',name!=='aurora');
+  $('hudL').textContent=''; $('hudR').textContent='';
+  cur.intro();
+  window.scrollTo({top:0,behavior:'smooth'});
+  cancelAnimationFrame(raf); last=performance.now(); raf=requestAnimationFrame(loop);
+}
+function closeGame(){
+  running=false; cancelAnimationFrame(raf); cur=null;
+  $('stage').classList.remove('on'); $('menu').classList.remove('hidden'); refreshBest();
+}
+function finish(key,score,html){ running=false; store.set(key,score); overlay(html+`<button class="btn" onclick="GAMES['${key}'].start()">Jugar otra vez</button> <button class="btn ghost" onclick="closeGame()">Menú</button>`); }
+$('gBack').onclick=closeGame;
+document.querySelectorAll('.card').forEach(c=>c.onclick=()=>openGame(c.dataset.game));
+
+/* ===================== 1. ESQUIVA ERUPCIONES ===================== */
+const FLARE={B:{r:9,v:150,c:'#7fd1ff',dmg:1},C:{r:13,v:190,c:'#ffd23f',dmg:1},M:{r:18,v:235,c:'#ff8c2b',dmg:1},X:{r:25,v:280,c:'#ff3b3b',dmg:2}};
+const dodge={
+  title:'🔥 Esquiva Erupciones',
+  help:'Mueve la nave con el ratón, el dedo o las flechas ← →. Las erupciones X quitan dos vidas. Recoge los escudos azules.',
+  intro(){ this.reset(); overlay(`<h3>Esquiva Erupciones</h3><p>Las erupciones solares se clasifican por su energía en rayos X: <b>B</b>, <b>C</b>, <b>M</b> y <b>X</b> (cada letra es 10 veces más intensa).</p><p>Las erupciones de este juego salen en el orden de los registros del proyecto.</p><button class="btn" onclick="GAMES.dodge.start()">Despegar</button>`); },
+  reset(){ this.ship={x:W/2,y:H-50}; this.items=[]; this.t=0; this.spawn=0; this.lives=3; this.score=0; this.shield=0; this.idx=0; this.factT=6; },
+  start(){ this.reset(); hideOverlay(); running=true; },
+  update(dt){
+    const s=this.ship;
+    if(keys.ArrowLeft) s.x-=420*dt; if(keys.ArrowRight) s.x+=420*dt;
+    if(ptr.active) s.x+=(ptr.x-s.x)*Math.min(1,dt*12);
+    s.x=clamp(s.x,20,W-20);
+    this.t+=dt; this.score=Math.floor(this.t*10);
+    const level=1+this.t/20;
+    this.spawn-=dt;
+    if(this.spawn<=0){
+      const rec=D.flares[this.idx++%D.flares.length];
+      const cls=(rec.class_type||'C')[0].toUpperCase(); const f=FLARE[cls]||FLARE.C;
+      this.items.push({x:rand(20,W-20),y:-30,r:f.r,v:f.v*(.8+level*.2),c:f.c,dmg:f.dmg,label:rec.class_type||cls,kind:'flare'});
+      if(Math.random()<.06) this.items.push({x:rand(30,W-30),y:-20,r:11,v:140,c:'#00bfff',kind:'shield'});
+      this.spawn=Math.max(.22,.9/level);
+    }
+    for(const it of this.items){
+      it.y+=it.v*dt;
+      if(Math.hypot(it.x-s.x,it.y-s.y)<it.r+16 && !it.gone){
+        it.gone=true;
+        if(it.kind==='shield'){ this.shield=4; toast('🛡️ Escudo magnético activado (4 s)'); }
+        else if(this.shield<=0){ this.lives-=it.dmg; toast(it.dmg>1?'¡Clase X! '+D.facts[0]:'Impacto de erupción '+it.label); }
+      }
+    }
+    this.items=this.items.filter(i=>!i.gone && i.y<H+40);
+    this.shield=Math.max(0,this.shield-dt);
+    this.factT-=dt; if(this.factT<=0){ toast(D.facts[Math.floor(Math.random()*D.facts.length)]); this.factT=12; }
+    $('hudL').textContent='❤️ '.repeat(Math.max(0,this.lives)); $('hudR').textContent='Puntos '+this.score;
+    if(this.lives<=0) finish('dodge',this.score,`<h3>Nave alcanzada</h3><p>Puntuación: <b>${this.score}</b> · Récord: ${Math.max(store.get('dodge'),this.score)}</p><p class="fact">Durante erupciones fuertes, los astronautas de la Estación Espacial se refugian en los módulos con más blindaje.</p>`);
+  },
+  draw(){
+    drawStars(running?2:0.3);
+    const grd=g.createRadialGradient(W/2,-120,20,W/2,-120,260); grd.addColorStop(0,'rgba(255,200,60,.9)'); grd.addColorStop(1,'rgba(255,120,0,0)');
+    g.fillStyle=grd; g.fillRect(0,0,W,160);
+    for(const it of this.items){
+      glow(it.x,it.y,it.r,it.c,it.kind==='shield'?25:18);
+      g.fillStyle='#001'; g.font='bold 11px Orbitron'; g.textAlign='center'; g.textBaseline='middle';
+      g.fillText(it.kind==='shield'?'🛡':it.label[0],it.x,it.y+1);
+    }
+    const s=this.ship;
+    if(this.shield>0){ g.strokeStyle='rgba(0,191,255,.8)'; g.lineWidth=3; g.beginPath(); g.arc(s.x,s.y,28,0,Math.PI*2); g.stroke(); }
+    g.save(); g.translate(s.x,s.y); g.shadowColor='#0ff'; g.shadowBlur=15; g.fillStyle='#dff';
+    g.beginPath(); g.moveTo(0,-20); g.lineTo(14,16); g.lineTo(0,9); g.lineTo(-14,16); g.closePath(); g.fill();
+    g.fillStyle='#ff8c2b'; g.beginPath(); g.moveTo(-5,12); g.lineTo(0,22+Math.random()*6); g.lineTo(5,12); g.fill(); g.restore();
+  }
+};
+
+/* ===================== 2. ESCUDO MAGNÉTICO ===================== */
+const LEVELS=[
+  {name:'Dipolo simple (Sol tranquilo)',arc:1.6,rate:4,time:30},
+  {name:'Campo complejo (manchas solares)',arc:1.25,rate:7,time:35},
+  {name:'Reconexión magnética (erupciones)',arc:1.0,rate:10,time:40,bursts:true}
+];
+const shield={
+  title:'🧲 Escudo Magnético',
+  help:'Mueve el ratón o el dedo alrededor de la Tierra (o usa ← →) para girar el escudo. Las partículas desviadas se convierten en auroras en los polos.',
+  intro(){ this.reset(0); overlay(`<h3>Escudo Magnético</h3><p>El campo magnético de la Tierra desvía el viento solar. Tu misión es mantenerlo bien orientado durante tres niveles.</p><p>Velocidad del viento solar en los datos: <b>${Math.round(D.weather.solar_wind_speed)} km/s</b>.</p><button class="btn" onclick="GAMES.shield.start()">Activar escudo</button>`); },
+  reset(lv){ this.lv=lv; this.ang=Math.PI; this.parts=[]; this.auroras=[]; this.hp=this.hp&&lv?this.hp:100; this.t=0; this.spawn=0; this.saved=lv?this.saved:0; this.earth={x:W*.68,y:H/2,r:42}; this.R=86; },
+  start(){ this.hp=100; this.saved=0; this.reset(0); hideOverlay(); running=true; toast('Nivel 1 · '+LEVELS[0].name); },
+  update(dt){
+    const L=LEVELS[this.lv], e=this.earth;
+    if(keys.ArrowLeft||keys.ArrowUp) this.ang-=3*dt; if(keys.ArrowRight||keys.ArrowDown) this.ang+=3*dt;
+    if(ptr.active && !(keys.ArrowLeft||keys.ArrowRight||keys.ArrowUp||keys.ArrowDown)) this.ang=Math.atan2(ptr.y-e.y,ptr.x-e.x);
+    this.t+=dt; this.spawn-=dt;
+    const v=clamp(D.weather.solar_wind_speed/547,0.6,1.8)*(140+this.lv*35);
+    if(this.spawn<=0){
+      const n=L.bursts && Math.random()<.15 ? 6 : 1;
+      for(let i=0;i<n;i++){ const y=rand(60,H-60); const dir=Math.atan2(e.y-y+rand(-60,60),e.x-40); this.parts.push({x:40,y,vx:Math.cos(dir)*v*rand(.85,1.15),vy:Math.sin(dir)*v}); }
+      if(n>1) toast('⚡ Ráfaga de reconexión magnética');
+      this.spawn=1/L.rate;
+    }
+    for(const p of this.parts){
+      p.x+=p.vx*dt; p.y+=p.vy*dt;
+      const dx=p.x-e.x, dy=p.y-e.y, d=Math.hypot(dx,dy);
+      if(!p.def && d<this.R+4 && d>this.R-12){
+        let diff=Math.atan2(dy,dx)-this.ang; diff=Math.atan2(Math.sin(diff),Math.cos(diff));
+        if(Math.abs(diff)<L.arc/2){
+          p.def=true; this.saved++;
+          const pole=dy<0?-1:1; const sp=Math.hypot(p.vx,p.vy);
+          p.vx=sp*.35; p.vy=pole*sp*.9; // la partícula se desvía hacia el polo más cercano
+          this.auroras.push({x:e.x+rand(-20,20),y:e.y+pole*(e.r+4),life:1,c:Math.random()<.5?'#3ddc97':'#a855f7'});
+        }
+      }
+      if(!p.def && d<e.r){ p.gone=true; this.hp-=4; }
+    }
+    this.parts=this.parts.filter(p=>!p.gone && p.x>-20 && p.x<W+20 && p.y>-20 && p.y<H+20);
+    for(const a of this.auroras) a.life-=dt*.8; this.auroras=this.auroras.filter(a=>a.life>0);
+    $('hudL').textContent=`Nivel ${this.lv+1} · Integridad ${Math.max(0,Math.round(this.hp))}%`;
+    $('hudR').textContent=`Desviadas ${this.saved} · ${Math.max(0,Math.ceil(L.time-this.t))} s`;
+    const score=this.saved*10+Math.max(0,Math.round(this.hp))*5;
+    if(this.hp<=0) return finish('shield',score,`<h3>La Tierra quedó expuesta</h3><p>Llegaste al nivel ${this.lv+1} y desviaste ${this.saved} partículas. Puntos: <b>${score}</b></p><p class="fact">En 1989 una tormenta geomagnética dejó sin luz a 6 millones de personas en Quebec (Canadá) durante 9 horas.</p>`);
+    if(this.t>=L.time){
+      if(this.lv<LEVELS.length-1){ this.reset(this.lv+1); toast('Nivel '+(this.lv+1)+' · '+LEVELS[this.lv].name); }
+      else finish('shield',score,`<h3>¡Planeta protegido!</h3><p>Superaste los tres niveles. Partículas desviadas: ${this.saved} · Integridad ${Math.round(this.hp)}%</p><p>Puntos: <b>${score}</b></p><p class="fact">Las auroras son justamente el viento solar desviado que choca con la atmósfera cerca de los polos.</p>`);
+    }
+  },
+  draw(){
+    drawStars(0);
+    const e=this.earth, L=LEVELS[this.lv||0];
+    const sg=g.createRadialGradient(-60,H/2,30,-60,H/2,200); sg.addColorStop(0,'#fff6c8'); sg.addColorStop(.4,'#ffb52e'); sg.addColorStop(1,'rgba(255,120,0,0)');
+    g.fillStyle=sg; g.fillRect(0,0,220,H);
+    g.strokeStyle='rgba(0,255,255,.12)'; g.lineWidth=1;
+    for(let k=1;k<=3;k++){ g.beginPath(); g.ellipse(e.x+k*14,e.y,this.R+k*26,(this.R+k*26)*.75,0,0,Math.PI*2); g.stroke(); }
+    for(const a of this.auroras){ g.globalAlpha=a.life; glow(a.x,a.y,5,a.c,15); } g.globalAlpha=1;
+    const eg=g.createRadialGradient(e.x-12,e.y-12,6,e.x,e.y,e.r); eg.addColorStop(0,'#5fb8ff'); eg.addColorStop(1,'#0b3a7a');
+    g.fillStyle=eg; g.beginPath(); g.arc(e.x,e.y,e.r,0,Math.PI*2); g.fill();
+    g.fillStyle='#2f9e5b'; g.beginPath(); g.ellipse(e.x-8,e.y-6,14,9,.5,0,Math.PI*2); g.fill(); g.beginPath(); g.ellipse(e.x+12,e.y+12,10,6,-.4,0,Math.PI*2); g.fill();
+    g.save(); g.shadowColor='#0ff'; g.shadowBlur=20; g.strokeStyle='#0ff'; g.lineWidth=7; g.lineCap='round';
+    g.beginPath(); g.arc(e.x,e.y,this.R,this.ang-L.arc/2,this.ang+L.arc/2); g.stroke(); g.restore();
+    for(const p of this.parts) glow(p.x,p.y,3.2,p.def?'#a855f7':'#ffd23f',10);
+  }
+};
+
+/* ===================== 3. CALCULADORA CME ===================== */
+const AU=149.6e6; // km
+const cme={
+  title:'🌪️ Calculadora CME',
+  help:'Estima en horas cuánto tarda la CME en llegar a la Tierra. Fórmula: tiempo = 150 millones de km ÷ velocidad. Después elige cómo reaccionar.',
+  intro(){ this.round=0; this.total=0; this.list=[...D.cmes].sort(()=>Math.random()-.5).slice(0,5); this.anim=null; this.prepare();
+    overlay(`<h3>Calculadora CME</h3><p>Una eyección de masa coronal (CME) es una nube de plasma que el Sol lanza al espacio. Viaja a cientos o miles de km/s.</p><p>Tienes ${this.list.length} CMEs del registro del proyecto. Mientras mejor estimes su llegada, más puntos ganas.</p><button class="btn" onclick="GAMES.cme.begin()">Empezar</button>`); },
+  begin(){ hideOverlay(); running=true; },
+  start(){ this.intro(); this.begin(); },
+  prepare(){
+    const c=this.list[this.round]; if(!c) return;
+    this.real=AU/c.speed/3600; this.anim=null; this.answered=false;
+    const date=(c.start_time||'').replace('T',' ').slice(0,16);
+    $('cmeInfo').innerHTML=`<b>CME ${this.round+1} de ${this.list.length}</b> · fecha ${date||'—'} · origen ${c.source_location||'—'}<br>Velocidad medida: <b style="color:var(--gold)">${Math.round(c.speed)} km/s</b>`;
+    $('cmeGo').disabled=false; $('cmeQ').classList.add('hidden'); $('cmeQ').innerHTML='';
+    $('hudL').textContent=`Ronda ${this.round+1}/${this.list.length}`; $('hudR').textContent=`Puntos ${this.total}`;
+  },
+  launch(){
+    if(this.anim || !running) return;
+    const guess=+$('cmeGuess').value;
+    this.guess=guess; this.anim={t:0}; $('cmeGo').disabled=true;
+  },
+  update(dt){
+    if(!this.anim) return;
+    this.anim.t=Math.min(1,this.anim.t+dt/3);
+    if(this.anim.t>=1 && !this.answered){
+      this.answered=true;
+      const err=Math.abs(this.guess-this.real)/this.real;
+      const pts=Math.max(0,Math.round(100-err*100));
+      this.total+=pts;
+      $('hudR').textContent=`Puntos ${this.total}`;
+      toast(`Llegada real: ${this.real.toFixed(1)} h · tu estimación: ${this.guess} h · +${pts}`);
+      this.ask();
+    }
+  },
+  ask(){
+    const v=this.list[this.round].speed;
+    const strong=v>=1000, mid=v>=500;
+    const opts=[
+      {t:'Poner satélites en modo seguro y avisar a las redes eléctricas',ok:strong},
+      {t:'Vigilar y avisar a los observadores de auroras',ok:mid&&!strong},
+      {t:'No hace falta hacer nada: es una CME lenta',ok:!mid}
+    ];
+    const q=$('cmeQ'); q.classList.remove('hidden');
+    q.innerHTML=`<p style="margin-top:12px">Con ${Math.round(v)} km/s, ¿qué harías?</p><div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${o.t}</button>`).join('')}</div>`;
+    q.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+      if(q.dataset.done) return; q.dataset.done=1;
+      const o=opts[+b.dataset.i]; b.classList.add(o.ok?'ok':'bad');
+      if(!o.ok) q.querySelectorAll('.choice')[opts.findIndex(x=>x.ok)].classList.add('ok');
+      if(o.ok){ this.total+=50; $('hudR').textContent=`Puntos ${this.total}`; }
+      const next=document.createElement('button'); next.className='btn'; next.style.marginTop='10px';
+      next.textContent=this.round+1<this.list.length?'Siguiente CME →':'Ver resultado';
+      next.onclick=()=>{ delete q.dataset.done; this.round++; if(this.round<this.list.length) this.prepare(); else this.end(); };
+      q.appendChild(next);
+    });
+  },
+  end(){
+    const max=this.list.length*150;
+    $('cmeQ').classList.add('hidden');
+    finish('cme',this.total,`<h3>Centro de predicción</h3><p>Puntos: <b>${this.total}</b> de ${max}</p><p class="fact">La CME más rápida registrada (agosto de 1972) llegó a la Tierra en menos de 15 horas.</p>`);
+  },
+  draw(){
+    drawStars(0);
+    const sx=70, ex=W-90, y=H/2;
+    const sg=g.createRadialGradient(sx,y,10,sx,y,90); sg.addColorStop(0,'#fff6c8'); sg.addColorStop(.5,'#ffb52e'); sg.addColorStop(1,'rgba(255,120,0,0)');
+    g.fillStyle=sg; g.beginPath(); g.arc(sx,y,90,0,Math.PI*2); g.fill();
+    glow(ex,y,22,'#3b82f6',25);
+    g.fillStyle='#2f9e5b'; g.beginPath(); g.ellipse(ex-5,y-4,8,5,.5,0,Math.PI*2); g.fill();
+    g.setLineDash([6,8]); g.strokeStyle='rgba(0,255,255,.3)'; g.beginPath(); g.moveTo(sx+40,y); g.lineTo(ex-30,y); g.stroke(); g.setLineDash([]);
+    g.fillStyle='#9fb8c8'; g.font='14px Roboto'; g.textAlign='center';
+    g.fillText('Sol',sx,y+110); g.fillText('Tierra',ex,y+50); g.fillText('150 millones de km',(sx+ex)/2,y+40);
+    if(this.anim){
+      const p=this.anim.t, x=sx+40+(ex-sx-70)*p;
+      g.save(); g.globalAlpha=.85; const cg=g.createRadialGradient(x,y,4,x,y,46); cg.addColorStop(0,'rgba(255,140,60,.9)'); cg.addColorStop(1,'rgba(168,85,247,0)');
+      g.fillStyle=cg; g.beginPath(); g.ellipse(x,y,30+p*20,46+p*30,0,-Math.PI/2,Math.PI/2); g.fill(); g.restore();
+      g.fillStyle='#ffd23f'; g.font='bold 22px Orbitron'; g.fillText((this.real*p).toFixed(1)+' h',W/2,60);
+      if(p>=1){ g.fillStyle=Math.abs(this.guess-this.real)/this.real<.15?'#3ddc97':'#ff8c2b'; g.font='16px Orbitron'; g.fillText('Tu estimación: '+this.guess+' h',W/2,90); }
+    } else if(this.list && this.list[this.round]){
+      g.fillStyle='#e6f8ff'; g.font='bold 20px Orbitron'; g.fillText('¿Cuántas horas tardará?',W/2,60);
+    }
+  }
+};
+$('cmeGuess').oninput=e=>$('cmeOut').textContent=e.target.value+' h';
+$('cmeGo').onclick=()=>cme.launch();
+
+/* ===================== 4. CAZADOR DE AURORAS ===================== */
+const CITIES=[
+  ['Tromsø',69.6,18.9],['Reikiavik',64.1,-21.9],['Anchorage',61.2,-149.9],['Yellowknife',62.5,-114.4],['Oslo',59.9,10.7],
+  ['Edimburgo',55.9,-3.2],['Ottawa',45.4,-75.7],['Nueva York',40.7,-74],['Madrid',40.4,-3.7],['Tokio',35.7,139.7],
+  ['Ciudad de México',19.4,-99.1],['Lima',-12,-77],['Moquegua',-17.2,-70.9],['Ciudad del Cabo',-33.9,18.4],['Hobart',-42.9,147.3],['Ushuaia',-54.8,-68.3]
+];
+// Latitud geomagnética con un dipolo (polo norte geomagnético ≈ 80.7°N, 72.7°O)
+function magLat(lat,lon){
+  const r=Math.PI/180, pl=80.7*r, pn=-72.7*r;
+  return Math.asin(Math.sin(lat*r)*Math.sin(pl)+Math.cos(lat*r)*Math.cos(pl)*Math.cos(lon*r-pn))/r;
+}
+const visibleAt=(kp,ml)=>Math.abs(ml)>=66-2*kp; // borde del óvalo auroral (aproximación)
+const aurora={
+  title:'🌈 Cazador de Auroras',
+  help:'Toca las ciudades desde las que crees que se verá la aurora con el índice Kp indicado y pulsa «Comprobar». Más Kp = óvalo auroral más grande.',
+  intro(){
+    const now=D.kp.length?D.kp[D.kp.length-1]:3;
+    const base=Math.max(1,Math.round(now));
+    const extra=[[2,'Noche tranquila'],[3,'Actividad moderada'],[5,'Tormenta geomagnética G1'],[7,'Tormenta fuerte G3'],[9,'Tormenta extrema · 10 de mayo de 2024']]
+      .filter(([k])=>k!==base).slice(-4);
+    this.rounds=[{kp:base,label:'Kp actual de los datos'},...extra.map(([kp,label])=>({kp,label}))];
+    this.round=0; this.total=0; this.sel=new Set(); this.checked=false;
+    this.updatePanel();
+    overlay(`<h3>Cazador de Auroras</h3><p>El índice <b>Kp</b> (0–9) mide cuánto se agita el campo magnético terrestre. Con más Kp, las auroras se ven más lejos de los polos.</p><p>Último Kp en los datos: <b>${now.toFixed(2)}</b>.</p><button class="btn" onclick="GAMES.aurora.begin()">Salir a cazar</button>`);
+  },
+  begin(){ hideOverlay(); running=true; },
+  start(){ this.intro(); this.begin(); },
+  pos(lat,lon){ return {x:(lon+180)/360*W, y:(90-lat)/180*H}; },
+  click(x,y){
+    if(!running || this.checked) return;
+    CITIES.forEach((c,i)=>{ const p=this.pos(c[1],c[2]); if(Math.hypot(p.x-x,p.y-y)<18){ this.sel.has(i)?this.sel.delete(i):this.sel.add(i); } });
+  },
+  updatePanel(){
+    const r=this.rounds[this.round];
+    $('auroraInfo').innerHTML=`Ronda ${this.round+1}/${this.rounds.length} · <b style="color:var(--gold)">Kp ${r.kp}</b> · ${r.label}`;
+    $('auroraGo').textContent=this.checked?(this.round+1<this.rounds.length?'Siguiente →':'Ver resultado'):'Comprobar';
+    $('hudL').textContent=`Kp ${r.kp}`; $('hudR').textContent=`Puntos ${this.total}`;
+  },
+  go(){
+    if(!running) return;
+    if(!this.checked){
+      const kp=this.rounds[this.round].kp; let ok=0;
+      CITIES.forEach((c,i)=>{ const vis=visibleAt(kp,magLat(c[1],c[2])); if(vis===this.sel.has(i)) ok++; });
+      const pts=Math.round(ok/CITIES.length*100); this.total+=pts; this.checked=true;
+      toast(`Acertaste ${ok} de ${CITIES.length} ciudades · +${pts}`);
+    } else {
+      this.round++; this.sel=new Set(); this.checked=false;
+      if(this.round>=this.rounds.length) return finish('aurora',this.total,`<h3>Temporada de auroras terminada</h3><p>Puntos: <b>${this.total}</b> de ${this.rounds.length*100}</p><p class="fact">En mayo de 2024 se vieron auroras incluso en el norte de Chile y Argentina, algo muy poco común.</p>`);
+    }
+    this.updatePanel();
+  },
+  update(){},
+  draw(){
+    g.fillStyle='#021024'; g.fillRect(0,0,W,H);
+    g.strokeStyle='rgba(0,255,255,.12)'; g.lineWidth=1; g.fillStyle='#4f6b80'; g.font='11px Roboto'; g.textAlign='left';
+    for(let lat=-60;lat<=60;lat+=30){ const y=(90-lat)/180*H; g.beginPath(); g.moveTo(0,y); g.lineTo(W,y); g.stroke(); g.fillText(lat+'°',4,y-3); }
+    for(let lon=-150;lon<=150;lon+=30){ const x=(lon+180)/360*W; g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
+    const eq=H/2; g.strokeStyle='rgba(255,210,63,.25)'; g.beginPath(); g.moveTo(0,eq); g.lineTo(W,eq); g.stroke();
+    const r=this.rounds?this.rounds[this.round]:{kp:3};
+    if(this.checked){
+      // Zona de visibilidad: celdas con latitud geomagnética por encima del borde del óvalo
+      g.fillStyle='rgba(61,220,151,.18)';
+      for(let lon=-180;lon<180;lon+=4) for(let lat=-88;lat<=88;lat+=4){
+        if(visibleAt(r.kp,magLat(lat,lon))){ const p=this.pos(lat+2,lon); g.fillRect(p.x,p.y,W/90+1,H/45+1); }
+      }
+    }
+    CITIES.forEach((c,i)=>{
+      const p=this.pos(c[1],c[2]), sel=this.sel && this.sel.has(i);
+      let col=sel?'#ffd23f':'#7fd1ff';
+      if(this.checked){ const vis=visibleAt(r.kp,magLat(c[1],c[2])); col=(vis===sel)?'#3ddc97':'#ff5a5f'; }
+      glow(p.x,p.y,sel?8:6,col,sel?16:8);
+      g.fillStyle='#e6f8ff'; g.font='12px Roboto'; g.textAlign=p.x>W-90?'right':'left';
+      g.fillText(c[0],p.x+(p.x>W-90?-10:10),p.y+4);
+    });
+    if(this.checked){ g.fillStyle='#9fb8c8'; g.font='12px Roboto'; g.textAlign='right'; g.fillText('verde = acierto · rojo = error · zona verde = aurora visible',W-8,H-8); }
+  }
+};
+$('auroraGo').onclick=()=>aurora.go();
+
+const GAMES={dodge,shield,cme,aurora};
+refreshBest();
+loadData();
+</script>
+</body>
+</html>
