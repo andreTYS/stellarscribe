@@ -4,179 +4,329 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Juegos Solares — StellarScribe</title>
+<meta name="description" content="Misiones educativas sobre clima espacial con Aldrin y su gato: erupciones, escudo magnético, CMEs y auroras.">
 <link rel="icon" href="/img/ICONOO.png">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Nunito:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#000510; --panel:rgba(8,22,38,.92); --line:rgba(0,255,255,.35);
-  --cyan:#00ffff; --gold:#ffd23f; --purple:#a855f7; --red:#ff5a5f; --green:#3ddc97;
-  --text:#e6f8ff; --muted:#9fb8c8;
+  --bg:#050816; --panel:rgba(12,22,44,.9); --panel2:rgba(20,34,64,.92); --line:rgba(120,220,255,.22);
+  --cyan:#3be8ff; --gold:#ffcf4a; --orange:#ff8a3d; --pink:#ff5fa2; --purple:#9b7bff; --green:#3ddc97; --red:#ff5a5f;
+  --text:#eef7ff; --muted:#a7b9cf;
+  --s:#3be8ff; --t:#9b7bff; --i:#ff8a3d; --a:#ff5fa2; --m:#3ddc97;
+  --radius:20px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{overflow-x:hidden}
 body{
-  font-family:'Roboto',system-ui,sans-serif; color:var(--text); min-height:100vh;
+  font-family:'Nunito',system-ui,sans-serif; color:var(--text); min-height:100vh; line-height:1.5;
   background:
-    radial-gradient(ellipse at 15% 10%,rgba(139,92,246,.22),transparent 50%),
-    radial-gradient(ellipse at 85% 90%,rgba(59,130,246,.18),transparent 50%),
+    radial-gradient(900px 500px at 10% -10%,rgba(155,123,255,.25),transparent 60%),
+    radial-gradient(800px 500px at 110% 110%,rgba(59,232,255,.14),transparent 60%),
     var(--bg);
 }
+body::before{ /* estrellas fijas de fondo */
+  content:'';position:fixed;inset:0;pointer-events:none;opacity:.55;z-index:0;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 22%,#fff,transparent),radial-gradient(1px 1px at 72% 12%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 42% 78%,#fff,transparent),radial-gradient(1px 1px at 88% 66%,#fff,transparent),
+    radial-gradient(1px 1px at 27% 55%,#fff,transparent),radial-gradient(1.5px 1.5px at 60% 40%,#fff,transparent),
+    radial-gradient(1px 1px at 5% 90%,#fff,transparent),radial-gradient(1px 1px at 95% 30%,#fff,transparent);
+}
+.wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:16px}
 a{color:var(--cyan)}
-.wrap{max-width:1100px;margin:0 auto;padding:16px}
-header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 0 20px}
-.back{color:var(--cyan);text-decoration:none;border:2px solid var(--line);padding:8px 14px;border-radius:12px;font-weight:700}
-.back:hover{background:rgba(0,255,255,.1)}
-h1{font-family:'Orbitron',sans-serif;color:var(--cyan);font-size:clamp(1.5rem,4.5vw,2.4rem);text-shadow:0 0 18px rgba(0,255,255,.6);letter-spacing:2px}
-.lead{color:var(--muted);margin:6px 0 18px;line-height:1.6}
+button{font:inherit}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.ic.fill{fill:currentColor;stroke-width:1.5}
+.ico-box{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:rgba(59,232,255,.1);color:var(--cyan)}
+.ico-box .ic{width:22px;height:22px}
+.ico-box.gold{background:rgba(255,207,74,.12);color:var(--gold)}.ico-box.pink{background:rgba(255,95,162,.12);color:var(--pink)}
+.ico-box.purple{background:rgba(155,123,255,.14);color:var(--purple)}.ico-box.green{background:rgba(61,220,151,.12);color:var(--green)}
+.mico{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:10px;background:rgba(59,232,255,.12);color:var(--cyan)}
+.mico .ic{width:1.05em;height:1.05em}
+.hidden{display:none!important}
 
-/* Datos reales */
-.data{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
-.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
-.stat b{display:block;font-family:'Orbitron',sans-serif;color:var(--gold);font-size:1.35rem;margin-top:4px}
-.stat span{color:var(--muted);font-size:.85rem}
-.cycle{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:24px}
-.cycle h2{font-size:1rem;color:var(--cyan);font-family:'Orbitron',sans-serif;margin-bottom:6px}
-.cycle canvas{width:100%;height:110px;display:block}
+/* ===== Barra superior ===== */
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.brand img{width:34px;height:34px}
+.brand b{font-family:'Orbitron',sans-serif;letter-spacing:2px;font-size:1rem;color:var(--cyan)}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:rgba(59,232,255,.08);border:1.5px solid var(--line);color:var(--text);padding:8px 14px;border-radius:999px;
+  cursor:pointer;font-weight:700;font-size:.9rem;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:.2s}
+.pill:hover{border-color:var(--cyan);background:rgba(59,232,255,.16)}
+.pill[aria-pressed=true]{background:var(--gold);color:#1a1200;border-color:var(--gold)}
+
+/* ===== Portada ===== */
+.hero{position:relative;border-radius:28px;overflow:hidden;border:1.5px solid var(--line);
+  background:linear-gradient(90deg,rgba(5,8,22,.95) 0%,rgba(5,8,22,.75) 45%,rgba(5,8,22,.2) 100%),url('arte/hero.webp') center/cover;
+  padding:clamp(20px,4vw,40px);display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;margin-bottom:22px}
+.hero h1{font-family:'Orbitron',sans-serif;font-size:clamp(1.6rem,4.6vw,2.8rem);line-height:1.15;letter-spacing:1px}
+.hero h1 span{color:var(--gold)}
+.hero p.sub{color:var(--muted);margin:10px 0 16px;max-width:520px;font-size:1.05rem}
+.steam{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-family:'Orbitron',sans-serif;font-size:.7rem;font-weight:700;padding:5px 9px;border-radius:999px;border:1.5px solid currentColor;letter-spacing:.5px;background:rgba(0,0,0,.25)}
+.chip.s{color:var(--s)} .chip.t{color:var(--t)} .chip.i{color:var(--i)} .chip.a{color:var(--a)} .chip.m{color:var(--m)}
+.chip.off{opacity:.25}
+.guide{display:flex;align-items:flex-end;gap:12px;justify-self:end}
+.guide img{width:min(150px,28vw);aspect-ratio:1;border-radius:50%;border:3px solid var(--cyan);box-shadow:0 0 30px rgba(59,232,255,.45);object-fit:cover;background:#0b1530;flex:none}
+.bubble{position:relative;background:#fff;color:#14203a;border-radius:18px;padding:12px 14px;font-weight:600;font-size:.95rem;max-width:260px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.bubble::after{content:'';position:absolute;right:-10px;bottom:18px;border:10px solid transparent;border-left-color:#fff;border-right:0}
+.bubble b{color:#7a4dff}
+
+/* ===== Datos ===== */
+.data{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
+.stat{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center}
+.stat span{display:block;color:var(--muted);font-size:.8rem}
+.stat b{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:1.15rem}
+.cycle{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:26px}
+.cycle header{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline;margin-bottom:6px}
+.cycle h2{font-size:1rem;font-family:'Orbitron',sans-serif;color:var(--cyan)}
+.cycle canvas{width:100%;height:120px;display:block}
 .cycle small{color:var(--muted)}
 
-/* Menú */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-.card{
-  background:linear-gradient(135deg,rgba(15,30,55,.95),rgba(25,40,70,.9));border:2px solid var(--line);
-  border-radius:18px;padding:20px;cursor:pointer;text-align:left;color:var(--text);font:inherit;
-  transition:transform .25s,box-shadow .25s,border-color .25s;
-}
-.card:hover,.card:focus-visible{transform:translateY(-4px);border-color:var(--cyan);box-shadow:0 0 28px rgba(0,255,255,.35);outline:none}
-.card .ico{font-size:2.2rem}
-.card h3{font-family:'Orbitron',sans-serif;color:var(--cyan);margin:8px 0 6px;font-size:1.1rem}
-.card p{color:var(--muted);font-size:.95rem;line-height:1.5}
-.card .best{margin-top:10px;color:var(--gold);font-size:.85rem}
+/* ===== Misiones ===== */
+.section-title{font-family:'Orbitron',sans-serif;font-size:1.15rem;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.card{position:relative;text-align:left;color:var(--text);cursor:pointer;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;
+  background:var(--panel2);padding:0;display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s,border-color .25s}
+.card:hover,.card:focus-visible{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 18px 40px rgba(0,0,0,.45),0 0 0 3px rgba(59,232,255,.15);outline:none}
+.card .art{position:relative;aspect-ratio:16/8;background-size:cover;background-position:center}
+.card .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,22,0) 40%,rgba(20,34,64,1) 100%)}
+.card .num{position:absolute;top:12px;left:12px;z-index:1;font-family:'Orbitron',sans-serif;font-weight:900;font-size:.75rem;background:rgba(5,8,22,.75);
+  border:1.5px solid var(--line);padding:5px 10px;border-radius:999px;letter-spacing:1px}
+.card .stars{position:absolute;top:12px;right:12px;z-index:1;display:flex;gap:2px;background:rgba(5,8,22,.75);border:1.5px solid var(--line);padding:4px 8px;border-radius:999px}
+.card .stars:empty{display:none}
+.card .stars .ic{width:15px;height:15px}
+.card .body{padding:4px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+.card h3{font-family:'Orbitron',sans-serif;font-size:1.15rem;display:flex;align-items:center;gap:8px}
+.card p{color:var(--muted);font-size:.95rem}
+.card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.card .info{color:var(--muted);font-size:.8rem}
+.card .play{font-family:'Orbitron',sans-serif;font-size:.8rem;font-weight:700;color:#04121a;background:var(--cyan);padding:7px 14px;border-radius:999px}
 
-/* Pantalla de juego */
+/* ===== Guía docente ===== */
+.teacher{background:linear-gradient(135deg,rgba(255,207,74,.1),rgba(155,123,255,.08));border:1.5px dashed rgba(255,207,74,.5);border-radius:var(--radius);padding:18px;margin-top:26px}
+.teacher h2{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:1.1rem;margin-bottom:6px}
+.teacher > p{color:var(--muted);margin-bottom:12px}
+.tgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.tcard h4{font-family:'Orbitron',sans-serif;font-size:.95rem;margin-bottom:6px}
+.tcard dl{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.88rem}
+.tcard dt{color:var(--gold);font-weight:800}
+.tcard dd{color:var(--text)}
+.tcard ul{margin:6px 0 0 18px;font-size:.88rem;color:var(--muted)}
+.teacher .actions{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== Escenario de juego ===== */
 .stage{display:none}
 .stage.on{display:block}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
-.bar h2{font-family:'Orbitron',sans-serif;color:var(--cyan);font-size:clamp(1.05rem,3vw,1.4rem)}
-.btn{
-  background:linear-gradient(135deg,#00ffff,#0077ff);color:#001;border:0;border-radius:12px;padding:11px 20px;
-  font-family:'Orbitron',sans-serif;font-weight:700;cursor:pointer;letter-spacing:1px;font-size:.95rem
-}
-.btn:hover{filter:brightness(1.15)}
-.btn.ghost{background:transparent;color:var(--cyan);border:2px solid var(--line)}
-.screen{position:relative;border:2px solid var(--line);border-radius:16px;overflow:hidden;background:#01060f}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.bar h2{font-family:'Orbitron',sans-serif;font-size:clamp(1.05rem,3vw,1.4rem)}
+.btn{background:linear-gradient(135deg,var(--cyan),#2d7dff);color:#03111c;border:0;border-radius:14px;padding:12px 22px;
+  font-family:'Orbitron',sans-serif;font-weight:700;cursor:pointer;letter-spacing:1px;font-size:.9rem;box-shadow:0 6px 20px rgba(59,232,255,.3)}
+.btn:hover{filter:brightness(1.12)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--cyan);border:1.5px solid var(--line);box-shadow:none}
+.btn.gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#1a0d00}
+.screen{position:relative;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;background:#020611;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .screen canvas{display:block;width:100%;height:auto;touch-action:none}
-.hud{position:absolute;top:8px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none;
-  font-family:'Orbitron',sans-serif;font-size:clamp(.7rem,2.2vw,.95rem);text-shadow:0 0 6px #000}
-.hud .r{text-align:right}
-.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:16px;background:rgba(0,5,16,.82)}
+.hud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
+.hud div{display:flex;align-items:center;gap:6px;background:rgba(5,8,22,.7);border:1px solid var(--line);border-radius:999px;padding:5px 12px;
+  font-family:'Orbitron',sans-serif;font-size:clamp(.65rem,2vw,.85rem);backdrop-filter:blur(6px)}
+.hud div:empty{display:none}
+.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(3,6,18,.86);backdrop-filter:blur(3px);overflow:auto}
 .overlay.hide{display:none}
-.box{max-width:560px;text-align:center}
-.box h3{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:clamp(1.1rem,3.5vw,1.6rem);margin-bottom:10px}
-.box p{color:var(--text);line-height:1.6;margin-bottom:10px;font-size:clamp(.85rem,2.4vw,1rem)}
-.box .fact{color:var(--muted);font-style:italic}
-.box .btn{margin-top:6px}
-.toast{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:rgba(255,210,63,.15);border:1px solid var(--gold);
-  color:var(--gold);padding:8px 14px;border-radius:10px;font-size:clamp(.75rem,2.2vw,.9rem);max-width:90%;text-align:center;
-  opacity:0;transition:opacity .3s;pointer-events:none}
-.toast.on{opacity:1}
-.help{color:var(--muted);font-size:.9rem;margin-top:10px;line-height:1.5}
+.box{max-width:600px;width:100%}
+.brief{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.brief img{width:clamp(56px,13vw,88px);aspect-ratio:1;border-radius:50%;border:2.5px solid var(--cyan);object-fit:cover;flex:none}
+.brief .bubble{max-width:none;font-size:clamp(.82rem,2.3vw,.98rem)}
+.brief .bubble::after{left:-10px;right:auto;top:20px;bottom:auto;border-left:0;border-right-color:#fff;border-right-width:10px}
+.box h3{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:clamp(1.05rem,3.4vw,1.5rem);margin-bottom:8px;text-align:center}
+.goals{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin-bottom:12px;font-size:clamp(.8rem,2.2vw,.95rem)}
+.goals li{margin-left:18px}
+.goals b{color:var(--cyan)}
+.center{text-align:center}
+.big-stars{font-size:clamp(2rem,8vw,3rem);letter-spacing:6px;text-align:center;margin:4px 0}
+.big-stars i{font-style:normal;color:#33415c;display:inline-block}
+.big-stars .ic{width:1em;height:1em;vertical-align:middle}
+.big-stars i.on{color:var(--gold);text-shadow:0 0 18px rgba(255,207,74,.7);display:inline-block;animation:pop .5s both}
+.big-stars i.on:nth-child(2){animation-delay:.15s}.big-stars i.on:nth-child(3){animation-delay:.3s}
+@keyframes pop{0%{transform:scale(0) rotate(-40deg)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
+.score{text-align:center;color:var(--muted);margin-bottom:10px;font-size:clamp(.85rem,2.4vw,1rem)}
+.score b{color:var(--text);font-family:'Orbitron',sans-serif}
+.learn{background:rgba(61,220,151,.08);border:1px solid rgba(61,220,151,.4);border-radius:14px;padding:10px 14px;margin-bottom:8px;font-size:clamp(.8rem,2.2vw,.95rem)}
+.learn.q{background:rgba(255,207,74,.08);border-color:rgba(255,207,74,.45)}
+.learn strong{display:block;font-family:'Orbitron',sans-serif;font-size:.75rem;letter-spacing:1px;margin-bottom:2px}
+.box .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.toast{position:absolute;left:50%;bottom:14px;transform:translate(-50%,10px);background:rgba(5,8,22,.9);border:1.5px solid var(--gold);
+  color:var(--text);padding:8px 14px;border-radius:14px;font-size:clamp(.72rem,2.2vw,.9rem);max-width:92%;text-align:center;
+  opacity:0;transition:.3s;pointer-events:none;display:flex;gap:8px;align-items:center}
+.toast img{width:26px;height:26px;border-radius:50%;flex:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.help{color:var(--muted);font-size:.9rem;margin-top:10px}
 
-/* CME */
-.cme-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:12px}
-.cme-panel .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.cme-panel label{color:var(--muted);font-size:.9rem}
-.cme-panel input[type=range]{flex:1;min-width:200px;accent-color:var(--cyan)}
-.cme-panel output{font-family:'Orbitron',sans-serif;color:var(--gold);min-width:90px}
+/* Paneles extra (CME y auroras) */
+.panel{background:var(--panel);border:1.5px solid var(--line);border-radius:18px;padding:14px;margin-top:12px}
+.panel .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.panel label{color:var(--muted);font-size:.9rem}
+.panel input[type=range]{flex:1;min-width:180px;accent-color:var(--cyan);height:28px}
+.panel output{font-family:'Orbitron',sans-serif;color:var(--gold);min-width:70px}
+.formula{font-family:'Orbitron',sans-serif;font-size:.8rem;color:var(--muted);margin-top:8px}
 .choices{display:grid;gap:8px;margin-top:10px}
-.choice{background:rgba(0,255,255,.06);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;text-align:left;cursor:pointer;font:inherit}
+.choice{background:rgba(59,232,255,.06);border:1.5px solid var(--line);color:var(--text);border-radius:12px;padding:11px 13px;text-align:left;cursor:pointer}
 .choice:hover{border-color:var(--cyan)}
 .choice.ok{border-color:var(--green);background:rgba(61,220,151,.15)}
 .choice.bad{border-color:var(--red);background:rgba(255,90,95,.15)}
-.hidden{display:none!important}
-footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px;line-height:1.6}
+
+footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
+
+@media (max-width:820px){
+  .hero{grid-template-columns:1fr;background:linear-gradient(180deg,rgba(5,8,22,.6),rgba(5,8,22,.95)),url('arte/hero.webp') center/cover}
+  .guide{justify-self:start;flex-direction:row-reverse}
+  .bubble::after{left:-10px;right:auto;border-left:0;border-right:10px solid #fff}
+  .data{grid-template-columns:repeat(2,1fr)}
+  .grid,.tgrid{grid-template-columns:1fr}
+  /* En celular el canvas es bajito: la explicación y el informe se abren a pantalla completa */
+  .overlay{position:fixed;z-index:50;align-items:flex-start;padding:24px 16px}
+  .tools .pill{padding:7px 11px;font-size:.82rem}
+}
+@media print{
+  body{background:#fff;color:#000}
+  body::before,.topbar,.hero,.data,.cycle,.grid,.section-title,footer,.teacher .actions,.stage{display:none!important}
+  #teacher{display:block!important;border:0;background:none}
+  .tcard{background:#fff;border:1px solid #999;break-inside:avoid}
+  .tcard dt{color:#000}.tcard dd,.tcard ul,.teacher>p{color:#222}
+  .teacher h2{color:#000}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /><path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol><symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol><symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><circle cx="19" cy="5" r="2" /><circle cx="5" cy="19" r="2" /><path d="M10.4 21.9a10 10 0 0 0 9.941-15.416" /><path d="M13.5 2.1a10 10 0 0 0-9.841 15.416" /></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol><symbol id="i-magnet" viewBox="0 0 24 24"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15" /><path d="m5 8 4 4" /><path d="m12 15 4 4" /></symbol><symbol id="i-tornado" viewBox="0 0 24 24"><path d="M21 4H3" /><path d="M18 8H6" /><path d="M19 12H9" /><path d="M16 16h-6" /><path d="M11 20H9" /></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /><path d="M20 3v4" /><path d="M22 5h-4" /><path d="M4 17v2" /><path d="M5 18H3" /></symbol><symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol><symbol id="i-volume-x" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><line x1="22" x2="16" y1="9" y2="15" /><line x1="16" x2="22" y1="9" y2="15" /></symbol><symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3" /></symbol><symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" /><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" /><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" /><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" /></symbol><symbol id="i-chart-spline" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7" /></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" /><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" /><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" /><path d="M17.599 6.5a3 3 0 0 0 .399-1.375" /><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" /><path d="M3.477 10.896a4 4 0 0 1 .585-.396" /><path d="M19.938 10.5a4 4 0 0 1 .585.396" /><path d="M6 18a4 4 0 0 1-1.967-.516" /><path d="M19.967 17.484A4 4 0 0 1 18 18" /></symbol><symbol id="i-message-circle-question" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></symbol><symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /><rect x="6" y="14" width="12" height="8" rx="1" /></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></symbol><symbol id="i-satellite" viewBox="0 0 24 24"><path d="M13 7 9 3 5 7l4 4" /><path d="m17 11 4 4-4 4-4-4" /><path d="m8 12 4 4 6-6-4-4Z" /><path d="m16 8 3-3" /><path d="M9 21a6 6 0 0 0-6-6" /></symbol><symbol id="i-telescope" viewBox="0 0 24 24"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44" /><path d="m13.56 11.747 4.332-.924" /><path d="m16 21-3.105-6.21" /><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z" /><path d="m6.158 8.633 1.114 4.456" /><path d="m8 21 3.105-6.21" /><circle cx="12" cy="13" r="2" /></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></symbol><symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></symbol><symbol id="i-earth" viewBox="0 0 24 24"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" /><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" /><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" /><circle cx="12" cy="12" r="10" /></symbol><symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2" /><line x1="12" x2="15" y1="14" y2="11" /><circle cx="12" cy="14" r="8" /></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M12 7v5l4 2" /></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></symbol></svg>
 <div class="wrap">
-  <header class="top">
-    <h1>☀️ Juegos Solares</h1>
-    <a class="back" href="/">← Inicio</a>
-  </header>
-  <p class="lead">Cuatro misiones para entender el clima espacial. Cada juego usa los datos del proyecto: manchas solares (SILSO), viento solar, índice Kp, erupciones y CMEs.</p>
-
-  <div id="menu">
-    <section class="data" aria-label="Datos solares">
-      <div class="stat"><span>Manchas solares</span><b id="dSun">—</b></div>
-      <div class="stat"><span>Viento solar</span><b id="dWind">—</b></div>
-      <div class="stat"><span>Índice Kp</span><b id="dKp">—</b></div>
-      <div class="stat"><span>Ciclo solar</span><b id="dCycle">—</b></div>
-    </section>
-    <section class="cycle">
-      <h2>Ciclo solar real · manchas por mes</h2>
-      <canvas id="cycleChart" width="1000" height="110"></canvas>
-      <small id="cycleNote">Fuente: SILSO (Real Observatorio de Bélgica)</small>
-    </section>
-
-    <div class="grid">
-      <button class="card" data-game="dodge"><div class="ico">🔥</div><h3>Esquiva Erupciones</h3><p>Pilota tu nave entre erupciones de clase B, C, M y X.</p><div class="best" data-best="dodge"></div></button>
-      <button class="card" data-game="shield"><div class="ico">🧲</div><h3>Escudo Magnético</h3><p>Gira la magnetosfera y protege la Tierra del viento solar.</p><div class="best" data-best="shield"></div></button>
-      <button class="card" data-game="cme"><div class="ico">🌪️</div><h3>Calculadora CME</h3><p>Calcula cuándo llega una eyección de masa coronal y decide qué hacer.</p><div class="best" data-best="cme"></div></button>
-      <button class="card" data-game="aurora"><div class="ico">🌈</div><h3>Cazador de Auroras</h3><p>Según el índice Kp, adivina desde qué ciudades se verá la aurora.</p><div class="best" data-best="aurora"></div></button>
+  <div class="topbar">
+    <a class="brand" href="/"><img src="/img/ICONOO.png" alt=""><b>STELLARSCRIBE</b></a>
+    <div class="tools">
+      <button class="pill" id="btnSound" aria-pressed="false" title="Sonido"><svg class="ic "><use href="#i-volume-x"/></svg> Sonido</button>
+      <button class="pill" id="btnTeacher" aria-pressed="false"><svg class="ic "><use href="#i-graduation-cap"/></svg> Guía docente</button>
+      <a class="pill" href="/index2.html"><svg class="ic "><use href="#i-book-open"/></svg> Cuento</a>
+      <a class="pill" href="/"><svg class="ic "><use href="#i-house"/></svg> Inicio</a>
     </div>
   </div>
 
-  <!-- Juego con canvas (esquivar / escudo / auroras) -->
+  <div id="menu">
+    <section class="hero">
+      <div>
+        <div class="steam" aria-label="STEAM">
+          <span class="chip s">CIENCIA</span><span class="chip t">TECNOLOGÍA</span><span class="chip i">INGENIERÍA</span><span class="chip a">ARTE</span><span class="chip m">MATEMÁTICA</span>
+        </div>
+        <h1 style="margin-top:12px">Academia de <span>Clima Espacial</span></h1>
+        <p class="sub">Aldrin y su gato regresan a la Tierra, pero el Sol está muy activo. Completa cuatro misiones para entender las tormentas solares con datos reales.</p>
+        <button class="btn gold" id="btnStart"><svg class="ic fill"><use href="#i-play"/></svg> Empezar por la misión 1</button>
+      </div>
+      <div class="guide">
+        <div class="bubble" id="guideBubble">¡Hola, cadete! Soy el <b>gato de Aldrin</b>. Hoy el Sol tiene <b id="gSun">muchas</b> manchas. ¿Me ayudas a proteger la nave?</div>
+        <img src="arte/guia.webp" alt="Aldrin y su gato con la Tierra">
+      </div>
+    </section>
+
+    <section class="data" aria-label="Datos solares">
+      <div class="stat"><span class="ico-box gold"><svg class="ic "><use href="#i-sun"/></svg></span><div><span>Manchas solares</span><b id="dSun">—</b></div></div>
+      <div class="stat"><span class="ico-box"><svg class="ic "><use href="#i-wind"/></svg></span><div><span>Viento solar</span><b id="dWind">—</b></div></div>
+      <div class="stat"><span class="ico-box purple"><svg class="ic "><use href="#i-gauge"/></svg></span><div><span>Índice Kp</span><b id="dKp">—</b></div></div>
+      <div class="stat"><span class="ico-box green"><svg class="ic "><use href="#i-orbit"/></svg></span><div><span>Ciclo solar</span><b id="dCycle">—</b></div></div>
+    </section>
+
+    <section class="cycle">
+      <header><h2><svg class="ic "><use href="#i-chart-spline"/></svg> El ciclo solar de verdad</h2><small id="cycleNote">Fuente: SILSO</small></header>
+      <canvas id="cycleChart" width="1000" height="120"></canvas>
+    </section>
+
+    <h2 class="section-title"><svg class="ic "><use href="#i-rocket"/></svg> Misiones</h2>
+    <div class="grid" id="cards"></div>
+
+    <section class="teacher hidden" id="teacher">
+      <h2><svg class="ic "><use href="#i-graduation-cap"/></svg> Guía para docentes</h2>
+      <p>Cada misión dura entre 10 y 15 minutos. Funciona en computadora, tablet o celular, en parejas o proyectada para toda la clase. Al terminar, cada misión muestra una pregunta para conversar.</p>
+      <div class="tgrid" id="tgrid"></div>
+      <div class="actions"><button class="btn gold" onclick="window.print()"><svg class="ic "><use href="#i-printer"/></svg> Imprimir guía</button></div>
+    </section>
+  </div>
+
   <section class="stage" id="stage">
     <div class="bar">
       <h2 id="gTitle"></h2>
-      <button class="btn ghost" id="gBack">← Juegos</button>
+      <button class="btn ghost" id="gBack"><svg class="ic "><use href="#i-arrow-left"/></svg> Misiones</button>
     </div>
     <div class="screen">
       <canvas id="cv" width="800" height="500"></canvas>
-      <div class="hud"><div id="hudL"></div><div class="r" id="hudR"></div></div>
-      <div class="toast" id="toast"></div>
+      <div class="hud"><div id="hudL"></div><div id="hudR"></div></div>
+      <div class="toast" id="toast"><img src="arte/guia.webp" alt=""><span></span></div>
       <div class="overlay" id="ov"><div class="box" id="ovBox"></div></div>
     </div>
     <p class="help" id="gHelp"></p>
 
-    <!-- Controles extra de la calculadora CME -->
-    <div class="cme-panel hidden" id="cmePanel">
+    <div class="panel hidden" id="cmePanel">
       <div id="cmeInfo"></div>
       <div class="row" style="margin-top:10px">
         <label for="cmeGuess">Tu estimación:</label>
         <input type="range" id="cmeGuess" min="10" max="120" step="1" value="48">
         <output id="cmeOut">48 h</output>
-        <button class="btn" id="cmeGo">Lanzar</button>
+        <button class="btn" id="cmeGo"><svg class="ic "><use href="#i-rocket"/></svg> Lanzar</button>
       </div>
+      <div class="formula">tiempo (h) = 150 000 000 km ÷ velocidad (km/s) ÷ 3600</div>
       <div id="cmeQ" class="hidden"></div>
     </div>
-    <div class="cme-panel hidden" id="auroraPanel">
-      <div class="row"><span id="auroraInfo"></span><button class="btn" id="auroraGo">Comprobar</button></div>
+    <div class="panel hidden" id="auroraPanel">
+      <div class="row"><span id="auroraInfo" style="flex:1"></span><button class="btn" id="auroraGo">Comprobar</button></div>
     </div>
   </section>
 
-  <footer>StellarScribe · Perú Es Clave — NASA Space Apps Challenge 2025<br>
-  Datos: SILSO, NOAA SWPC y NASA. Las secciones sin datos en vivo usan valores típicos del mismo periodo.</footer>
+  <footer>StellarScribe · Perú Es Clave — NASA Space Apps Challenge · Datos: SILSO, NOAA SWPC y NASA.<br>
+  Las secciones sin datos en vivo usan valores típicos del mismo periodo.</footer>
 </div>
 
 <script>
+/* ===================== MISIONES (contenido) ===================== */
+const MISSIONS = {
+  dodge:{n:1,icon:'flame',name:'Esquiva Erupciones',art:'arte/dodge.webp',steam:'stm',age:'8+ años',min:'10 min',
+    desc:'La nave de Aldrin cruza una tormenta solar. Esquiva las erupciones B, C, M y X.',
+    guide:{area:'Ciencia y Tecnología',comp:'Explica el mundo físico basándose en conocimientos sobre materia, energía, Tierra y universo',
+      obj:'Reconocer que las erupciones solares se clasifican por su energía y que la radiación viaja a la velocidad de la luz.',
+      q:['¿Por qué una erupción X es más peligrosa que una B?','Si la luz tarda 8 minutos en llegar, ¿cuánto tiempo hay para avisar a los astronautas?']}},
+  shield:{n:2,icon:'magnet',name:'Escudo Magnético',art:'arte/shield.webp',steam:'stia',age:'9+ años',min:'12 min',
+    desc:'Gira la magnetosfera para desviar el viento solar. Las partículas desviadas forman auroras.',
+    guide:{area:'Ciencia y Tecnología',comp:'Explica el mundo físico basándose en conocimientos sobre materia, energía, Tierra y universo',
+      obj:'Comprender que el campo magnético de la Tierra la protege del viento solar y que las auroras son la prueba de ese escudo.',
+      q:['¿Qué le pasaría a la Tierra sin campo magnético?','¿Por qué las auroras aparecen cerca de los polos?']}},
+  cme:{n:3,icon:'tornado',name:'Calculadora CME',art:'arte/cme.webp',steam:'stim',age:'11+ años',min:'15 min',
+    desc:'Calcula cuándo llega una nube de plasma del Sol y decide cómo proteger la Tierra.',
+    guide:{area:'Matemática · Ciencia y Tecnología',comp:'Resuelve problemas de regularidad, equivalencia y cambio (velocidad = distancia ÷ tiempo)',
+      obj:'Aplicar la relación distancia–velocidad–tiempo con datos reales y tomar decisiones según el riesgo.',
+      q:['Si una CME va el doble de rápido, ¿tarda la mitad? ¿Por qué?','¿Qué servicios de tu ciudad dependen de los satélites?']}},
+  aurora:{n:4,icon:'sparkles',name:'Cazador de Auroras',art:'arte/aurora.webp',steam:'stam',age:'10+ años',min:'12 min',
+    desc:'Según el índice Kp, elige desde qué ciudades se verá la aurora esta noche.',
+    guide:{area:'Ciencia y Tecnología · Ciencias Sociales',comp:'Indaga mediante métodos científicos para construir sus conocimientos',
+      obj:'Relacionar el índice Kp con el tamaño del óvalo auroral y ubicar ciudades por latitud en un mapa.',
+      q:['¿Por qué casi nunca se ven auroras en Moquegua?','¿Qué pasó el 10 de mayo de 2024 para que se vieran auroras en Chile?']}}
+};
+function ic(n,c=''){ return `<svg class="ic ${c}"><use href="#i-${n}"/></svg>`; }
+const STEAM_KEYS=[['s','C'],['t','T'],['i','I'],['a','A'],['m','M']];
+
 /* ===================== DATOS ===================== */
 const FALLBACK = {
   weather:{sunspot_number:155,solar_wind_speed:547,kp_index:4,magnetic_field:6.2,current_solar_cycle:{cycle_number:25,phase:'ascending'}},
   flares:['B3.4','C1.2','M1.5','C4.8','X1.1','B7.6','M2.3','C2.0'].map(c=>({class_type:c})),
   cmes:[{speed:1417,start_time:'2025-09-06T02:17',source_location:'S34E52'},{speed:620,start_time:'2025-09-04T17:01',source_location:'S07E75'},{speed:950,start_time:'2025-09-10T08:00',source_location:'N12W20'}],
-  kp:[1.33,2,3,4],
-  cycles:[], facts:['La radiación de una erupción llega a la Tierra en unos 8 minutos.']
+  kp:[1.33,2,3,4], cycles:[], facts:['La radiación de una erupción llega a la Tierra en unos 8 minutos.']
 };
 const D = structuredClone(FALLBACK);
-
 async function getJSON(u){ try{ const r=await fetch(u); if(!r.ok) throw 0; return await r.json(); }catch(e){ return null; } }
-
 async function loadData(){
   const [w,f,c,n,h,e] = await Promise.all([
-    getJSON('/api/current_space_weather.json'), getJSON('/api/basic_flare_data.json'),
-    getJSON('/api/basic_cme_data.json'), getJSON('/api/noaa_comprehensive.json'),
-    getJSON('/api/solar_cycles_historical.json'), getJSON('/api/advanced_educational_content.json')
+    getJSON('/api/current_space_weather.json'), getJSON('/api/basic_flare_data.json'), getJSON('/api/basic_cme_data.json'),
+    getJSON('/api/noaa_comprehensive.json'), getJSON('/api/solar_cycles_historical.json'), getJSON('/api/advanced_educational_content.json')
   ]);
   if(w) D.weather=w;
   if(f && f.length) D.flares=f;
@@ -187,152 +337,232 @@ async function loadData(){
   if(pop) D.facts=pop;
   renderStats();
 }
-
 function renderStats(){
-  const w=D.weather;
-  document.getElementById('dSun').textContent = Math.round(w.sunspot_number);
-  document.getElementById('dWind').textContent = Math.round(w.solar_wind_speed)+' km/s';
-  document.getElementById('dKp').textContent = (+w.kp_index).toFixed(1);
+  const w=D.weather, ss=Math.round(w.sunspot_number);
+  $('dSun').textContent=ss; $('gSun').textContent=ss;
+  $('dWind').textContent=Math.round(w.solar_wind_speed)+' km/s';
+  $('dKp').textContent=(+(w.current_kp??w.kp_index)).toFixed(1);
   const cy=w.current_solar_cycle||{};
-  document.getElementById('dCycle').textContent = (cy.cycle_number||25)+(cy.phase==='ascending'?' ↑':'');
+  $('dCycle').textContent='N.º '+(cy.cycle_number||25)+(cy.phase==='ascending'?' ↑':'');
   drawCycle();
 }
-
 function drawCycle(){
-  const cv=document.getElementById('cycleChart'), g=cv.getContext('2d');
-  const data=D.cycles.filter(r=>r.year>=1975);
+  const cv=$('cycleChart'), g=cv.getContext('2d'), data=D.cycles.filter(r=>r.year>=1975);
   g.clearRect(0,0,cv.width,cv.height);
-  if(!data.length){ document.getElementById('cycleNote').textContent='Sin datos históricos disponibles.'; return; }
-  const max=Math.max(...data.map(r=>r.sunspot_number));
-  const W=cv.width,H=cv.height,pad=14;
-  g.strokeStyle='rgba(0,255,255,.15)'; g.fillStyle='#6f8ea3'; g.font='13px Roboto';
-  for(let y=1980;y<=2025;y+=10){
-    const x=(data.findIndex(r=>r.year===y)/data.length)*W;
-    if(x<0) continue;
-    g.beginPath(); g.moveTo(x,0); g.lineTo(x,H-pad); g.stroke(); g.fillText(y,x+3,H-2);
-  }
-  const grd=g.createLinearGradient(0,0,0,H); grd.addColorStop(0,'rgba(255,210,63,.9)'); grd.addColorStop(1,'rgba(255,90,0,.15)');
-  g.beginPath(); g.moveTo(0,H-pad);
-  data.forEach((r,i)=>g.lineTo(i/(data.length-1)*W, H-pad-(r.sunspot_number/max)*(H-pad-6)));
-  g.lineTo(W,H-pad); g.closePath(); g.fillStyle=grd; g.fill();
-  const last=data[data.length-1];
-  document.getElementById('cycleNote').textContent=`Fuente: SILSO · ${data[0].year}–${last.date} · máximo del periodo: ${Math.round(max)} manchas`;
+  if(!data.length){ $('cycleNote').textContent='Sin datos históricos disponibles.'; return; }
+  const max=Math.max(...data.map(r=>r.sunspot_number)), W=cv.width, H=cv.height, pad=16;
+  const X=i=>i/(data.length-1)*W, Y=v=>H-pad-(v/max)*(H-pad-8);
+  g.font='13px Nunito'; g.fillStyle='#6f87a3'; g.strokeStyle='rgba(120,220,255,.12)';
+  for(let y=1980;y<=2025;y+=5){ const i=data.findIndex(r=>r.year===y); if(i<0) continue; const x=X(i);
+    g.beginPath(); g.moveTo(x,0); g.lineTo(x,H-pad); g.stroke(); if(y%10===0) g.fillText(y,x+3,H-2); }
+  const grd=g.createLinearGradient(0,0,0,H); grd.addColorStop(0,'rgba(255,207,74,.95)'); grd.addColorStop(1,'rgba(255,95,162,.12)');
+  g.beginPath(); g.moveTo(0,H-pad); data.forEach((r,i)=>g.lineTo(X(i),Y(r.sunspot_number))); g.lineTo(W,H-pad); g.closePath(); g.fillStyle=grd; g.fill();
+  // marcar los máximos de cada ciclo (uno por década aprox.)
+  g.fillStyle='#fff'; g.font='bold 12px Nunito';
+  for(let s=0;s<data.length;s+=132){ const seg=data.slice(s,s+132); if(!seg.length) continue; const mx=seg.reduce((a,b)=>b.sunspot_number>a.sunspot_number?b:a);
+    const i=data.indexOf(mx); g.beginPath(); g.arc(X(i),Y(mx.sunspot_number),3,0,7); g.fill(); }
+  const last=data[data.length-1]; g.fillStyle='#3be8ff'; g.beginPath(); g.arc(W-4,Y(last.sunspot_number),5,0,7); g.fill();
+  $('cycleNote').textContent=`SILSO · cada 11 años sube y baja · último dato ${last.date}: ${Math.round(last.sunspot_number)} manchas`;
 }
 
 /* ===================== UTILIDADES ===================== */
 const $=id=>document.getElementById(id);
 const cv=$('cv'), g=cv.getContext('2d'), W=cv.width, H=cv.height;
-const rand=(a,b)=>a+Math.random()*(b-a);
-const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const rand=(a,b)=>a+Math.random()*(b-a), clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const store={
-  get(k){ try{ return +localStorage.getItem('ss_best_'+k)||0; }catch(e){ return 0; } },
-  set(k,v){ try{ if(v>store.get(k)) localStorage.setItem('ss_best_'+k,v); }catch(e){} }
+  get(k){ try{ return JSON.parse(localStorage.getItem('ss_'+k))||null; }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem('ss_'+k,JSON.stringify(v)); }catch(e){} }
 };
-function refreshBest(){ document.querySelectorAll('[data-best]').forEach(el=>{ const b=store.get(el.dataset.best); el.textContent=b?('Récord: '+b):''; }); }
+function best(key){ return store.get('best_'+key)||{score:0,stars:0}; }
+function saveBest(key,score,stars){ const b=best(key); store.set('best_'+key,{score:Math.max(b.score,score),stars:Math.max(b.stars,stars)}); }
+
+/* Sonido (WebAudio, sin archivos) */
+const snd={on:!!store.get('sound'),ctx:null,
+  beep(f=440,d=.08,type='sine',v=.08){ if(!this.on) return; try{
+    this.ctx=this.ctx||new (window.AudioContext||window.webkitAudioContext)();
+    const o=this.ctx.createOscillator(), gn=this.ctx.createGain(), t=this.ctx.currentTime;
+    o.type=type; o.frequency.setValueAtTime(f,t); o.frequency.exponentialRampToValueAtTime(Math.max(40,f*.6),t+d);
+    gn.gain.setValueAtTime(v,t); gn.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(gn); gn.connect(this.ctx.destination); o.start(t); o.stop(t+d);
+  }catch(e){} },
+  win(){ [523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.beep(f,.15,'triangle',.07),i*110)); },
+  hit(){ this.beep(140,.25,'sawtooth',.09); }, ok(){ this.beep(880,.08,'triangle',.06); }, bad(){ this.beep(220,.18,'square',.05); }
+};
+function paintSound(){ $('btnSound').innerHTML=(snd.on?ic('volume-2'):ic('volume-x'))+' Sonido'; $('btnSound').setAttribute('aria-pressed',snd.on); }
+$('btnSound').onclick=()=>{ snd.on=!snd.on; store.set('sound',snd.on); paintSound(); snd.ok(); };
+paintSound();
 
 let toastT;
-function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3200); }
-function overlay(html){ $('ovBox').innerHTML=html; $('ov').classList.remove('hide'); }
+function toast(msg){ const t=$('toast'); t.querySelector('span').textContent=msg; t.classList.add('on'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('on'),3400); }
+function overlay(html){ $('ovBox').innerHTML=html; $('ov').classList.remove('hide'); $('ov').scrollTop=0; }
 function hideOverlay(){ $('ov').classList.add('hide'); }
 
-// Puntero en coordenadas del canvas (ratón y táctil)
-const ptr={x:W/2,y:H/2,down:false,active:false};
+function briefing(key,talk,goals,btn,startFn){
+  const m=MISSIONS[key];
+  overlay(`<h3><span class="mico">${ic(m.icon)}</span> Misión ${m.n}: ${m.name}</h3>
+    <div class="brief"><img src="arte/guia.webp" alt="Gato de Aldrin"><div class="bubble">${talk}</div></div>
+    <div class="goals"><b>Tu objetivo</b><ul>${goals.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="row"><button class="btn gold" id="ovGo">${btn}</button><button class="btn ghost" onclick="closeGame()">${ic('arrow-left')} Misiones</button></div>`);
+  $('ovGo').onclick=startFn;
+}
+function debrief(key,{title,score,max,stars,learn,extra=''}){
+  running=false; saveBest(key,score,stars); stars?snd.win():snd.bad();
+  const m=MISSIONS[key], b=best(key);
+  const nextKey=Object.keys(MISSIONS).find(k=>MISSIONS[k].n===m.n+1);
+  overlay(`<h3>${title}</h3>
+    <div class="big-stars">${[0,1,2].map(i=>`<i class="${i<stars?'on':''}">${ic('star','fill')}</i>`).join('')}</div>
+    <div class="score">Puntos <b>${score}</b>${max?` de ${max}`:''} · Récord <b>${b.score}</b></div>${extra}
+    <div class="learn"><strong>${ic('brain')} LO QUE APRENDISTE</strong>${learn}</div>
+    <div class="learn q"><strong>${ic('message-circle-question')} PREGUNTA PARA LA CLASE</strong>${m.guide.q[0]}</div>
+    <div class="row"><button class="btn" onclick="GAMES['${key}'].start()">${ic('rotate-ccw')} Otra vez</button>
+    ${nextKey?`<button class="btn gold" onclick="openGame('${nextKey}')">Misión ${m.n+1} ${ic('arrow-right')}</button>`:''}
+    <button class="btn ghost" onclick="closeGame()">Misiones</button></div>`);
+}
+
+/* Puntero en coordenadas del canvas (ratón y táctil) */
+const ptr={x:W/2,y:H/2,active:false};
 function toCanvas(e){ const r=cv.getBoundingClientRect(); ptr.x=(e.clientX-r.left)/r.width*W; ptr.y=(e.clientY-r.top)/r.height*H; }
 cv.addEventListener('pointermove',e=>{ toCanvas(e); ptr.active=true; });
-cv.addEventListener('pointerdown',e=>{ toCanvas(e); ptr.down=true; ptr.active=true; if(cur && cur.click) cur.click(ptr.x,ptr.y); });
-window.addEventListener('pointerup',()=>ptr.down=false);
+cv.addEventListener('pointerdown',e=>{ toCanvas(e); ptr.active=true; if(cur && cur.click) cur.click(ptr.x,ptr.y); });
 const keys={};
 window.addEventListener('keydown',e=>{ keys[e.key]=true; if(cur && running && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(e.key)) e.preventDefault(); });
 window.addEventListener('keyup',e=>keys[e.key]=false);
 
-// Fondo de estrellas compartido
-const stars=Array.from({length:120},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.4+.3,s:Math.random()*.6+.1}));
+/* Efectos compartidos: estrellas, partículas, sacudida y destello */
+const stars=Array.from({length:140},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,s:Math.random()*.7+.1,tw:Math.random()*6}));
+let fx=[], shakeT=0, flashT=0, flashC='#fff', clock=0;
+function burst(x,y,color,n=14,sp=160){ for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, v=rand(.3,1)*sp; fx.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:1,c:color,r:rand(1.5,3.5)}); } }
+function shake(t=.3){ shakeT=Math.max(shakeT,t); }
+function flash(c='#fff',t=.25){ flashC=c; flashT=t; }
+function stepFx(dt){ for(const p of fx){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.vx*=.96; p.vy*=.96; p.life-=dt*1.4; } fx=fx.filter(p=>p.life>0); shakeT=Math.max(0,shakeT-dt); flashT=Math.max(0,flashT-dt); }
+function drawFx(){ for(const p of fx){ g.globalAlpha=Math.max(0,p.life); g.fillStyle=p.c; g.beginPath(); g.arc(p.x,p.y,p.r,0,7); g.fill(); } g.globalAlpha=1;
+  if(flashT>0){ g.globalAlpha=flashT*1.6; g.fillStyle=flashC; g.fillRect(0,0,W,H); g.globalAlpha=1; } }
 function drawStars(dy=0){
-  g.fillStyle='#01060f'; g.fillRect(0,0,W,H);
+  const bg=g.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#030818'); bg.addColorStop(1,'#0a0f2a'); g.fillStyle=bg; g.fillRect(0,0,W,H);
   g.fillStyle='#fff';
-  for(const s of stars){ s.y+=s.s*dy; if(s.y>H) s.y-=H; g.globalAlpha=.4+s.s; g.fillRect(s.x,s.y,s.r,s.r); }
+  for(const s of stars){ s.y+=s.s*dy; if(s.y>H) s.y-=H; g.globalAlpha=.25+s.s*.8*(.7+.3*Math.sin(clock*2+s.tw)); g.fillRect(s.x,s.y,s.r,s.r); }
   g.globalAlpha=1;
 }
 function glow(x,y,r,color,blur=20){ g.save(); g.shadowColor=color; g.shadowBlur=blur; g.fillStyle=color; g.beginPath(); g.arc(x,y,r,0,Math.PI*2); g.fill(); g.restore(); }
+function drawSun(x,y,r){ // Sol con corona animada
+  const c=g.createRadialGradient(x,y,r*.2,x,y,r*2.2); c.addColorStop(0,'rgba(255,240,180,1)'); c.addColorStop(.35,'rgba(255,170,40,.9)'); c.addColorStop(1,'rgba(255,90,0,0)');
+  g.fillStyle=c; g.beginPath(); g.arc(x,y,r*2.2,0,7); g.fill();
+  g.save(); g.translate(x,y); g.strokeStyle='rgba(255,200,80,.35)'; g.lineWidth=2;
+  for(let i=0;i<14;i++){ const a=i/14*Math.PI*2+clock*.2, l=r*(1.15+.25*Math.sin(clock*3+i*1.7)); g.beginPath(); g.moveTo(Math.cos(a)*r,Math.sin(a)*r); g.quadraticCurveTo(Math.cos(a+.15)*l*1.1,Math.sin(a+.15)*l*1.1,Math.cos(a+.3)*r,Math.sin(a+.3)*r); g.stroke(); }
+  g.restore();
+  const s=g.createRadialGradient(x-r*.3,y-r*.3,r*.1,x,y,r); s.addColorStop(0,'#fffbe0'); s.addColorStop(.6,'#ffc23a'); s.addColorStop(1,'#ff7a1a');
+  g.fillStyle=s; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+}
+function drawEarth(x,y,r){
+  const a=g.createRadialGradient(x,y,r*.9,x,y,r*1.35); a.addColorStop(0,'rgba(90,180,255,.5)'); a.addColorStop(1,'rgba(90,180,255,0)');
+  g.fillStyle=a; g.beginPath(); g.arc(x,y,r*1.35,0,7); g.fill();
+  const e=g.createRadialGradient(x-r*.35,y-r*.35,r*.1,x,y,r); e.addColorStop(0,'#6cc6ff'); e.addColorStop(1,'#0b3a7a');
+  g.fillStyle=e; g.beginPath(); g.arc(x,y,r,0,7); g.fill();
+  g.save(); g.beginPath(); g.arc(x,y,r,0,7); g.clip(); g.fillStyle='#35b26a';
+  const o=(clock*6)%(r*4);
+  for(const [dx,dy,w,h] of [[-.3,-.2,.45,.28],[.35,.3,.3,.2],[-.1,.45,.25,.15],[.5,-.45,.25,.16]]){ g.beginPath(); g.ellipse(x+dx*r-o+r*2,y+dy*r,w*r,h*r,.4,0,7); g.fill(); g.beginPath(); g.ellipse(x+dx*r-o-r*2,y+dy*r,w*r,h*r,.4,0,7); g.fill(); g.beginPath(); g.ellipse(x+dx*r-o,y+dy*r,w*r,h*r,.4,0,7); g.fill(); }
+  g.fillStyle='rgba(255,255,255,.85)'; g.beginPath(); g.ellipse(x,y-r*.95,r*.45,r*.15,0,0,7); g.fill(); g.beginPath(); g.ellipse(x,y+r*.95,r*.45,r*.15,0,0,7); g.fill();
+  const sh=g.createLinearGradient(x-r,y,x+r,y); sh.addColorStop(0,'rgba(0,0,0,0)'); sh.addColorStop(1,'rgba(0,0,20,.55)'); g.fillStyle=sh; g.fillRect(x-r,y-r,r*2,r*2);
+  g.restore();
+}
 
 /* ===================== MOTOR ===================== */
-let cur=null, running=false, raf=0, last=0;
+let cur=null, curKey=null, running=false, raf=0, last=0;
 function loop(t){
-  const dt=Math.min(.05,(t-last)/1000||0); last=t;
-  if(running && cur){ cur.update(dt); }
-  if(cur) cur.draw();
+  const dt=Math.min(.05,(t-last)/1000||0); last=t; clock+=dt;
+  if(running && cur) cur.update(dt);
+  stepFx(dt);
+  g.save(); if(shakeT>0) g.translate(rand(-6,6)*shakeT*3,rand(-6,6)*shakeT*3);
+  if(cur) cur.draw(); drawFx(); g.restore();
   raf=requestAnimationFrame(loop);
 }
 function openGame(name){
-  cur=GAMES[name];
+  curKey=name; cur=GAMES[name]; const m=MISSIONS[name];
   $('menu').classList.add('hidden'); $('stage').classList.add('on');
-  $('gTitle').textContent=cur.title; $('gHelp').textContent=cur.help;
-  $('cmePanel').classList.toggle('hidden',name!=='cme');
-  $('auroraPanel').classList.toggle('hidden',name!=='aurora');
-  $('hudL').textContent=''; $('hudR').textContent='';
-  cur.intro();
-  window.scrollTo({top:0,behavior:'smooth'});
+  $('gTitle').innerHTML=`<span class="mico">${ic(m.icon)}</span> Misión ${m.n} · ${m.name}`; $('gHelp').textContent=cur.help;
+  $('cmePanel').classList.toggle('hidden',name!=='cme'); $('auroraPanel').classList.toggle('hidden',name!=='aurora');
+  $('hudL').textContent=''; $('hudR').textContent=''; fx=[]; running=false;
+  cur.intro(); window.scrollTo({top:0,behavior:'smooth'});
   cancelAnimationFrame(raf); last=performance.now(); raf=requestAnimationFrame(loop);
 }
-function closeGame(){
-  running=false; cancelAnimationFrame(raf); cur=null;
-  $('stage').classList.remove('on'); $('menu').classList.remove('hidden'); refreshBest();
-}
-function finish(key,score,html){ running=false; store.set(key,score); overlay(html+`<button class="btn" onclick="GAMES['${key}'].start()">Jugar otra vez</button> <button class="btn ghost" onclick="closeGame()">Menú</button>`); }
+function closeGame(){ running=false; cancelAnimationFrame(raf); cur=null; $('stage').classList.remove('on'); $('menu').classList.remove('hidden'); renderCards(); }
 $('gBack').onclick=closeGame;
-document.querySelectorAll('.card').forEach(c=>c.onclick=()=>openGame(c.dataset.game));
+$('btnStart').onclick=()=>openGame('dodge');
+$('btnTeacher').onclick=()=>{ const t=$('teacher'), on=t.classList.toggle('hidden')===false; $('btnTeacher').setAttribute('aria-pressed',on); if(on){ if(!$('menu').classList.contains('hidden')) t.scrollIntoView({behavior:'smooth'}); else { closeGame(); setTimeout(()=>t.scrollIntoView({behavior:'smooth'}),50); } } };
+
+function renderCards(){
+  $('cards').innerHTML=Object.entries(MISSIONS).map(([k,m])=>{ const b=best(k);
+    return `<button class="card" data-game="${k}">
+      <div class="art" style="background-image:url('${m.art}')"><span class="num">MISIÓN ${m.n}</span><span class="stars" title="Mejor resultado">${b.stars?[0,1,2].map(i=>`<span style="color:${i<b.stars?'var(--gold)':'#4a5872'}">${ic('star','fill')}</span>`).join(''):''}</span></div>
+      <div class="body"><h3><span class="mico">${ic(m.icon)}</span> ${m.name}</h3><p>${m.desc}</p>
+      <div class="steam">${STEAM_KEYS.map(([c,l])=>`<span class="chip ${c} ${m.steam.includes(c)?'':'off'}">${l}</span>`).join('')}</div>
+      <div class="meta"><span class="info">${ic('users')} ${m.age} · ${ic('clock')} ${m.min}${b.score?` · ${ic('trophy')} ${b.score}`:''}</span><span class="play">JUGAR ${ic('play','fill')}</span></div></div></button>`; }).join('');
+  document.querySelectorAll('.card').forEach(c=>c.onclick=()=>openGame(c.dataset.game));
+  $('tgrid').innerHTML=Object.values(MISSIONS).map(m=>`<div class="tcard"><h4>${ic(m.icon)} Misión ${m.n}: ${m.name}</h4>
+    <dl><dt>Área</dt><dd>${m.guide.area}</dd><dt>Competencia</dt><dd>${m.guide.comp}</dd><dt>Propósito</dt><dd>${m.guide.obj}</dd><dt>Edad · tiempo</dt><dd>${m.age} · ${m.min}</dd></dl>
+    <ul>${m.guide.q.map(q=>`<li>${q}</li>`).join('')}</ul></div>`).join('');
+}
 
 /* ===================== 1. ESQUIVA ERUPCIONES ===================== */
-const FLARE={B:{r:9,v:150,c:'#7fd1ff',dmg:1},C:{r:13,v:190,c:'#ffd23f',dmg:1},M:{r:18,v:235,c:'#ff8c2b',dmg:1},X:{r:25,v:280,c:'#ff3b3b',dmg:2}};
+const FLARE={B:{r:9,v:150,c:'#7fd1ff',dmg:1},C:{r:13,v:190,c:'#ffcf4a',dmg:1},M:{r:18,v:235,c:'#ff8a3d',dmg:1},X:{r:25,v:280,c:'#ff3b5c',dmg:2}};
 const dodge={
-  title:'🔥 Esquiva Erupciones',
   help:'Mueve la nave con el ratón, el dedo o las flechas ← →. Las erupciones X quitan dos vidas. Recoge los escudos azules.',
-  intro(){ this.reset(); overlay(`<h3>Esquiva Erupciones</h3><p>Las erupciones solares se clasifican por su energía en rayos X: <b>B</b>, <b>C</b>, <b>M</b> y <b>X</b> (cada letra es 10 veces más intensa).</p><p>Las erupciones de este juego salen en el orden de los registros del proyecto.</p><button class="btn" onclick="GAMES.dodge.start()">Despegar</button>`); },
-  reset(){ this.ship={x:W/2,y:H-50}; this.items=[]; this.t=0; this.spawn=0; this.lives=3; this.score=0; this.shield=0; this.idx=0; this.factT=6; },
+  intro(){ this.reset(); briefing('dodge',
+    '¡Atención, Aldrin! Viene una tormenta solar. Las erupciones se miden por su energía: <b>B</b> es la más débil, luego <b>C</b>, <b>M</b> y la terrible <b>X</b>. ¡Cada letra es 10 veces más fuerte!',
+    ['Sobrevive el mayor tiempo posible esquivando erupciones',`Recoge escudos magnéticos ${ic('shield')} para ser invencible 4 segundos`,`${ic('star','fill')} 50 puntos · ${ic('star','fill')}${ic('star','fill')} 150 · ${ic('star','fill')}${ic('star','fill')}${ic('star','fill')} 300`],`${ic('rocket')} Despegar`,()=>this.start()); },
+  reset(){ this.ship={x:W/2,y:H-55}; this.items=[]; this.trail=[]; this.t=0; this.spawn=0; this.lives=3; this.score=0; this.shield=0; this.idx=0; this.factT=7; this.inv=0; },
   start(){ this.reset(); hideOverlay(); running=true; },
   update(dt){
     const s=this.ship;
     if(keys.ArrowLeft) s.x-=420*dt; if(keys.ArrowRight) s.x+=420*dt;
-    if(ptr.active) s.x+=(ptr.x-s.x)*Math.min(1,dt*12);
-    s.x=clamp(s.x,20,W-20);
-    this.t+=dt; this.score=Math.floor(this.t*10);
-    const level=1+this.t/20;
-    this.spawn-=dt;
+    if(ptr.active && !keys.ArrowLeft && !keys.ArrowRight) s.x+=(ptr.x-s.x)*Math.min(1,dt*12);
+    s.x=clamp(s.x,22,W-22);
+    this.trail.push({x:s.x,y:s.y+18,life:1}); for(const p of this.trail) p.life-=dt*3; this.trail=this.trail.filter(p=>p.life>0);
+    this.t+=dt; this.score=Math.floor(this.t*10); this.inv=Math.max(0,this.inv-dt);
+    const level=1+this.t/20; this.spawn-=dt;
     if(this.spawn<=0){
-      const rec=D.flares[this.idx++%D.flares.length];
-      const cls=(rec.class_type||'C')[0].toUpperCase(); const f=FLARE[cls]||FLARE.C;
-      this.items.push({x:rand(20,W-20),y:-30,r:f.r,v:f.v*(.8+level*.2),c:f.c,dmg:f.dmg,label:rec.class_type||cls,kind:'flare'});
-      if(Math.random()<.06) this.items.push({x:rand(30,W-30),y:-20,r:11,v:140,c:'#00bfff',kind:'shield'});
+      const rec=D.flares[this.idx++%D.flares.length], cls=(rec.class_type||'C')[0].toUpperCase(), f=FLARE[cls]||FLARE.C;
+      this.items.push({x:rand(20,W-20),y:-30,r:f.r,v:f.v*(.8+level*.2),c:f.c,dmg:f.dmg,label:rec.class_type||cls,kind:'flare',rot:0});
+      if(Math.random()<.06) this.items.push({x:rand(30,W-30),y:-20,r:12,v:140,c:'#3be8ff',kind:'shield',rot:0});
       this.spawn=Math.max(.22,.9/level);
     }
     for(const it of this.items){
-      it.y+=it.v*dt;
-      if(Math.hypot(it.x-s.x,it.y-s.y)<it.r+16 && !it.gone){
+      it.y+=it.v*dt; it.rot+=dt*3;
+      if(!it.gone && Math.hypot(it.x-s.x,it.y-s.y)<it.r+15){
         it.gone=true;
-        if(it.kind==='shield'){ this.shield=4; toast('🛡️ Escudo magnético activado (4 s)'); }
-        else if(this.shield<=0){ this.lives-=it.dmg; toast(it.dmg>1?'¡Clase X! '+D.facts[0]:'Impacto de erupción '+it.label); }
+        if(it.kind==='shield'){ this.shield=4; snd.ok(); burst(it.x,it.y,'#3be8ff',18); toast('¡Escudo magnético activado!'); }
+        else if(this.shield>0){ burst(it.x,it.y,'#3be8ff',10,120); snd.ok(); }
+        else if(this.inv<=0){ this.lives-=it.dmg; this.inv=1; snd.hit(); shake(.4); flash(it.c,.25); burst(it.x,it.y,it.c,26,220);
+          toast(it.dmg>1?'¡Clase X! '+D.facts[0]:'¡Impacto de una erupción '+it.label+'!'); }
       }
     }
     this.items=this.items.filter(i=>!i.gone && i.y<H+40);
     this.shield=Math.max(0,this.shield-dt);
     this.factT-=dt; if(this.factT<=0){ toast(D.facts[Math.floor(Math.random()*D.facts.length)]); this.factT=12; }
-    $('hudL').textContent='❤️ '.repeat(Math.max(0,this.lives)); $('hudR').textContent='Puntos '+this.score;
-    if(this.lives<=0) finish('dodge',this.score,`<h3>Nave alcanzada</h3><p>Puntuación: <b>${this.score}</b> · Récord: ${Math.max(store.get('dodge'),this.score)}</p><p class="fact">Durante erupciones fuertes, los astronautas de la Estación Espacial se refugian en los módulos con más blindaje.</p>`);
+    $('hudL').innerHTML=[0,1,2].map(i=>`<span style="color:${i<this.lives?'#ff5f7a':'#3a4660'}">${ic('heart','fill')}</span>`).join(''); $('hudR').innerHTML=ic('star','fill')+' '+this.score;
+    if(this.lives<=0){ const sc=this.score, st=sc>=300?3:sc>=150?2:sc>=50?1:0;
+      debrief('dodge',{title:st?'¡Buen vuelo, cadete!':'La nave fue alcanzada',score:sc,stars:st,
+        learn:'Las erupciones B, C, M y X se clasifican por la energía de sus rayos X. La radiación viaja a la velocidad de la luz: llega en unos <b>8 minutos</b>, por eso hay muy poco tiempo para protegerse.'}); }
   },
   draw(){
-    drawStars(running?2:0.3);
-    const grd=g.createRadialGradient(W/2,-120,20,W/2,-120,260); grd.addColorStop(0,'rgba(255,200,60,.9)'); grd.addColorStop(1,'rgba(255,120,0,0)');
-    g.fillStyle=grd; g.fillRect(0,0,W,160);
+    drawStars(running?2.2:.3);
+    drawSun(W/2,-150,150);
+    for(const p of this.trail){ g.globalAlpha=p.life*.6; glow(p.x+rand(-2,2),p.y+(1-p.life)*30,3*p.life+1,'#ff8a3d',10); } g.globalAlpha=1;
     for(const it of this.items){
-      glow(it.x,it.y,it.r,it.c,it.kind==='shield'?25:18);
-      g.fillStyle='#001'; g.font='bold 11px Orbitron'; g.textAlign='center'; g.textBaseline='middle';
-      g.fillText(it.kind==='shield'?'🛡':it.label[0],it.x,it.y+1);
+      if(it.kind==='shield'){ glow(it.x,it.y,it.r+2,'#3be8ff',25); g.save(); g.translate(it.x,it.y); g.fillStyle='#03111c';
+        g.beginPath(); g.moveTo(0,-8); g.lineTo(7,-5); g.quadraticCurveTo(7,4,0,9); g.quadraticCurveTo(-7,4,-7,-5); g.closePath(); g.fill(); g.restore(); continue; }
+      g.save(); g.translate(it.x,it.y); g.rotate(it.rot);
+      g.shadowColor=it.c; g.shadowBlur=22; g.fillStyle=it.c; g.beginPath();
+      for(let i=0;i<16;i++){ const a=i/16*Math.PI*2, rr=it.r*(i%2?0.75:1.15); g.lineTo(Math.cos(a)*rr,Math.sin(a)*rr); } g.closePath(); g.fill(); g.restore();
+      g.fillStyle='#14080a'; g.font=`bold ${Math.max(10,it.r*.8)}px Orbitron`; g.textAlign='center'; g.textBaseline='middle'; g.fillText(it.label[0],it.x,it.y+1);
     }
     const s=this.ship;
-    if(this.shield>0){ g.strokeStyle='rgba(0,191,255,.8)'; g.lineWidth=3; g.beginPath(); g.arc(s.x,s.y,28,0,Math.PI*2); g.stroke(); }
-    g.save(); g.translate(s.x,s.y); g.shadowColor='#0ff'; g.shadowBlur=15; g.fillStyle='#dff';
-    g.beginPath(); g.moveTo(0,-20); g.lineTo(14,16); g.lineTo(0,9); g.lineTo(-14,16); g.closePath(); g.fill();
-    g.fillStyle='#ff8c2b'; g.beginPath(); g.moveTo(-5,12); g.lineTo(0,22+Math.random()*6); g.lineTo(5,12); g.fill(); g.restore();
+    if(this.shield>0){ g.save(); g.strokeStyle=`rgba(59,232,255,${.5+.4*Math.sin(clock*10)})`; g.lineWidth=3; g.shadowColor='#3be8ff'; g.shadowBlur=15; g.beginPath(); g.arc(s.x,s.y,30,0,7); g.stroke(); g.restore(); }
+    if(this.inv>0 && Math.floor(clock*16)%2) return;
+    g.save(); g.translate(s.x,s.y); g.shadowColor='#3be8ff'; g.shadowBlur=14;
+    g.fillStyle='#e8f6ff'; g.beginPath(); g.moveTo(0,-22); g.quadraticCurveTo(10,-6,12,14); g.lineTo(0,9); g.lineTo(-12,14); g.quadraticCurveTo(-10,-6,0,-22); g.fill();
+    g.fillStyle='#ff5fa2'; g.beginPath(); g.moveTo(-12,14); g.lineTo(-18,20); g.lineTo(-8,10); g.fill(); g.beginPath(); g.moveTo(12,14); g.lineTo(18,20); g.lineTo(8,10); g.fill();
+    g.fillStyle='#3be8ff'; g.beginPath(); g.arc(0,-6,4.5,0,7); g.fill();
+    g.fillStyle='#ffcf4a'; g.beginPath(); g.moveTo(-5,11); g.lineTo(0,22+Math.random()*8); g.lineTo(5,11); g.fill(); g.restore();
   }
 };
 
@@ -343,144 +573,151 @@ const LEVELS=[
   {name:'Reconexión magnética (erupciones)',arc:1.0,rate:10,time:40,bursts:true}
 ];
 const shield={
-  title:'🧲 Escudo Magnético',
-  help:'Mueve el ratón o el dedo alrededor de la Tierra (o usa ← →) para girar el escudo. Las partículas desviadas se convierten en auroras en los polos.',
-  intro(){ this.reset(0); overlay(`<h3>Escudo Magnético</h3><p>El campo magnético de la Tierra desvía el viento solar. Tu misión es mantenerlo bien orientado durante tres niveles.</p><p>Velocidad del viento solar en los datos: <b>${Math.round(D.weather.solar_wind_speed)} km/s</b>.</p><button class="btn" onclick="GAMES.shield.start()">Activar escudo</button>`); },
-  reset(lv){ this.lv=lv; this.ang=Math.PI; this.parts=[]; this.auroras=[]; this.hp=this.hp&&lv?this.hp:100; this.t=0; this.spawn=0; this.saved=lv?this.saved:0; this.earth={x:W*.68,y:H/2,r:42}; this.R=86; },
+  help:'Mueve el ratón o el dedo alrededor de la Tierra (o usa ← →) para girar el escudo. Las partículas desviadas encienden auroras en los polos.',
+  intro(){ this.hp=100; this.saved=0; this.reset(0); briefing('shield',
+    `El Sol sopla un viento de partículas a <b>${Math.round(D.weather.solar_wind_speed)} km/s</b>. La Tierra tiene un escudo invisible: su <b>campo magnético</b>. ¡Oriéntalo para que nada llegue a la superficie!`,
+    ['Desvía las partículas amarillas con el escudo celeste','Supera 3 niveles: dipolo, campo complejo y reconexión',`${ic('star','fill')} llegar al nivel 2 · ${ic('star','fill')}${ic('star','fill')} completar · ${ic('star','fill')}${ic('star','fill')}${ic('star','fill')} completar con más de 60 % de integridad`],`${ic('magnet')} Activar escudo`,()=>this.start()); },
+  reset(lv){ this.lv=lv; this.ang=Math.PI; this.parts=[]; this.auroraN=0; this.auroraS=0; this.t=0; this.spawn=0; this.earth={x:W*.68,y:H/2,r:44}; this.R=88; },
   start(){ this.hp=100; this.saved=0; this.reset(0); hideOverlay(); running=true; toast('Nivel 1 · '+LEVELS[0].name); },
   update(dt){
-    const L=LEVELS[this.lv], e=this.earth;
+    const L=LEVELS[this.lv], e=this.earth, kb=keys.ArrowLeft||keys.ArrowRight||keys.ArrowUp||keys.ArrowDown;
     if(keys.ArrowLeft||keys.ArrowUp) this.ang-=3*dt; if(keys.ArrowRight||keys.ArrowDown) this.ang+=3*dt;
-    if(ptr.active && !(keys.ArrowLeft||keys.ArrowRight||keys.ArrowUp||keys.ArrowDown)) this.ang=Math.atan2(ptr.y-e.y,ptr.x-e.x);
+    if(ptr.active && !kb) this.ang=Math.atan2(ptr.y-e.y,ptr.x-e.x);
     this.t+=dt; this.spawn-=dt;
-    const v=clamp(D.weather.solar_wind_speed/547,0.6,1.8)*(140+this.lv*35);
+    const v=clamp(D.weather.solar_wind_speed/547,.6,1.8)*(140+this.lv*35);
     if(this.spawn<=0){
       const n=L.bursts && Math.random()<.15 ? 6 : 1;
-      for(let i=0;i<n;i++){ const y=rand(60,H-60); const dir=Math.atan2(e.y-y+rand(-60,60),e.x-40); this.parts.push({x:40,y,vx:Math.cos(dir)*v*rand(.85,1.15),vy:Math.sin(dir)*v}); }
-      if(n>1) toast('⚡ Ráfaga de reconexión magnética');
+      for(let i=0;i<n;i++){ const y=rand(60,H-60), dir=Math.atan2(e.y-y+rand(-60,60),e.x-40); this.parts.push({x:40,y,vx:Math.cos(dir)*v*rand(.85,1.15),vy:Math.sin(dir)*v,tr:[]}); }
+      if(n>1){ toast('¡Ráfaga de reconexión magnética!'); flash('#ffcf4a',.12); }
       this.spawn=1/L.rate;
     }
     for(const p of this.parts){
+      p.tr.push([p.x,p.y]); if(p.tr.length>6) p.tr.shift();
       p.x+=p.vx*dt; p.y+=p.vy*dt;
       const dx=p.x-e.x, dy=p.y-e.y, d=Math.hypot(dx,dy);
-      if(!p.def && d<this.R+4 && d>this.R-12){
+      if(!p.def && d<this.R+4 && d>this.R-14){
         let diff=Math.atan2(dy,dx)-this.ang; diff=Math.atan2(Math.sin(diff),Math.cos(diff));
         if(Math.abs(diff)<L.arc/2){
-          p.def=true; this.saved++;
-          const pole=dy<0?-1:1; const sp=Math.hypot(p.vx,p.vy);
-          p.vx=sp*.35; p.vy=pole*sp*.9; // la partícula se desvía hacia el polo más cercano
-          this.auroras.push({x:e.x+rand(-20,20),y:e.y+pole*(e.r+4),life:1,c:Math.random()<.5?'#3ddc97':'#a855f7'});
+          p.def=true; this.saved++; snd.beep(600+Math.random()*300,.05,'triangle',.03);
+          const pole=dy<0?-1:1, sp=Math.hypot(p.vx,p.vy); p.vx=sp*.35; p.vy=pole*sp*.9; // la partícula se desvía hacia el polo más cercano
+          pole<0?this.auroraN=Math.min(1,this.auroraN+.08):this.auroraS=Math.min(1,this.auroraS+.08);
+          burst(p.x,p.y,'#9b7bff',5,80);
         }
       }
-      if(!p.def && d<e.r){ p.gone=true; this.hp-=4; }
+      if(!p.def && d<e.r){ p.gone=true; this.hp-=4; snd.hit(); shake(.2); burst(p.x,p.y,'#ffcf4a',10,120); }
     }
     this.parts=this.parts.filter(p=>!p.gone && p.x>-20 && p.x<W+20 && p.y>-20 && p.y<H+20);
-    for(const a of this.auroras) a.life-=dt*.8; this.auroras=this.auroras.filter(a=>a.life>0);
-    $('hudL').textContent=`Nivel ${this.lv+1} · Integridad ${Math.max(0,Math.round(this.hp))}%`;
-    $('hudR').textContent=`Desviadas ${this.saved} · ${Math.max(0,Math.ceil(L.time-this.t))} s`;
+    this.auroraN=Math.max(0,this.auroraN-dt*.15); this.auroraS=Math.max(0,this.auroraS-dt*.15);
+    $('hudL').innerHTML=`Nivel ${this.lv+1}/3 · ${ic('earth')} ${Math.max(0,Math.round(this.hp))}%`;
+    $('hudR').innerHTML=`${ic('sparkles')} ${this.saved} · ${ic('timer')} ${Math.max(0,Math.ceil(L.time-this.t))} s`;
     const score=this.saved*10+Math.max(0,Math.round(this.hp))*5;
-    if(this.hp<=0) return finish('shield',score,`<h3>La Tierra quedó expuesta</h3><p>Llegaste al nivel ${this.lv+1} y desviaste ${this.saved} partículas. Puntos: <b>${score}</b></p><p class="fact">En 1989 una tormenta geomagnética dejó sin luz a 6 millones de personas en Quebec (Canadá) durante 9 horas.</p>`);
+    const learn='La magnetosfera desvía el viento solar hacia los polos. Allí las partículas chocan con el aire y lo hacen brillar: eso son las <b>auroras</b>. Sin ese escudo, la radiación dañaría la vida y la tecnología.';
+    if(this.hp<=0) return debrief('shield',{title:'La Tierra quedó expuesta',score,stars:this.lv>=1?1:0,learn,
+      extra:'<div class="learn"><strong>'+ic('history')+' DATO HISTÓRICO</strong>En 1989 una tormenta geomagnética dejó sin luz a 6 millones de personas en Quebec (Canadá) durante 9 horas.</div>'});
     if(this.t>=L.time){
-      if(this.lv<LEVELS.length-1){ this.reset(this.lv+1); toast('Nivel '+(this.lv+1)+' · '+LEVELS[this.lv].name); }
-      else finish('shield',score,`<h3>¡Planeta protegido!</h3><p>Superaste los tres niveles. Partículas desviadas: ${this.saved} · Integridad ${Math.round(this.hp)}%</p><p>Puntos: <b>${score}</b></p><p class="fact">Las auroras son justamente el viento solar desviado que choca con la atmósfera cerca de los polos.</p>`);
+      if(this.lv<LEVELS.length-1){ this.reset(this.lv+1); snd.win(); flash('#3be8ff',.2); toast('Nivel '+(this.lv+1)+' · '+LEVELS[this.lv].name); }
+      else debrief('shield',{title:'¡Planeta protegido!',score,stars:this.hp>60?3:2,learn});
     }
   },
   draw(){
     drawStars(0);
     const e=this.earth, L=LEVELS[this.lv||0];
-    const sg=g.createRadialGradient(-60,H/2,30,-60,H/2,200); sg.addColorStop(0,'#fff6c8'); sg.addColorStop(.4,'#ffb52e'); sg.addColorStop(1,'rgba(255,120,0,0)');
-    g.fillStyle=sg; g.fillRect(0,0,220,H);
-    g.strokeStyle='rgba(0,255,255,.12)'; g.lineWidth=1;
-    for(let k=1;k<=3;k++){ g.beginPath(); g.ellipse(e.x+k*14,e.y,this.R+k*26,(this.R+k*26)*.75,0,0,Math.PI*2); g.stroke(); }
-    for(const a of this.auroras){ g.globalAlpha=a.life; glow(a.x,a.y,5,a.c,15); } g.globalAlpha=1;
-    const eg=g.createRadialGradient(e.x-12,e.y-12,6,e.x,e.y,e.r); eg.addColorStop(0,'#5fb8ff'); eg.addColorStop(1,'#0b3a7a');
-    g.fillStyle=eg; g.beginPath(); g.arc(e.x,e.y,e.r,0,Math.PI*2); g.fill();
-    g.fillStyle='#2f9e5b'; g.beginPath(); g.ellipse(e.x-8,e.y-6,14,9,.5,0,Math.PI*2); g.fill(); g.beginPath(); g.ellipse(e.x+12,e.y+12,10,6,-.4,0,Math.PI*2); g.fill();
-    g.save(); g.shadowColor='#0ff'; g.shadowBlur=20; g.strokeStyle='#0ff'; g.lineWidth=7; g.lineCap='round';
-    g.beginPath(); g.arc(e.x,e.y,this.R,this.ang-L.arc/2,this.ang+L.arc/2); g.stroke(); g.restore();
-    for(const p of this.parts) glow(p.x,p.y,3.2,p.def?'#a855f7':'#ffd23f',10);
+    drawSun(-40,H/2,110);
+    // líneas de campo magnético (dipolo comprimido por el viento solar)
+    g.strokeStyle='rgba(155,123,255,.18)'; g.lineWidth=1.5;
+    for(let k=1;k<=4;k++){ const R=this.R*.6+k*26; g.beginPath(); g.ellipse(e.x+k*10,e.y,R*1.15,R*.8,0,0,7); g.stroke(); }
+    for(let i=0;i<5;i++){ g.globalAlpha=.08+i*.02; g.beginPath(); g.moveTo(e.x,e.y-e.r); g.bezierCurveTo(e.x+200+i*40,e.y-140-i*20,e.x+200+i*40,e.y+140+i*20,e.x,e.y+e.r); g.stroke(); } g.globalAlpha=1;
+    // auroras en los polos
+    for(const [pole,amt] of [[-1,this.auroraN],[1,this.auroraS]]){ if(amt<=0) continue;
+      g.save(); g.globalAlpha=amt; g.shadowColor='#3ddc97'; g.shadowBlur=25; g.strokeStyle=pole<0?'#3ddc97':'#9b7bff'; g.lineWidth=5;
+      g.beginPath(); g.ellipse(e.x,e.y+pole*(e.r*.85),e.r*.55,e.r*.18,0,0,7); g.stroke(); g.restore(); }
+    drawEarth(e.x,e.y,e.r);
+    g.save(); g.shadowColor='#3be8ff'; g.shadowBlur=24; g.strokeStyle='#3be8ff'; g.lineWidth=8; g.lineCap='round';
+    g.beginPath(); g.arc(e.x,e.y,this.R,this.ang-L.arc/2,this.ang+L.arc/2); g.stroke();
+    g.strokeStyle='rgba(255,255,255,.7)'; g.lineWidth=2; g.beginPath(); g.arc(e.x,e.y,this.R,this.ang-L.arc/2,this.ang+L.arc/2); g.stroke(); g.restore();
+    for(const p of this.parts){ const c=p.def?'#9b7bff':'#ffcf4a';
+      g.strokeStyle=c; g.globalAlpha=.4; g.lineWidth=2; g.beginPath(); p.tr.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y)); g.lineTo(p.x,p.y); g.stroke(); g.globalAlpha=1;
+      glow(p.x,p.y,3.4,c,10); }
+    // barra de tiempo del nivel
+    if(running){ g.fillStyle='rgba(255,255,255,.1)'; g.fillRect(20,H-14,W-40,5); g.fillStyle='#3be8ff'; g.fillRect(20,H-14,(W-40)*Math.min(1,this.t/L.time),5); }
   }
 };
 
 /* ===================== 3. CALCULADORA CME ===================== */
 const AU=149.6e6; // km
 const cme={
-  title:'🌪️ Calculadora CME',
-  help:'Estima en horas cuánto tarda la CME en llegar a la Tierra. Fórmula: tiempo = 150 millones de km ÷ velocidad. Después elige cómo reaccionar.',
+  help:'Estima cuántas horas tarda la CME en llegar a la Tierra con la fórmula de abajo. Luego elige cómo reaccionar.',
   intro(){ this.round=0; this.total=0; this.list=[...D.cmes].sort(()=>Math.random()-.5).slice(0,5); this.anim=null; this.prepare();
-    overlay(`<h3>Calculadora CME</h3><p>Una eyección de masa coronal (CME) es una nube de plasma que el Sol lanza al espacio. Viaja a cientos o miles de km/s.</p><p>Tienes ${this.list.length} CMEs del registro del proyecto. Mientras mejor estimes su llegada, más puntos ganas.</p><button class="btn" onclick="GAMES.cme.begin()">Empezar</button>`); },
-  begin(){ hideOverlay(); running=true; },
-  start(){ this.intro(); this.begin(); },
+    briefing('cme','A veces el Sol lanza una nube gigante de plasma: una <b>CME</b> (eyección de masa coronal). Si sabemos su velocidad podemos calcular cuándo llega. ¡Los centros de predicción hacen esto todos los días!',
+      [`Estima la llegada de ${this.list.length} CMEs reales del registro`,'Más cerca de la respuesta = más puntos (máx. 100 por CME)','Elige la acción correcta y gana 50 puntos extra'],`${ic('tornado')} Abrir el centro de predicción`,()=>{ hideOverlay(); running=true; }); },
+  start(){ this.intro(); hideOverlay(); running=true; },
   prepare(){
     const c=this.list[this.round]; if(!c) return;
     this.real=AU/c.speed/3600; this.anim=null; this.answered=false;
     const date=(c.start_time||'').replace('T',' ').slice(0,16);
-    $('cmeInfo').innerHTML=`<b>CME ${this.round+1} de ${this.list.length}</b> · fecha ${date||'—'} · origen ${c.source_location||'—'}<br>Velocidad medida: <b style="color:var(--gold)">${Math.round(c.speed)} km/s</b>`;
-    $('cmeGo').disabled=false; $('cmeQ').classList.add('hidden'); $('cmeQ').innerHTML='';
-    $('hudL').textContent=`Ronda ${this.round+1}/${this.list.length}`; $('hudR').textContent=`Puntos ${this.total}`;
+    $('cmeInfo').innerHTML=`<b>CME ${this.round+1} de ${this.list.length}</b> · ${date||'—'} · región ${c.source_location||'—'}<br>Velocidad medida: <b style="color:var(--gold);font-family:Orbitron">${Math.round(c.speed)} km/s</b>`;
+    $('cmeGo').disabled=false; $('cmeGuess').disabled=false; $('cmeQ').classList.add('hidden'); $('cmeQ').innerHTML='';
+    $('hudL').textContent=`CME ${this.round+1}/${this.list.length}`; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
   },
-  launch(){
-    if(this.anim || !running) return;
-    const guess=+$('cmeGuess').value;
-    this.guess=guess; this.anim={t:0}; $('cmeGo').disabled=true;
-  },
+  launch(){ if(this.anim || !running) return; this.guess=+$('cmeGuess').value; this.anim={t:0}; $('cmeGo').disabled=true; $('cmeGuess').disabled=true; snd.beep(300,.4,'sawtooth',.05); },
   update(dt){
     if(!this.anim) return;
     this.anim.t=Math.min(1,this.anim.t+dt/3);
     if(this.anim.t>=1 && !this.answered){
       this.answered=true;
-      const err=Math.abs(this.guess-this.real)/this.real;
-      const pts=Math.max(0,Math.round(100-err*100));
-      this.total+=pts;
-      $('hudR').textContent=`Puntos ${this.total}`;
-      toast(`Llegada real: ${this.real.toFixed(1)} h · tu estimación: ${this.guess} h · +${pts}`);
+      const err=Math.abs(this.guess-this.real)/this.real, pts=Math.max(0,Math.round(100-err*100));
+      this.total+=pts; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
+      flash('#ff8a3d',.2); shake(.25); burst(W-90,H/2,'#ff8a3d',30,200); pts>=80?snd.win():snd.ok();
+      toast(`Llegada real: ${this.real.toFixed(1)} h · tú dijiste ${this.guess} h · +${pts}`);
       this.ask();
     }
   },
   ask(){
-    const v=this.list[this.round].speed;
-    const strong=v>=1000, mid=v>=500;
+    const v=this.list[this.round].speed, strong=v>=1000, mid=v>=500;
     const opts=[
-      {t:'Poner satélites en modo seguro y avisar a las redes eléctricas',ok:strong},
-      {t:'Vigilar y avisar a los observadores de auroras',ok:mid&&!strong},
-      {t:'No hace falta hacer nada: es una CME lenta',ok:!mid}
+      {i:'satellite',t:'Poner satélites en modo seguro y avisar a las redes eléctricas',ok:strong},
+      {i:'telescope',t:'Vigilar y avisar a los observadores de auroras',ok:mid&&!strong},
+      {i:'circle-check',t:'No hace falta hacer nada: es una CME lenta',ok:!mid}
     ];
     const q=$('cmeQ'); q.classList.remove('hidden');
-    q.innerHTML=`<p style="margin-top:12px">Con ${Math.round(v)} km/s, ¿qué harías?</p><div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${o.t}</button>`).join('')}</div>`;
+    q.innerHTML=`<p style="margin-top:12px;font-weight:700">Con ${Math.round(v)} km/s, ¿qué harías?</p><div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${ic(o.i)} ${o.t}</button>`).join('')}</div>`;
     q.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
       if(q.dataset.done) return; q.dataset.done=1;
       const o=opts[+b.dataset.i]; b.classList.add(o.ok?'ok':'bad');
-      if(!o.ok) q.querySelectorAll('.choice')[opts.findIndex(x=>x.ok)].classList.add('ok');
-      if(o.ok){ this.total+=50; $('hudR').textContent=`Puntos ${this.total}`; }
-      const next=document.createElement('button'); next.className='btn'; next.style.marginTop='10px';
+      if(!o.ok){ q.querySelectorAll('.choice')[opts.findIndex(x=>x.ok)].classList.add('ok'); snd.bad(); }
+      else { this.total+=50; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`; snd.ok(); }
+      const next=document.createElement('button'); next.className='btn gold'; next.style.marginTop='10px';
       next.textContent=this.round+1<this.list.length?'Siguiente CME →':'Ver resultado';
       next.onclick=()=>{ delete q.dataset.done; this.round++; if(this.round<this.list.length) this.prepare(); else this.end(); };
-      q.appendChild(next);
+      q.appendChild(next); next.scrollIntoView({behavior:'smooth',block:'nearest'});
     });
   },
   end(){
-    const max=this.list.length*150;
-    $('cmeQ').classList.add('hidden');
-    finish('cme',this.total,`<h3>Centro de predicción</h3><p>Puntos: <b>${this.total}</b> de ${max}</p><p class="fact">La CME más rápida registrada (agosto de 1972) llegó a la Tierra en menos de 15 horas.</p>`);
+    const max=this.list.length*150, r=this.total/max; $('cmeQ').classList.add('hidden');
+    window.scrollTo({top:0,behavior:'smooth'});
+    debrief('cme',{title:'Informe del centro de predicción',score:this.total,max,stars:r>=.8?3:r>=.55?2:r>=.3?1:0,
+      learn:'Tiempo = distancia ÷ velocidad. El Sol está a 150 millones de km: una CME a 1500 km/s llega en poco más de un día, y una a 500 km/s tarda unos 3 días y medio. La CME más rápida conocida (agosto de 1972) llegó en <b>menos de 15 horas</b>.'});
   },
   draw(){
     drawStars(0);
     const sx=70, ex=W-90, y=H/2;
-    const sg=g.createRadialGradient(sx,y,10,sx,y,90); sg.addColorStop(0,'#fff6c8'); sg.addColorStop(.5,'#ffb52e'); sg.addColorStop(1,'rgba(255,120,0,0)');
-    g.fillStyle=sg; g.beginPath(); g.arc(sx,y,90,0,Math.PI*2); g.fill();
-    glow(ex,y,22,'#3b82f6',25);
-    g.fillStyle='#2f9e5b'; g.beginPath(); g.ellipse(ex-5,y-4,8,5,.5,0,Math.PI*2); g.fill();
-    g.setLineDash([6,8]); g.strokeStyle='rgba(0,255,255,.3)'; g.beginPath(); g.moveTo(sx+40,y); g.lineTo(ex-30,y); g.stroke(); g.setLineDash([]);
-    g.fillStyle='#9fb8c8'; g.font='14px Roboto'; g.textAlign='center';
-    g.fillText('Sol',sx,y+110); g.fillText('Tierra',ex,y+50); g.fillText('150 millones de km',(sx+ex)/2,y+40);
+    drawSun(sx,y,60);
+    // órbitas de Mercurio y Venus como referencia de distancia
+    for(const [f,n] of [[.39,'Mercurio'],[.72,'Venus']]){ const x=sx+40+(ex-sx-70)*f; g.strokeStyle='rgba(255,255,255,.1)'; g.beginPath(); g.arc(sx,y,x-sx,-.6,.6); g.stroke(); glow(x,y-(x-sx)*Math.sin(.35)*0,4,'#c9b38a',6); g.fillStyle='#6f87a3'; g.font='12px Nunito'; g.textAlign='center'; g.fillText(n,x,y-14); }
+    drawEarth(ex,y,24);
+    g.setLineDash([6,8]); g.strokeStyle='rgba(59,232,255,.3)'; g.beginPath(); g.moveTo(sx+70,y+40); g.lineTo(ex-30,y+40); g.stroke(); g.setLineDash([]);
+    g.fillStyle='#a7b9cf'; g.font='15px Nunito'; g.textAlign='center';
+    g.fillText('Sol',sx,y+95); g.fillText('Tierra',ex,y+52); g.fillText('150 millones de km',(sx+ex)/2,y+62);
     if(this.anim){
-      const p=this.anim.t, x=sx+40+(ex-sx-70)*p;
-      g.save(); g.globalAlpha=.85; const cg=g.createRadialGradient(x,y,4,x,y,46); cg.addColorStop(0,'rgba(255,140,60,.9)'); cg.addColorStop(1,'rgba(168,85,247,0)');
-      g.fillStyle=cg; g.beginPath(); g.ellipse(x,y,30+p*20,46+p*30,0,-Math.PI/2,Math.PI/2); g.fill(); g.restore();
-      g.fillStyle='#ffd23f'; g.font='bold 22px Orbitron'; g.fillText((this.real*p).toFixed(1)+' h',W/2,60);
-      if(p>=1){ g.fillStyle=Math.abs(this.guess-this.real)/this.real<.15?'#3ddc97':'#ff8c2b'; g.font='16px Orbitron'; g.fillText('Tu estimación: '+this.guess+' h',W/2,90); }
+      const p=this.anim.t, x=sx+70+(ex-sx-110)*p;
+      g.save(); const cg=g.createRadialGradient(x,y,4,x,y,60); cg.addColorStop(0,'rgba(255,170,90,.95)'); cg.addColorStop(.6,'rgba(255,95,162,.45)'); cg.addColorStop(1,'rgba(155,123,255,0)');
+      g.fillStyle=cg; g.beginPath(); g.ellipse(x,y,30+p*24,50+p*40,0,-Math.PI/2,Math.PI/2); g.fill(); g.restore();
+      if(Math.random()<.6) fx.push({x:x-rand(0,20),y:y+rand(-50,50)*(.6+p),vx:rand(20,60),vy:rand(-10,10),life:.6,c:'#ff8a3d',r:rand(1,2.5)});
+      g.fillStyle='#ffcf4a'; g.font='bold 26px Orbitron'; g.fillText((this.real*p).toFixed(1)+' h',W/2,64);
+      if(p>=1){ const good=Math.abs(this.guess-this.real)/this.real<.15; g.fillStyle=good?'#3ddc97':'#ff8a3d'; g.font='16px Orbitron'; g.fillText((good?'¡Excelente! ':'')+'Tu estimación: '+this.guess+' h',W/2,96); }
     } else if(this.list && this.list[this.round]){
-      g.fillStyle='#e6f8ff'; g.font='bold 20px Orbitron'; g.fillText('¿Cuántas horas tardará?',W/2,60);
+      g.fillStyle='#eef7ff'; g.font='bold 20px Orbitron'; g.fillText('¿Cuántas horas tardará?',W/2,64);
+      g.fillStyle='#a7b9cf'; g.font='15px Nunito'; g.fillText('Mueve la barra de abajo y pulsa Lanzar',W/2,92);
     }
   }
 };
@@ -493,81 +730,92 @@ const CITIES=[
   ['Edimburgo',55.9,-3.2],['Ottawa',45.4,-75.7],['Nueva York',40.7,-74],['Madrid',40.4,-3.7],['Tokio',35.7,139.7],
   ['Ciudad de México',19.4,-99.1],['Lima',-12,-77],['Moquegua',-17.2,-70.9],['Ciudad del Cabo',-33.9,18.4],['Hobart',-42.9,147.3],['Ushuaia',-54.8,-68.3]
 ];
+// Contornos simplificados de los continentes [lon, lat]
+const LAND=[
+  [[-168,66],[-162,70],[-140,70],[-120,72],[-95,72],[-80,68],[-65,60],[-55,52],[-66,45],[-75,38],[-81,31],[-80,25],[-90,29],[-97,26],[-97,20],[-90,16],[-83,10],[-79,8],[-87,13],[-105,20],[-112,30],[-118,34],[-124,40],[-124,48],[-135,58],[-150,60],[-165,60]],
+  [[-50,60],[-42,60],[-20,70],[-20,80],[-40,83],[-60,80],[-70,77],[-55,70]],
+  [[-24,64],[-14,64],[-14,66.5],[-22,66.5]],
+  [[-80,9],[-72,12],[-60,10],[-50,0],[-35,-6],[-38,-15],[-40,-22],[-48,-26],[-58,-35],[-63,-42],[-68,-50],[-70,-55],[-74,-50],[-73,-40],[-72,-30],[-70,-18],[-76,-14],[-81,-5],[-78,2]],
+  [[-10,36],[-9,43],[-2,44],[-5,48],[3,51],[8,54],[10,58],[5,62],[15,69],[25,71],[40,68],[60,70],[80,73],[100,77],[120,73],[140,72],[160,70],[180,68],[180,62],[160,60],[155,52],[140,46],[135,35],[122,30],[120,22],[108,20],[105,10],[100,13],[98,8],[92,22],[80,15],[77,8],[72,20],[67,25],[57,25],[50,30],[48,28],[56,24],[59,22],[52,16],[44,12],[35,28],[33,31],[36,36],[27,37],[26,40],[23,36],[20,40],[16,38],[12,44],[8,44],[3,43],[-1,37]],
+  [[-5,50],[2,51],[-2,56],[-6,58],[-5,54]],
+  [[-17,21],[-16,12],[-8,4],[5,5],[9,4],[12,-5],[13,-12],[12,-18],[16,-29],[20,-35],[27,-33],[33,-26],[35,-18],[40,-11],[40,-3],[51,11],[43,12],[37,18],[33,31],[20,32],[10,37],[-5,36],[-10,30]],
+  [[44,-12],[50,-15],[49,-25],[44,-24]],
+  [[130,31],[141,38],[142,44],[139,40],[132,34]],
+  [[114,-22],[122,-18],[130,-12],[137,-12],[142,-11],[146,-19],[153,-26],[151,-34],[145,-38],[138,-35],[131,-31],[115,-34]],
+  [[145,-41],[148,-41],[147,-43.5],[145,-43]],
+  [[166,-46],[174,-41],[178,-38],[173,-35],[172,-41]],
+  [[-180,-70],[180,-70],[180,-90],[-180,-90]]
+];
 // Latitud geomagnética con un dipolo (polo norte geomagnético ≈ 80.7°N, 72.7°O)
-function magLat(lat,lon){
-  const r=Math.PI/180, pl=80.7*r, pn=-72.7*r;
-  return Math.asin(Math.sin(lat*r)*Math.sin(pl)+Math.cos(lat*r)*Math.cos(pl)*Math.cos(lon*r-pn))/r;
-}
+function magLat(lat,lon){ const r=Math.PI/180, pl=80.7*r, pn=-72.7*r; return Math.asin(Math.sin(lat*r)*Math.sin(pl)+Math.cos(lat*r)*Math.cos(pl)*Math.cos(lon*r-pn))/r; }
 const visibleAt=(kp,ml)=>Math.abs(ml)>=66-2*kp; // borde del óvalo auroral (aproximación)
 const aurora={
-  title:'🌈 Cazador de Auroras',
-  help:'Toca las ciudades desde las que crees que se verá la aurora con el índice Kp indicado y pulsa «Comprobar». Más Kp = óvalo auroral más grande.',
+  help:'Toca las ciudades desde las que crees que se verá la aurora y pulsa «Comprobar». Con más Kp, el óvalo de la aurora crece hacia el ecuador.',
   intro(){
-    const now=D.kp.length?D.kp[D.kp.length-1]:3;
-    const base=Math.max(1,Math.round(now));
-    const extra=[[2,'Noche tranquila'],[3,'Actividad moderada'],[5,'Tormenta geomagnética G1'],[7,'Tormenta fuerte G3'],[9,'Tormenta extrema · 10 de mayo de 2024']]
-      .filter(([k])=>k!==base).slice(-4);
+    const now=D.kp.length?D.kp[D.kp.length-1]:3, base=Math.max(1,Math.round(now));
+    const extra=[[2,'Noche tranquila'],[3,'Actividad moderada'],[5,'Tormenta geomagnética G1'],[7,'Tormenta fuerte G3'],[9,'Tormenta extrema · 10 de mayo de 2024']].filter(([k])=>k!==base).slice(-4);
     this.rounds=[{kp:base,label:'Kp actual de los datos'},...extra.map(([kp,label])=>({kp,label}))];
-    this.round=0; this.total=0; this.sel=new Set(); this.checked=false;
-    this.updatePanel();
-    overlay(`<h3>Cazador de Auroras</h3><p>El índice <b>Kp</b> (0–9) mide cuánto se agita el campo magnético terrestre. Con más Kp, las auroras se ven más lejos de los polos.</p><p>Último Kp en los datos: <b>${now.toFixed(2)}</b>.</p><button class="btn" onclick="GAMES.aurora.begin()">Salir a cazar</button>`);
+    this.round=0; this.total=0; this.sel=new Set(); this.checked=false; this.updatePanel();
+    briefing('aurora',`¡Esta noche salimos a cazar auroras! El <b>índice Kp</b> va de 0 a 9 y mide cuánto se agita el campo magnético. Ahora mismo los datos marcan <b>Kp ${now.toFixed(1)}</b>. Con más Kp, la aurora se ve más lejos de los polos.`,
+      ['Toca las ciudades donde crees que se verá la aurora','Pulsa «Comprobar»: verde = acierto, rojo = error','5 noches con distinto Kp · máximo 100 puntos por noche'],`${ic('sparkles')} Salir a cazar`,()=>{ hideOverlay(); running=true; });
   },
-  begin(){ hideOverlay(); running=true; },
-  start(){ this.intro(); this.begin(); },
+  start(){ this.intro(); hideOverlay(); running=true; },
   pos(lat,lon){ return {x:(lon+180)/360*W, y:(90-lat)/180*H}; },
   click(x,y){
     if(!running || this.checked) return;
-    CITIES.forEach((c,i)=>{ const p=this.pos(c[1],c[2]); if(Math.hypot(p.x-x,p.y-y)<18){ this.sel.has(i)?this.sel.delete(i):this.sel.add(i); } });
+    CITIES.forEach((c,i)=>{ const p=this.pos(c[1],c[2]); if(Math.hypot(p.x-x,p.y-y)<20){ this.sel.has(i)?this.sel.delete(i):this.sel.add(i); snd.beep(this.sel.has(i)?700:400,.05,'triangle',.04); burst(p.x,p.y,'#ffcf4a',6,60); } });
   },
   updatePanel(){
     const r=this.rounds[this.round];
-    $('auroraInfo').innerHTML=`Ronda ${this.round+1}/${this.rounds.length} · <b style="color:var(--gold)">Kp ${r.kp}</b> · ${r.label}`;
-    $('auroraGo').textContent=this.checked?(this.round+1<this.rounds.length?'Siguiente →':'Ver resultado'):'Comprobar';
-    $('hudL').textContent=`Kp ${r.kp}`; $('hudR').textContent=`Puntos ${this.total}`;
+    $('auroraInfo').innerHTML=`Noche ${this.round+1}/${this.rounds.length} · <b style="color:var(--gold);font-family:Orbitron">Kp ${r.kp}</b> · ${r.label}`;
+    $('auroraGo').textContent=this.checked?(this.round+1<this.rounds.length?'Siguiente noche →':'Ver resultado'):'Comprobar';
+    $('hudL').textContent=`Kp ${r.kp}`; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
   },
   go(){
     if(!running) return;
     if(!this.checked){
       const kp=this.rounds[this.round].kp; let ok=0;
-      CITIES.forEach((c,i)=>{ const vis=visibleAt(kp,magLat(c[1],c[2])); if(vis===this.sel.has(i)) ok++; });
-      const pts=Math.round(ok/CITIES.length*100); this.total+=pts; this.checked=true;
+      CITIES.forEach((c,i)=>{ if(visibleAt(kp,magLat(c[1],c[2]))===this.sel.has(i)) ok++; });
+      const pts=Math.round(ok/CITIES.length*100); this.total+=pts; this.checked=true; pts>=80?snd.win():snd.ok();
       toast(`Acertaste ${ok} de ${CITIES.length} ciudades · +${pts}`);
     } else {
       this.round++; this.sel=new Set(); this.checked=false;
-      if(this.round>=this.rounds.length) return finish('aurora',this.total,`<h3>Temporada de auroras terminada</h3><p>Puntos: <b>${this.total}</b> de ${this.rounds.length*100}</p><p class="fact">En mayo de 2024 se vieron auroras incluso en el norte de Chile y Argentina, algo muy poco común.</p>`);
+      if(this.round>=this.rounds.length){ const max=this.rounds.length*100, r=this.total/max;
+        return debrief('aurora',{title:'Temporada de auroras terminada',score:this.total,max,stars:r>=.85?3:r>=.7?2:r>=.5?1:0,
+          learn:'El índice Kp mide la agitación del campo magnético. Con Kp alto, el óvalo de la aurora se agranda hacia el ecuador: en mayo de 2024 (Kp 9) se vieron auroras hasta en el norte de Chile. Desde Moquegua, cerca del ecuador magnético, casi nunca se ven.'}); }
     }
     this.updatePanel();
   },
   update(){},
   draw(){
-    g.fillStyle='#021024'; g.fillRect(0,0,W,H);
-    g.strokeStyle='rgba(0,255,255,.12)'; g.lineWidth=1; g.fillStyle='#4f6b80'; g.font='11px Roboto'; g.textAlign='left';
+    const sea=g.createLinearGradient(0,0,0,H); sea.addColorStop(0,'#04122e'); sea.addColorStop(.5,'#062048'); sea.addColorStop(1,'#04122e'); g.fillStyle=sea; g.fillRect(0,0,W,H);
+    g.fillStyle='#1b3a5c'; g.strokeStyle='rgba(120,220,255,.25)'; g.lineWidth=1;
+    for(const poly of LAND){ g.beginPath(); poly.forEach(([lo,la],i)=>{ const p=this.pos(la,lo); i?g.lineTo(p.x,p.y):g.moveTo(p.x,p.y); }); g.closePath(); g.fill(); g.stroke(); }
+    g.strokeStyle='rgba(120,220,255,.08)'; g.fillStyle='#4f6b80'; g.font='11px Nunito'; g.textAlign='left';
     for(let lat=-60;lat<=60;lat+=30){ const y=(90-lat)/180*H; g.beginPath(); g.moveTo(0,y); g.lineTo(W,y); g.stroke(); g.fillText(lat+'°',4,y-3); }
-    for(let lon=-150;lon<=150;lon+=30){ const x=(lon+180)/360*W; g.beginPath(); g.moveTo(x,0); g.lineTo(x,H); g.stroke(); }
-    const eq=H/2; g.strokeStyle='rgba(255,210,63,.25)'; g.beginPath(); g.moveTo(0,eq); g.lineTo(W,eq); g.stroke();
     const r=this.rounds?this.rounds[this.round]:{kp:3};
-    if(this.checked){
-      // Zona de visibilidad: celdas con latitud geomagnética por encima del borde del óvalo
-      g.fillStyle='rgba(61,220,151,.18)';
-      for(let lon=-180;lon<180;lon+=4) for(let lat=-88;lat<=88;lat+=4){
-        if(visibleAt(r.kp,magLat(lat,lon))){ const p=this.pos(lat+2,lon); g.fillRect(p.x,p.y,W/90+1,H/45+1); }
-      }
-    }
+    // el óvalo auroral se muestra siempre tenue y brillante al comprobar
+    g.save(); g.globalAlpha=this.checked?.55:.0; if(this.checked){
+      for(let lon=-180;lon<180;lon+=3) for(let lat=-88;lat<=88;lat+=3){ const ml=magLat(lat,lon), edge=66-2*r.kp;
+        if(Math.abs(ml)>=edge && Math.abs(ml)<=edge+10){ const p=this.pos(lat+1.5,lon); g.fillStyle=Math.abs(ml)<edge+4?'#3ddc97':'#9b7bff'; g.fillRect(p.x,p.y,W/120+1,H/60+1); } } }
+    g.restore();
     CITIES.forEach((c,i)=>{
       const p=this.pos(c[1],c[2]), sel=this.sel && this.sel.has(i);
-      let col=sel?'#ffd23f':'#7fd1ff';
+      let col=sel?'#ffcf4a':'#cfe8ff';
       if(this.checked){ const vis=visibleAt(r.kp,magLat(c[1],c[2])); col=(vis===sel)?'#3ddc97':'#ff5a5f'; }
-      glow(p.x,p.y,sel?8:6,col,sel?16:8);
-      g.fillStyle='#e6f8ff'; g.font='12px Roboto'; g.textAlign=p.x>W-90?'right':'left';
-      g.fillText(c[0],p.x+(p.x>W-90?-10:10),p.y+4);
+      if(c[0]==='Moquegua'){ g.strokeStyle='#ff5fa2'; g.lineWidth=1.5; g.beginPath(); g.arc(p.x,p.y,12+2*Math.sin(clock*4),0,7); g.stroke(); }
+      glow(p.x,p.y,sel?8:5.5,col,sel?18:8);
+      g.font=(c[0]==='Moquegua'?'bold ':'')+'12px Nunito'; g.textAlign=p.x>W-100?'right':'left';
+      const tx=p.x+(p.x>W-100?-11:11); g.fillStyle='rgba(3,8,24,.7)'; const tw=g.measureText(c[0]).width; g.fillRect(p.x>W-100?tx-tw-3:tx-3,p.y-8,tw+6,16);
+      g.fillStyle='#eef7ff'; g.fillText(c[0],tx,p.y+4);
     });
-    if(this.checked){ g.fillStyle='#9fb8c8'; g.font='12px Roboto'; g.textAlign='right'; g.fillText('verde = acierto · rojo = error · zona verde = aurora visible',W-8,H-8); }
+    if(this.checked){ g.fillStyle='rgba(3,8,24,.75)'; g.fillRect(W-330,H-26,324,20); g.fillStyle='#a7b9cf'; g.font='12px Nunito'; g.textAlign='right'; g.fillText('verde = acierto · rojo = error · franja = óvalo auroral',W-12,H-12); }
   }
 };
 $('auroraGo').onclick=()=>aurora.go();
 
 const GAMES={dodge,shield,cme,aurora};
-refreshBest();
+renderCards();
 loadData();
 </script>
 </body>
