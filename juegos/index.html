@@ -35,6 +35,14 @@ body::before{ /* estrellas fijas de fondo */
 .wrap{position:relative;z-index:1;max-width:1120px;margin:0 auto;padding:16px}
 a{color:var(--cyan)}
 button{font:inherit}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.ic.fill{fill:currentColor;stroke-width:1.5}
+.ico-box{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;flex:none;background:rgba(59,232,255,.1);color:var(--cyan)}
+.ico-box .ic{width:22px;height:22px}
+.ico-box.gold{background:rgba(255,207,74,.12);color:var(--gold)}.ico-box.pink{background:rgba(255,95,162,.12);color:var(--pink)}
+.ico-box.purple{background:rgba(155,123,255,.14);color:var(--purple)}.ico-box.green{background:rgba(61,220,151,.12);color:var(--green)}
+.mico{display:inline-grid;place-items:center;width:1.8em;height:1.8em;border-radius:10px;background:rgba(59,232,255,.12);color:var(--cyan)}
+.mico .ic{width:1.05em;height:1.05em}
 .hidden{display:none!important}
 
 /* ===== Barra superior ===== */
@@ -68,7 +76,6 @@ button{font:inherit}
 /* ===== Datos ===== */
 .data{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:22px}
 .stat{background:var(--panel);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;gap:10px;align-items:center}
-.stat .ico{font-size:1.5rem}
 .stat span{display:block;color:var(--muted);font-size:.8rem}
 .stat b{font-family:'Orbitron',sans-serif;color:var(--gold);font-size:1.15rem}
 .cycle{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:26px}
@@ -88,7 +95,9 @@ button{font:inherit}
 .card .art::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,8,22,0) 40%,rgba(20,34,64,1) 100%)}
 .card .num{position:absolute;top:12px;left:12px;z-index:1;font-family:'Orbitron',sans-serif;font-weight:900;font-size:.75rem;background:rgba(5,8,22,.75);
   border:1.5px solid var(--line);padding:5px 10px;border-radius:999px;letter-spacing:1px}
-.card .stars{position:absolute;top:10px;right:12px;z-index:1;font-size:1.15rem;letter-spacing:2px;text-shadow:0 2px 6px #000}
+.card .stars{position:absolute;top:12px;right:12px;z-index:1;display:flex;gap:2px;background:rgba(5,8,22,.75);border:1.5px solid var(--line);padding:4px 8px;border-radius:999px}
+.card .stars:empty{display:none}
+.card .stars .ic{width:15px;height:15px}
 .card .body{padding:4px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card h3{font-family:'Orbitron',sans-serif;font-size:1.15rem;display:flex;align-items:center;gap:8px}
 .card p{color:var(--muted);font-size:.95rem}
@@ -123,7 +132,7 @@ button{font:inherit}
 .screen{position:relative;border:1.5px solid var(--line);border-radius:22px;overflow:hidden;background:#020611;box-shadow:0 20px 50px rgba(0,0,0,.5)}
 .screen canvas{display:block;width:100%;height:auto;touch-action:none}
 .hud{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;gap:8px;pointer-events:none}
-.hud div{background:rgba(5,8,22,.7);border:1px solid var(--line);border-radius:999px;padding:5px 12px;
+.hud div{display:flex;align-items:center;gap:6px;background:rgba(5,8,22,.7);border:1px solid var(--line);border-radius:999px;padding:5px 12px;
   font-family:'Orbitron',sans-serif;font-size:clamp(.65rem,2vw,.85rem);backdrop-filter:blur(6px)}
 .hud div:empty{display:none}
 .overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:14px;background:rgba(3,6,18,.86);backdrop-filter:blur(3px);overflow:auto}
@@ -139,7 +148,8 @@ button{font:inherit}
 .goals b{color:var(--cyan)}
 .center{text-align:center}
 .big-stars{font-size:clamp(2rem,8vw,3rem);letter-spacing:6px;text-align:center;margin:4px 0}
-.big-stars i{font-style:normal;color:#33415c}
+.big-stars i{font-style:normal;color:#33415c;display:inline-block}
+.big-stars .ic{width:1em;height:1em;vertical-align:middle}
 .big-stars i.on{color:var(--gold);text-shadow:0 0 18px rgba(255,207,74,.7);display:inline-block;animation:pop .5s both}
 .big-stars i.on:nth-child(2){animation-delay:.15s}.big-stars i.on:nth-child(3){animation-delay:.3s}
 @keyframes pop{0%{transform:scale(0) rotate(-40deg)}70%{transform:scale(1.3)}100%{transform:scale(1)}}
@@ -193,14 +203,15 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol><symbol id="i-wind" viewBox="0 0 24 24"><path d="M12.8 19.6A2 2 0 1 0 14 16H2" /><path d="M17.5 8a2.5 2.5 0 1 1 2 4H2" /><path d="M9.8 4.4A2 2 0 1 1 11 8H2" /></symbol><symbol id="i-gauge" viewBox="0 0 24 24"><path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" /></symbol><symbol id="i-orbit" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" /><circle cx="19" cy="5" r="2" /><circle cx="5" cy="19" r="2" /><path d="M10.4 21.9a10 10 0 0 0 9.941-15.416" /><path d="M13.5 2.1a10 10 0 0 0-9.841 15.416" /></symbol><symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></symbol><symbol id="i-magnet" viewBox="0 0 24 24"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15" /><path d="m5 8 4 4" /><path d="m12 15 4 4" /></symbol><symbol id="i-tornado" viewBox="0 0 24 24"><path d="M21 4H3" /><path d="M18 8H6" /><path d="M19 12H9" /><path d="M16 16h-6" /><path d="M11 20H9" /></symbol><symbol id="i-sparkles" viewBox="0 0 24 24"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" /><path d="M20 3v4" /><path d="M22 5h-4" /><path d="M4 17v2" /><path d="M5 18H3" /></symbol><symbol id="i-volume-2" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><path d="M16 9a5 5 0 0 1 0 6" /><path d="M19.364 18.364a9 9 0 0 0 0-12.728" /></symbol><symbol id="i-volume-x" viewBox="0 0 24 24"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z" /><line x1="22" x2="16" y1="9" y2="15" /><line x1="16" x2="22" y1="9" y2="15" /></symbol><symbol id="i-graduation-cap" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z" /><path d="M22 10v6" /><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5" /></symbol><symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14" /><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" /></symbol><symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7" /><path d="M19 12H5" /></symbol><symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></symbol><symbol id="i-play" viewBox="0 0 24 24"><polygon points="6 3 20 12 6 21 6 3" /></symbol><symbol id="i-rocket" viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" /><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" /><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" /><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" /></symbol><symbol id="i-chart-spline" viewBox="0 0 24 24"><path d="M3 3v16a2 2 0 0 0 2 2h16" /><path d="M7 16c.5-2 1.5-7 4-7 2 0 2 3 4 3 2.5 0 4.5-5 5-7" /></symbol><symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" /><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" /><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" /><path d="M17.599 6.5a3 3 0 0 0 .399-1.375" /><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" /><path d="M3.477 10.896a4 4 0 0 1 .585-.396" /><path d="M19.938 10.5a4 4 0 0 1 .585.396" /><path d="M6 18a4 4 0 0 1-1.967-.516" /><path d="M19.967 17.484A4 4 0 0 1 18 18" /></symbol><symbol id="i-message-circle-question" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><path d="M12 17h.01" /></symbol><symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></symbol><symbol id="i-printer" viewBox="0 0 24 24"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" /><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" /><rect x="6" y="14" width="12" height="8" rx="1" /></symbol><symbol id="i-shield" viewBox="0 0 24 24"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /></symbol><symbol id="i-star" viewBox="0 0 24 24"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z" /></symbol><symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></symbol><symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></symbol><symbol id="i-satellite" viewBox="0 0 24 24"><path d="M13 7 9 3 5 7l4 4" /><path d="m17 11 4 4-4 4-4-4" /><path d="m8 12 4 4 6-6-4-4Z" /><path d="m16 8 3-3" /><path d="M9 21a6 6 0 0 0-6-6" /></symbol><symbol id="i-telescope" viewBox="0 0 24 24"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44" /><path d="m13.56 11.747 4.332-.924" /><path d="m16 21-3.105-6.21" /><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z" /><path d="m6.158 8.633 1.114 4.456" /><path d="m8 21 3.105-6.21" /><circle cx="12" cy="13" r="2" /></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" /></symbol><symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="6" /><circle cx="12" cy="12" r="2" /></symbol><symbol id="i-trophy" viewBox="0 0 24 24"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></symbol><symbol id="i-earth" viewBox="0 0 24 24"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54" /><path d="M7 3.34V5a3 3 0 0 0 3 3a2 2 0 0 1 2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2c0-1.1.9-2 2-2h3.17" /><path d="M11 21.95V18a2 2 0 0 0-2-2a2 2 0 0 1-2-2v-1a2 2 0 0 0-2-2H2.05" /><circle cx="12" cy="12" r="10" /></symbol><symbol id="i-timer" viewBox="0 0 24 24"><line x1="10" x2="14" y1="2" y2="2" /><line x1="12" x2="15" y1="14" y2="11" /><circle cx="12" cy="14" r="8" /></symbol><symbol id="i-circle-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></symbol><symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /><path d="M12 7v5l4 2" /></symbol><symbol id="i-house" viewBox="0 0 24 24"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></symbol></svg>
 <div class="wrap">
   <div class="topbar">
     <a class="brand" href="/"><img src="/img/ICONOO.png" alt=""><b>STELLARSCRIBE</b></a>
     <div class="tools">
-      <button class="pill" id="btnSound" aria-pressed="false" title="Sonido">🔇 Sonido</button>
-      <button class="pill" id="btnTeacher" aria-pressed="false">🍎 Guía docente</button>
-      <a class="pill" href="/index2.html">📖 Cuento</a>
-      <a class="pill" href="/">← Inicio</a>
+      <button class="pill" id="btnSound" aria-pressed="false" title="Sonido"><svg class="ic "><use href="#i-volume-x"/></svg> Sonido</button>
+      <button class="pill" id="btnTeacher" aria-pressed="false"><svg class="ic "><use href="#i-graduation-cap"/></svg> Guía docente</button>
+      <a class="pill" href="/index2.html"><svg class="ic "><use href="#i-book-open"/></svg> Cuento</a>
+      <a class="pill" href="/"><svg class="ic "><use href="#i-house"/></svg> Inicio</a>
     </div>
   </div>
 
@@ -212,7 +223,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
         </div>
         <h1 style="margin-top:12px">Academia de <span>Clima Espacial</span></h1>
         <p class="sub">Aldrin y su gato regresan a la Tierra, pero el Sol está muy activo. Completa cuatro misiones para entender las tormentas solares con datos reales.</p>
-        <button class="btn gold" id="btnStart">▶ Empezar por la misión 1</button>
+        <button class="btn gold" id="btnStart"><svg class="ic fill"><use href="#i-play"/></svg> Empezar por la misión 1</button>
       </div>
       <div class="guide">
         <div class="bubble" id="guideBubble">¡Hola, cadete! Soy el <b>gato de Aldrin</b>. Hoy el Sol tiene <b id="gSun">muchas</b> manchas. ¿Me ayudas a proteger la nave?</div>
@@ -221,32 +232,32 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
     </section>
 
     <section class="data" aria-label="Datos solares">
-      <div class="stat"><span class="ico">☀️</span><div><span>Manchas solares</span><b id="dSun">—</b></div></div>
-      <div class="stat"><span class="ico">💨</span><div><span>Viento solar</span><b id="dWind">—</b></div></div>
-      <div class="stat"><span class="ico">🧭</span><div><span>Índice Kp</span><b id="dKp">—</b></div></div>
-      <div class="stat"><span class="ico">🔄</span><div><span>Ciclo solar</span><b id="dCycle">—</b></div></div>
+      <div class="stat"><span class="ico-box gold"><svg class="ic "><use href="#i-sun"/></svg></span><div><span>Manchas solares</span><b id="dSun">—</b></div></div>
+      <div class="stat"><span class="ico-box"><svg class="ic "><use href="#i-wind"/></svg></span><div><span>Viento solar</span><b id="dWind">—</b></div></div>
+      <div class="stat"><span class="ico-box purple"><svg class="ic "><use href="#i-gauge"/></svg></span><div><span>Índice Kp</span><b id="dKp">—</b></div></div>
+      <div class="stat"><span class="ico-box green"><svg class="ic "><use href="#i-orbit"/></svg></span><div><span>Ciclo solar</span><b id="dCycle">—</b></div></div>
     </section>
 
     <section class="cycle">
-      <header><h2>📈 El ciclo solar de verdad</h2><small id="cycleNote">Fuente: SILSO</small></header>
+      <header><h2><svg class="ic "><use href="#i-chart-spline"/></svg> El ciclo solar de verdad</h2><small id="cycleNote">Fuente: SILSO</small></header>
       <canvas id="cycleChart" width="1000" height="120"></canvas>
     </section>
 
-    <h2 class="section-title">🚀 Misiones</h2>
+    <h2 class="section-title"><svg class="ic "><use href="#i-rocket"/></svg> Misiones</h2>
     <div class="grid" id="cards"></div>
 
     <section class="teacher hidden" id="teacher">
-      <h2>🍎 Guía para docentes</h2>
+      <h2><svg class="ic "><use href="#i-graduation-cap"/></svg> Guía para docentes</h2>
       <p>Cada misión dura entre 10 y 15 minutos. Funciona en computadora, tablet o celular, en parejas o proyectada para toda la clase. Al terminar, cada misión muestra una pregunta para conversar.</p>
       <div class="tgrid" id="tgrid"></div>
-      <div class="actions"><button class="btn gold" onclick="window.print()">🖨 Imprimir guía</button></div>
+      <div class="actions"><button class="btn gold" onclick="window.print()"><svg class="ic "><use href="#i-printer"/></svg> Imprimir guía</button></div>
     </section>
   </div>
 
   <section class="stage" id="stage">
     <div class="bar">
       <h2 id="gTitle"></h2>
-      <button class="btn ghost" id="gBack">← Misiones</button>
+      <button class="btn ghost" id="gBack"><svg class="ic "><use href="#i-arrow-left"/></svg> Misiones</button>
     </div>
     <div class="screen">
       <canvas id="cv" width="800" height="500"></canvas>
@@ -262,7 +273,7 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
         <label for="cmeGuess">Tu estimación:</label>
         <input type="range" id="cmeGuess" min="10" max="120" step="1" value="48">
         <output id="cmeOut">48 h</output>
-        <button class="btn" id="cmeGo">🚀 Lanzar</button>
+        <button class="btn" id="cmeGo"><svg class="ic "><use href="#i-rocket"/></svg> Lanzar</button>
       </div>
       <div class="formula">tiempo (h) = 150 000 000 km ÷ velocidad (km/s) ÷ 3600</div>
       <div id="cmeQ" class="hidden"></div>
@@ -279,27 +290,28 @@ footer{color:var(--muted);font-size:.8rem;text-align:center;padding:30px 0 10px}
 <script>
 /* ===================== MISIONES (contenido) ===================== */
 const MISSIONS = {
-  dodge:{n:1,icon:'🔥',name:'Esquiva Erupciones',art:'arte/dodge.webp',steam:'stm',age:'8+ años',min:'10 min',
+  dodge:{n:1,icon:'flame',name:'Esquiva Erupciones',art:'arte/dodge.webp',steam:'stm',age:'8+ años',min:'10 min',
     desc:'La nave de Aldrin cruza una tormenta solar. Esquiva las erupciones B, C, M y X.',
     guide:{area:'Ciencia y Tecnología',comp:'Explica el mundo físico basándose en conocimientos sobre materia, energía, Tierra y universo',
       obj:'Reconocer que las erupciones solares se clasifican por su energía y que la radiación viaja a la velocidad de la luz.',
       q:['¿Por qué una erupción X es más peligrosa que una B?','Si la luz tarda 8 minutos en llegar, ¿cuánto tiempo hay para avisar a los astronautas?']}},
-  shield:{n:2,icon:'🧲',name:'Escudo Magnético',art:'arte/shield.webp',steam:'stia',age:'9+ años',min:'12 min',
+  shield:{n:2,icon:'magnet',name:'Escudo Magnético',art:'arte/shield.webp',steam:'stia',age:'9+ años',min:'12 min',
     desc:'Gira la magnetosfera para desviar el viento solar. Las partículas desviadas forman auroras.',
     guide:{area:'Ciencia y Tecnología',comp:'Explica el mundo físico basándose en conocimientos sobre materia, energía, Tierra y universo',
       obj:'Comprender que el campo magnético de la Tierra la protege del viento solar y que las auroras son la prueba de ese escudo.',
       q:['¿Qué le pasaría a la Tierra sin campo magnético?','¿Por qué las auroras aparecen cerca de los polos?']}},
-  cme:{n:3,icon:'🌪️',name:'Calculadora CME',art:'arte/cme.webp',steam:'stim',age:'11+ años',min:'15 min',
+  cme:{n:3,icon:'tornado',name:'Calculadora CME',art:'arte/cme.webp',steam:'stim',age:'11+ años',min:'15 min',
     desc:'Calcula cuándo llega una nube de plasma del Sol y decide cómo proteger la Tierra.',
     guide:{area:'Matemática · Ciencia y Tecnología',comp:'Resuelve problemas de regularidad, equivalencia y cambio (velocidad = distancia ÷ tiempo)',
       obj:'Aplicar la relación distancia–velocidad–tiempo con datos reales y tomar decisiones según el riesgo.',
       q:['Si una CME va el doble de rápido, ¿tarda la mitad? ¿Por qué?','¿Qué servicios de tu ciudad dependen de los satélites?']}},
-  aurora:{n:4,icon:'🌈',name:'Cazador de Auroras',art:'arte/aurora.webp',steam:'stam',age:'10+ años',min:'12 min',
+  aurora:{n:4,icon:'sparkles',name:'Cazador de Auroras',art:'arte/aurora.webp',steam:'stam',age:'10+ años',min:'12 min',
     desc:'Según el índice Kp, elige desde qué ciudades se verá la aurora esta noche.',
     guide:{area:'Ciencia y Tecnología · Ciencias Sociales',comp:'Indaga mediante métodos científicos para construir sus conocimientos',
       obj:'Relacionar el índice Kp con el tamaño del óvalo auroral y ubicar ciudades por latitud en un mapa.',
       q:['¿Por qué casi nunca se ven auroras en Moquegua?','¿Qué pasó el 10 de mayo de 2024 para que se vieran auroras en Chile?']}}
 };
+function ic(n,c=''){ return `<svg class="ic ${c}"><use href="#i-${n}"/></svg>`; }
 const STEAM_KEYS=[['s','C'],['t','T'],['i','I'],['a','A'],['m','M']];
 
 /* ===================== DATOS ===================== */
@@ -363,7 +375,6 @@ const store={
 };
 function best(key){ return store.get('best_'+key)||{score:0,stars:0}; }
 function saveBest(key,score,stars){ const b=best(key); store.set('best_'+key,{score:Math.max(b.score,score),stars:Math.max(b.stars,stars)}); }
-const starStr=n=>'★'.repeat(n)+'☆'.repeat(3-n);
 
 /* Sonido (WebAudio, sin archivos) */
 const snd={on:!!store.get('sound'),ctx:null,
@@ -376,7 +387,7 @@ const snd={on:!!store.get('sound'),ctx:null,
   win(){ [523,659,784,1046].forEach((f,i)=>setTimeout(()=>this.beep(f,.15,'triangle',.07),i*110)); },
   hit(){ this.beep(140,.25,'sawtooth',.09); }, ok(){ this.beep(880,.08,'triangle',.06); }, bad(){ this.beep(220,.18,'square',.05); }
 };
-function paintSound(){ $('btnSound').textContent=snd.on?'🔊 Sonido':'🔇 Sonido'; $('btnSound').setAttribute('aria-pressed',snd.on); }
+function paintSound(){ $('btnSound').innerHTML=(snd.on?ic('volume-2'):ic('volume-x'))+' Sonido'; $('btnSound').setAttribute('aria-pressed',snd.on); }
 $('btnSound').onclick=()=>{ snd.on=!snd.on; store.set('sound',snd.on); paintSound(); snd.ok(); };
 paintSound();
 
@@ -387,10 +398,10 @@ function hideOverlay(){ $('ov').classList.add('hide'); }
 
 function briefing(key,talk,goals,btn,startFn){
   const m=MISSIONS[key];
-  overlay(`<h3>${m.icon} Misión ${m.n}: ${m.name}</h3>
+  overlay(`<h3><span class="mico">${ic(m.icon)}</span> Misión ${m.n}: ${m.name}</h3>
     <div class="brief"><img src="arte/guia.webp" alt="Gato de Aldrin"><div class="bubble">${talk}</div></div>
     <div class="goals"><b>Tu objetivo</b><ul>${goals.map(x=>`<li>${x}</li>`).join('')}</ul></div>
-    <div class="row"><button class="btn gold" id="ovGo">${btn}</button><button class="btn ghost" onclick="closeGame()">← Misiones</button></div>`);
+    <div class="row"><button class="btn gold" id="ovGo">${btn}</button><button class="btn ghost" onclick="closeGame()">${ic('arrow-left')} Misiones</button></div>`);
   $('ovGo').onclick=startFn;
 }
 function debrief(key,{title,score,max,stars,learn,extra=''}){
@@ -398,12 +409,12 @@ function debrief(key,{title,score,max,stars,learn,extra=''}){
   const m=MISSIONS[key], b=best(key);
   const nextKey=Object.keys(MISSIONS).find(k=>MISSIONS[k].n===m.n+1);
   overlay(`<h3>${title}</h3>
-    <div class="big-stars">${[0,1,2].map(i=>`<i class="${i<stars?'on':''}">★</i>`).join('')}</div>
+    <div class="big-stars">${[0,1,2].map(i=>`<i class="${i<stars?'on':''}">${ic('star','fill')}</i>`).join('')}</div>
     <div class="score">Puntos <b>${score}</b>${max?` de ${max}`:''} · Récord <b>${b.score}</b></div>${extra}
-    <div class="learn"><strong>🧠 LO QUE APRENDISTE</strong>${learn}</div>
-    <div class="learn q"><strong>💬 PREGUNTA PARA LA CLASE</strong>${m.guide.q[0]}</div>
-    <div class="row"><button class="btn" onclick="GAMES['${key}'].start()">↻ Otra vez</button>
-    ${nextKey?`<button class="btn gold" onclick="openGame('${nextKey}')">Misión ${m.n+1} →</button>`:''}
+    <div class="learn"><strong>${ic('brain')} LO QUE APRENDISTE</strong>${learn}</div>
+    <div class="learn q"><strong>${ic('message-circle-question')} PREGUNTA PARA LA CLASE</strong>${m.guide.q[0]}</div>
+    <div class="row"><button class="btn" onclick="GAMES['${key}'].start()">${ic('rotate-ccw')} Otra vez</button>
+    ${nextKey?`<button class="btn gold" onclick="openGame('${nextKey}')">Misión ${m.n+1} ${ic('arrow-right')}</button>`:''}
     <button class="btn ghost" onclick="closeGame()">Misiones</button></div>`);
 }
 
@@ -467,7 +478,7 @@ function loop(t){
 function openGame(name){
   curKey=name; cur=GAMES[name]; const m=MISSIONS[name];
   $('menu').classList.add('hidden'); $('stage').classList.add('on');
-  $('gTitle').textContent=`${m.icon} Misión ${m.n} · ${m.name}`; $('gHelp').textContent=cur.help;
+  $('gTitle').innerHTML=`<span class="mico">${ic(m.icon)}</span> Misión ${m.n} · ${m.name}`; $('gHelp').textContent=cur.help;
   $('cmePanel').classList.toggle('hidden',name!=='cme'); $('auroraPanel').classList.toggle('hidden',name!=='aurora');
   $('hudL').textContent=''; $('hudR').textContent=''; fx=[]; running=false;
   cur.intro(); window.scrollTo({top:0,behavior:'smooth'});
@@ -481,12 +492,12 @@ $('btnTeacher').onclick=()=>{ const t=$('teacher'), on=t.classList.toggle('hidde
 function renderCards(){
   $('cards').innerHTML=Object.entries(MISSIONS).map(([k,m])=>{ const b=best(k);
     return `<button class="card" data-game="${k}">
-      <div class="art" style="background-image:url('${m.art}')"><span class="num">MISIÓN ${m.n}</span><span class="stars" title="Mejor resultado">${b.stars?`<span style="color:var(--gold)">${'★'.repeat(b.stars)}</span><span style="color:#5a6b85">${'★'.repeat(3-b.stars)}</span>`:''}</span></div>
-      <div class="body"><h3>${m.icon} ${m.name}</h3><p>${m.desc}</p>
+      <div class="art" style="background-image:url('${m.art}')"><span class="num">MISIÓN ${m.n}</span><span class="stars" title="Mejor resultado">${b.stars?[0,1,2].map(i=>`<span style="color:${i<b.stars?'var(--gold)':'#4a5872'}">${ic('star','fill')}</span>`).join(''):''}</span></div>
+      <div class="body"><h3><span class="mico">${ic(m.icon)}</span> ${m.name}</h3><p>${m.desc}</p>
       <div class="steam">${STEAM_KEYS.map(([c,l])=>`<span class="chip ${c} ${m.steam.includes(c)?'':'off'}">${l}</span>`).join('')}</div>
-      <div class="meta"><span class="info">👦 ${m.age} · ⏱ ${m.min}${b.score?` · récord ${b.score}`:''}</span><span class="play">JUGAR ▶</span></div></div></button>`; }).join('');
+      <div class="meta"><span class="info">${ic('users')} ${m.age} · ${ic('clock')} ${m.min}${b.score?` · ${ic('trophy')} ${b.score}`:''}</span><span class="play">JUGAR ${ic('play','fill')}</span></div></div></button>`; }).join('');
   document.querySelectorAll('.card').forEach(c=>c.onclick=()=>openGame(c.dataset.game));
-  $('tgrid').innerHTML=Object.values(MISSIONS).map(m=>`<div class="tcard"><h4>${m.icon} Misión ${m.n}: ${m.name}</h4>
+  $('tgrid').innerHTML=Object.values(MISSIONS).map(m=>`<div class="tcard"><h4>${ic(m.icon)} Misión ${m.n}: ${m.name}</h4>
     <dl><dt>Área</dt><dd>${m.guide.area}</dd><dt>Competencia</dt><dd>${m.guide.comp}</dd><dt>Propósito</dt><dd>${m.guide.obj}</dd><dt>Edad · tiempo</dt><dd>${m.age} · ${m.min}</dd></dl>
     <ul>${m.guide.q.map(q=>`<li>${q}</li>`).join('')}</ul></div>`).join('');
 }
@@ -494,10 +505,10 @@ function renderCards(){
 /* ===================== 1. ESQUIVA ERUPCIONES ===================== */
 const FLARE={B:{r:9,v:150,c:'#7fd1ff',dmg:1},C:{r:13,v:190,c:'#ffcf4a',dmg:1},M:{r:18,v:235,c:'#ff8a3d',dmg:1},X:{r:25,v:280,c:'#ff3b5c',dmg:2}};
 const dodge={
-  help:'Mueve la nave con el ratón, el dedo o las flechas ← →. Las erupciones X quitan dos vidas. Recoge los escudos azules 🛡.',
+  help:'Mueve la nave con el ratón, el dedo o las flechas ← →. Las erupciones X quitan dos vidas. Recoge los escudos azules.',
   intro(){ this.reset(); briefing('dodge',
     '¡Atención, Aldrin! Viene una tormenta solar. Las erupciones se miden por su energía: <b>B</b> es la más débil, luego <b>C</b>, <b>M</b> y la terrible <b>X</b>. ¡Cada letra es 10 veces más fuerte!',
-    ['Sobrevive el mayor tiempo posible esquivando erupciones','Recoge escudos magnéticos 🛡 para ser invencible 4 segundos','⭐ 50 puntos · ⭐⭐ 150 · ⭐⭐⭐ 300'],'🚀 Despegar',()=>this.start()); },
+    ['Sobrevive el mayor tiempo posible esquivando erupciones',`Recoge escudos magnéticos ${ic('shield')} para ser invencible 4 segundos`,`${ic('star','fill')} 50 puntos · ${ic('star','fill')}${ic('star','fill')} 150 · ${ic('star','fill')}${ic('star','fill')}${ic('star','fill')} 300`],`${ic('rocket')} Despegar`,()=>this.start()); },
   reset(){ this.ship={x:W/2,y:H-55}; this.items=[]; this.trail=[]; this.t=0; this.spawn=0; this.lives=3; this.score=0; this.shield=0; this.idx=0; this.factT=7; this.inv=0; },
   start(){ this.reset(); hideOverlay(); running=true; },
   update(dt){
@@ -518,7 +529,7 @@ const dodge={
       it.y+=it.v*dt; it.rot+=dt*3;
       if(!it.gone && Math.hypot(it.x-s.x,it.y-s.y)<it.r+15){
         it.gone=true;
-        if(it.kind==='shield'){ this.shield=4; snd.ok(); burst(it.x,it.y,'#3be8ff',18); toast('🛡️ ¡Escudo magnético activado!'); }
+        if(it.kind==='shield'){ this.shield=4; snd.ok(); burst(it.x,it.y,'#3be8ff',18); toast('¡Escudo magnético activado!'); }
         else if(this.shield>0){ burst(it.x,it.y,'#3be8ff',10,120); snd.ok(); }
         else if(this.inv<=0){ this.lives-=it.dmg; this.inv=1; snd.hit(); shake(.4); flash(it.c,.25); burst(it.x,it.y,it.c,26,220);
           toast(it.dmg>1?'¡Clase X! '+D.facts[0]:'¡Impacto de una erupción '+it.label+'!'); }
@@ -527,7 +538,7 @@ const dodge={
     this.items=this.items.filter(i=>!i.gone && i.y<H+40);
     this.shield=Math.max(0,this.shield-dt);
     this.factT-=dt; if(this.factT<=0){ toast(D.facts[Math.floor(Math.random()*D.facts.length)]); this.factT=12; }
-    $('hudL').textContent='❤️'.repeat(Math.max(0,this.lives))+'🖤'.repeat(Math.max(0,3-this.lives)); $('hudR').textContent='⭐ '+this.score;
+    $('hudL').innerHTML=[0,1,2].map(i=>`<span style="color:${i<this.lives?'#ff5f7a':'#3a4660'}">${ic('heart','fill')}</span>`).join(''); $('hudR').innerHTML=ic('star','fill')+' '+this.score;
     if(this.lives<=0){ const sc=this.score, st=sc>=300?3:sc>=150?2:sc>=50?1:0;
       debrief('dodge',{title:st?'¡Buen vuelo, cadete!':'La nave fue alcanzada',score:sc,stars:st,
         learn:'Las erupciones B, C, M y X se clasifican por la energía de sus rayos X. La radiación viaja a la velocidad de la luz: llega en unos <b>8 minutos</b>, por eso hay muy poco tiempo para protegerse.'}); }
@@ -537,7 +548,8 @@ const dodge={
     drawSun(W/2,-150,150);
     for(const p of this.trail){ g.globalAlpha=p.life*.6; glow(p.x+rand(-2,2),p.y+(1-p.life)*30,3*p.life+1,'#ff8a3d',10); } g.globalAlpha=1;
     for(const it of this.items){
-      if(it.kind==='shield'){ glow(it.x,it.y,it.r,'#3be8ff',25); g.fillStyle='#03111c'; g.font='bold 13px Orbitron'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('🛡',it.x,it.y+1); continue; }
+      if(it.kind==='shield'){ glow(it.x,it.y,it.r+2,'#3be8ff',25); g.save(); g.translate(it.x,it.y); g.fillStyle='#03111c';
+        g.beginPath(); g.moveTo(0,-8); g.lineTo(7,-5); g.quadraticCurveTo(7,4,0,9); g.quadraticCurveTo(-7,4,-7,-5); g.closePath(); g.fill(); g.restore(); continue; }
       g.save(); g.translate(it.x,it.y); g.rotate(it.rot);
       g.shadowColor=it.c; g.shadowBlur=22; g.fillStyle=it.c; g.beginPath();
       for(let i=0;i<16;i++){ const a=i/16*Math.PI*2, rr=it.r*(i%2?0.75:1.15); g.lineTo(Math.cos(a)*rr,Math.sin(a)*rr); } g.closePath(); g.fill(); g.restore();
@@ -564,7 +576,7 @@ const shield={
   help:'Mueve el ratón o el dedo alrededor de la Tierra (o usa ← →) para girar el escudo. Las partículas desviadas encienden auroras en los polos.',
   intro(){ this.hp=100; this.saved=0; this.reset(0); briefing('shield',
     `El Sol sopla un viento de partículas a <b>${Math.round(D.weather.solar_wind_speed)} km/s</b>. La Tierra tiene un escudo invisible: su <b>campo magnético</b>. ¡Oriéntalo para que nada llegue a la superficie!`,
-    ['Desvía las partículas amarillas con el escudo celeste','Supera 3 niveles: dipolo, campo complejo y reconexión','⭐ llegar al nivel 2 · ⭐⭐ completar · ⭐⭐⭐ completar con más de 60 % de integridad'],'🧲 Activar escudo',()=>this.start()); },
+    ['Desvía las partículas amarillas con el escudo celeste','Supera 3 niveles: dipolo, campo complejo y reconexión',`${ic('star','fill')} llegar al nivel 2 · ${ic('star','fill')}${ic('star','fill')} completar · ${ic('star','fill')}${ic('star','fill')}${ic('star','fill')} completar con más de 60 % de integridad`],`${ic('magnet')} Activar escudo`,()=>this.start()); },
   reset(lv){ this.lv=lv; this.ang=Math.PI; this.parts=[]; this.auroraN=0; this.auroraS=0; this.t=0; this.spawn=0; this.earth={x:W*.68,y:H/2,r:44}; this.R=88; },
   start(){ this.hp=100; this.saved=0; this.reset(0); hideOverlay(); running=true; toast('Nivel 1 · '+LEVELS[0].name); },
   update(dt){
@@ -576,7 +588,7 @@ const shield={
     if(this.spawn<=0){
       const n=L.bursts && Math.random()<.15 ? 6 : 1;
       for(let i=0;i<n;i++){ const y=rand(60,H-60), dir=Math.atan2(e.y-y+rand(-60,60),e.x-40); this.parts.push({x:40,y,vx:Math.cos(dir)*v*rand(.85,1.15),vy:Math.sin(dir)*v,tr:[]}); }
-      if(n>1){ toast('⚡ ¡Ráfaga de reconexión magnética!'); flash('#ffcf4a',.12); }
+      if(n>1){ toast('¡Ráfaga de reconexión magnética!'); flash('#ffcf4a',.12); }
       this.spawn=1/L.rate;
     }
     for(const p of this.parts){
@@ -596,12 +608,12 @@ const shield={
     }
     this.parts=this.parts.filter(p=>!p.gone && p.x>-20 && p.x<W+20 && p.y>-20 && p.y<H+20);
     this.auroraN=Math.max(0,this.auroraN-dt*.15); this.auroraS=Math.max(0,this.auroraS-dt*.15);
-    $('hudL').textContent=`Nivel ${this.lv+1}/3 · 🌍 ${Math.max(0,Math.round(this.hp))}%`;
-    $('hudR').textContent=`✨ ${this.saved} · ⏱ ${Math.max(0,Math.ceil(L.time-this.t))} s`;
+    $('hudL').innerHTML=`Nivel ${this.lv+1}/3 · ${ic('earth')} ${Math.max(0,Math.round(this.hp))}%`;
+    $('hudR').innerHTML=`${ic('sparkles')} ${this.saved} · ${ic('timer')} ${Math.max(0,Math.ceil(L.time-this.t))} s`;
     const score=this.saved*10+Math.max(0,Math.round(this.hp))*5;
     const learn='La magnetosfera desvía el viento solar hacia los polos. Allí las partículas chocan con el aire y lo hacen brillar: eso son las <b>auroras</b>. Sin ese escudo, la radiación dañaría la vida y la tecnología.';
     if(this.hp<=0) return debrief('shield',{title:'La Tierra quedó expuesta',score,stars:this.lv>=1?1:0,learn,
-      extra:'<div class="learn"><strong>📜 DATO HISTÓRICO</strong>En 1989 una tormenta geomagnética dejó sin luz a 6 millones de personas en Quebec (Canadá) durante 9 horas.</div>'});
+      extra:'<div class="learn"><strong>'+ic('history')+' DATO HISTÓRICO</strong>En 1989 una tormenta geomagnética dejó sin luz a 6 millones de personas en Quebec (Canadá) durante 9 horas.</div>'});
     if(this.t>=L.time){
       if(this.lv<LEVELS.length-1){ this.reset(this.lv+1); snd.win(); flash('#3be8ff',.2); toast('Nivel '+(this.lv+1)+' · '+LEVELS[this.lv].name); }
       else debrief('shield',{title:'¡Planeta protegido!',score,stars:this.hp>60?3:2,learn});
@@ -637,7 +649,7 @@ const cme={
   help:'Estima cuántas horas tarda la CME en llegar a la Tierra con la fórmula de abajo. Luego elige cómo reaccionar.',
   intro(){ this.round=0; this.total=0; this.list=[...D.cmes].sort(()=>Math.random()-.5).slice(0,5); this.anim=null; this.prepare();
     briefing('cme','A veces el Sol lanza una nube gigante de plasma: una <b>CME</b> (eyección de masa coronal). Si sabemos su velocidad podemos calcular cuándo llega. ¡Los centros de predicción hacen esto todos los días!',
-      [`Estima la llegada de ${this.list.length} CMEs reales del registro`,'Más cerca de la respuesta = más puntos (máx. 100 por CME)','Elige la acción correcta y gana 50 puntos extra'],'🌪️ Abrir el centro de predicción',()=>{ hideOverlay(); running=true; }); },
+      [`Estima la llegada de ${this.list.length} CMEs reales del registro`,'Más cerca de la respuesta = más puntos (máx. 100 por CME)','Elige la acción correcta y gana 50 puntos extra'],`${ic('tornado')} Abrir el centro de predicción`,()=>{ hideOverlay(); running=true; }); },
   start(){ this.intro(); hideOverlay(); running=true; },
   prepare(){
     const c=this.list[this.round]; if(!c) return;
@@ -645,7 +657,7 @@ const cme={
     const date=(c.start_time||'').replace('T',' ').slice(0,16);
     $('cmeInfo').innerHTML=`<b>CME ${this.round+1} de ${this.list.length}</b> · ${date||'—'} · región ${c.source_location||'—'}<br>Velocidad medida: <b style="color:var(--gold);font-family:Orbitron">${Math.round(c.speed)} km/s</b>`;
     $('cmeGo').disabled=false; $('cmeGuess').disabled=false; $('cmeQ').classList.add('hidden'); $('cmeQ').innerHTML='';
-    $('hudL').textContent=`CME ${this.round+1}/${this.list.length}`; $('hudR').textContent=`⭐ ${this.total}`;
+    $('hudL').textContent=`CME ${this.round+1}/${this.list.length}`; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
   },
   launch(){ if(this.anim || !running) return; this.guess=+$('cmeGuess').value; this.anim={t:0}; $('cmeGo').disabled=true; $('cmeGuess').disabled=true; snd.beep(300,.4,'sawtooth',.05); },
   update(dt){
@@ -654,7 +666,7 @@ const cme={
     if(this.anim.t>=1 && !this.answered){
       this.answered=true;
       const err=Math.abs(this.guess-this.real)/this.real, pts=Math.max(0,Math.round(100-err*100));
-      this.total+=pts; $('hudR').textContent=`⭐ ${this.total}`;
+      this.total+=pts; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
       flash('#ff8a3d',.2); shake(.25); burst(W-90,H/2,'#ff8a3d',30,200); pts>=80?snd.win():snd.ok();
       toast(`Llegada real: ${this.real.toFixed(1)} h · tú dijiste ${this.guess} h · +${pts}`);
       this.ask();
@@ -663,17 +675,17 @@ const cme={
   ask(){
     const v=this.list[this.round].speed, strong=v>=1000, mid=v>=500;
     const opts=[
-      {t:'🛰️ Poner satélites en modo seguro y avisar a las redes eléctricas',ok:strong},
-      {t:'🔭 Vigilar y avisar a los observadores de auroras',ok:mid&&!strong},
-      {t:'😌 No hace falta hacer nada: es una CME lenta',ok:!mid}
+      {i:'satellite',t:'Poner satélites en modo seguro y avisar a las redes eléctricas',ok:strong},
+      {i:'telescope',t:'Vigilar y avisar a los observadores de auroras',ok:mid&&!strong},
+      {i:'circle-check',t:'No hace falta hacer nada: es una CME lenta',ok:!mid}
     ];
     const q=$('cmeQ'); q.classList.remove('hidden');
-    q.innerHTML=`<p style="margin-top:12px;font-weight:700">Con ${Math.round(v)} km/s, ¿qué harías?</p><div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${o.t}</button>`).join('')}</div>`;
+    q.innerHTML=`<p style="margin-top:12px;font-weight:700">Con ${Math.round(v)} km/s, ¿qué harías?</p><div class="choices">${opts.map((o,i)=>`<button class="choice" data-i="${i}">${ic(o.i)} ${o.t}</button>`).join('')}</div>`;
     q.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
       if(q.dataset.done) return; q.dataset.done=1;
       const o=opts[+b.dataset.i]; b.classList.add(o.ok?'ok':'bad');
       if(!o.ok){ q.querySelectorAll('.choice')[opts.findIndex(x=>x.ok)].classList.add('ok'); snd.bad(); }
-      else { this.total+=50; $('hudR').textContent=`⭐ ${this.total}`; snd.ok(); }
+      else { this.total+=50; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`; snd.ok(); }
       const next=document.createElement('button'); next.className='btn gold'; next.style.marginTop='10px';
       next.textContent=this.round+1<this.list.length?'Siguiente CME →':'Ver resultado';
       next.onclick=()=>{ delete q.dataset.done; this.round++; if(this.round<this.list.length) this.prepare(); else this.end(); };
@@ -745,7 +757,7 @@ const aurora={
     this.rounds=[{kp:base,label:'Kp actual de los datos'},...extra.map(([kp,label])=>({kp,label}))];
     this.round=0; this.total=0; this.sel=new Set(); this.checked=false; this.updatePanel();
     briefing('aurora',`¡Esta noche salimos a cazar auroras! El <b>índice Kp</b> va de 0 a 9 y mide cuánto se agita el campo magnético. Ahora mismo los datos marcan <b>Kp ${now.toFixed(1)}</b>. Con más Kp, la aurora se ve más lejos de los polos.`,
-      ['Toca las ciudades donde crees que se verá la aurora','Pulsa «Comprobar»: verde = acierto, rojo = error','5 noches con distinto Kp · máximo 100 puntos por noche'],'🌈 Salir a cazar',()=>{ hideOverlay(); running=true; });
+      ['Toca las ciudades donde crees que se verá la aurora','Pulsa «Comprobar»: verde = acierto, rojo = error','5 noches con distinto Kp · máximo 100 puntos por noche'],`${ic('sparkles')} Salir a cazar`,()=>{ hideOverlay(); running=true; });
   },
   start(){ this.intro(); hideOverlay(); running=true; },
   pos(lat,lon){ return {x:(lon+180)/360*W, y:(90-lat)/180*H}; },
@@ -757,7 +769,7 @@ const aurora={
     const r=this.rounds[this.round];
     $('auroraInfo').innerHTML=`Noche ${this.round+1}/${this.rounds.length} · <b style="color:var(--gold);font-family:Orbitron">Kp ${r.kp}</b> · ${r.label}`;
     $('auroraGo').textContent=this.checked?(this.round+1<this.rounds.length?'Siguiente noche →':'Ver resultado'):'Comprobar';
-    $('hudL').textContent=`Kp ${r.kp}`; $('hudR').textContent=`⭐ ${this.total}`;
+    $('hudL').textContent=`Kp ${r.kp}`; $('hudR').innerHTML=`${ic('star','fill')} ${this.total}`;
   },
   go(){
     if(!running) return;
