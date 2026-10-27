@@ -71554,9 +71554,9 @@ A.a9K.prototype={
 $1(a){return B.Cy},
 $S:481}
 A.ph.prototype={
-M(a){return A.anf(a,"Aurora Hunter","Crear auroras combinando part\xedculas.")}}
+M(a){return A.anf(a,"Aurora Hunter","Crear auroras combinando part\xedculas. \xa1Ya puedes jugarlo en stellarscribe.moqueguasoft.com/juegos!")}}
 A.pC.prototype={
-M(a){return A.anf(a,"CME Arrival Calculator","Calcular llegada de CMEs y reaccionar.")}}
+M(a){return A.anf(a,"CME Arrival Calculator","Calcular llegada de CMEs y reaccionar. \xa1Ya puedes jugarlo en stellarscribe.moqueguasoft.com/juegos!")}}
 A.eD.prototype={
 c2(){var s=0,r=A.P(t.H),q=this,p,o,n,m,l,k,j,i
 var $async$c2=A.L(function(a,b){if(a===1)return A.M(b,r)
@@ -71925,7 +71925,7 @@ br(){this.dl()
 this.cX()
 this.l_()}}
 A.qv.prototype={
-M(a){return A.anf(a,"Magnetic Shield Defense","Construir campos magn\xe9ticos para proteger la Tierra.")}}
+M(a){return A.anf(a,"Magnetic Shield Defense","Construir campos magn\xe9ticos para proteger la Tierra. \xa1Ya puedes jugarlo en stellarscribe.moqueguasoft.com/juegos!")}}
 A.Xs.prototype={
 jt(){var s=this
 return A.au(["difficulty_level",s.a,"concepts",s.b,"mini_game_params",s.c,"fun_facts",s.d],t.N,t.z)}}

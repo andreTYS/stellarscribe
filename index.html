@@ -7,7 +7,7 @@
 <style>
 /* ==================== RESET Y BODY ==================== */
 * { box-sizing: border-box; margin:0; padding:0; }
-html, body { height: 100%; width: 100%; }
+html, body { height: 100%; width: 100%; overflow-x: hidden; }
 body {
   font-family: 'Arial', sans-serif;
 
@@ -149,7 +149,8 @@ footer {
   header h1 { font-size: 1.6em; }
   nav button { padding: 8px 16px; font-size: 0.85em; }
   .mosaic-container { gap: 15px; padding-bottom: 40px; }
-  .mosaic-container img { width: 110px; max-width: 90%; }
+  .mosaic-container { padding: 0 16px 40px; }
+  .mosaic-container img { width: calc(50% - 15px); max-width: 160px; }
 }
 </style>
 </head>
@@ -164,6 +165,7 @@ footer {
 <nav>
   <button onclick="window.open('/index2.html','_blank')">Cuento</button>
   <button onclick="window.open('/web/index.html','_blank')">Entretenimiento</button>
+  <button onclick="location.href='/juegos/'">Juegos Solares</button>
   <button onclick="window.open('/apk/peruesclave.apk','_blank')">Descarga El apk</button>
 </nav>
 
@@ -218,9 +220,11 @@ for(let i=0;i<40;i++){
 // ==================== MOSAICO FLOTANTE ====================
 const mosaic = document.getElementById('mosaic');
 const images = mosaic.querySelectorAll('img');
+// Amplitud del flotado según el ancho: en móvil apenas se mueven para no encimarse ni salirse
+const DRIFT = window.innerWidth < 600 ? 10 : 60;
 images.forEach(img => {
-  img.dataset.x = Math.random()*200 - 100;
-  img.dataset.y = Math.random()*200 - 100;
+  img.dataset.x = Math.random()*DRIFT*2 - DRIFT;
+  img.dataset.y = Math.random()*DRIFT*2 - DRIFT;
   img.dataset.dx = (Math.random()*0.4-0.2);
   img.dataset.dy = (Math.random()*0.4-0.2);
 });
@@ -233,8 +237,8 @@ function animateMosaic(){
     let dy = parseFloat(img.dataset.dy);
     x += dx;
     y += dy;
-    if(x>60 || x<-60) img.dataset.dx = -dx;
-    if(y>60 || y<-60) img.dataset.dy = -dy;
+    if(x>DRIFT || x<-DRIFT) img.dataset.dx = -dx;
+    if(y>DRIFT || y<-DRIFT) img.dataset.dy = -dy;
     img.dataset.x = x;
     img.dataset.y = y;
     img.style.transform = `translate(${x}px, ${y}px)`;
