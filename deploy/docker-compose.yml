@@ -1,0 +1,32 @@
+# StellarScribe en el VPS detrás del Traefik que ya existe (80/443).
+#   cd deploy && docker compose up -d --build
+# Variables opcionales en deploy/.env: DOMINIO, TRAEFIK_NETWORK, CERT_RESOLVER
+name: stellarscribe
+
+services:
+  web:
+    build: ..
+    image: stellarscribe:latest
+    container_name: stellarscribe
+    restart: unless-stopped
+    mem_limit: 128m
+    networks:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${TRAEFIK_NETWORK:-traefik-network}
+      - traefik.http.routers.stellarscribe.rule=Host(`${DOMINIO:-stellarscribe.moqueguasoft.com}`)
+      - traefik.http.routers.stellarscribe.entrypoints=websecure
+      - traefik.http.routers.stellarscribe.tls=true
+      - traefik.http.routers.stellarscribe.tls.certresolver=${CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.stellarscribe.loadbalancer.server.port=80
+      # HTTP -> HTTPS
+      - traefik.http.routers.stellarscribe-http.rule=Host(`${DOMINIO:-stellarscribe.moqueguasoft.com}`)
+      - traefik.http.routers.stellarscribe-http.entrypoints=web
+      - traefik.http.routers.stellarscribe-http.middlewares=stellarscribe-https
+      - traefik.http.middlewares.stellarscribe-https.redirectscheme.scheme=https
+
+networks:
+  traefik:
+    external: true
+    name: ${TRAEFIK_NETWORK:-traefik-network}
